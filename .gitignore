@@ -43,6 +43,9 @@ vignettes/*.pdf
 docs/
 
 # translation temp files
+
+# Directories
+02_Data/Raw
 po/*~
 
 # RStudio Connect folder
