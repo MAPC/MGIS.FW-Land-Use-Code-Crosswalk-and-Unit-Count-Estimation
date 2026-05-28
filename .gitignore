@@ -43,10 +43,10 @@ vignettes/*.pdf
 docs/
 
 # translation temp files
+po/*~
 
 # Directories
 02_Data/Raw
-po/*~
 
 # RStudio Connect folder
 rsconnect/
