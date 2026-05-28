@@ -46,7 +46,7 @@ docs/
 po/*~
 
 # Directories
-02_Data/Raw
+02_Data/Raw/
 
 # RStudio Connect folder
 rsconnect/
