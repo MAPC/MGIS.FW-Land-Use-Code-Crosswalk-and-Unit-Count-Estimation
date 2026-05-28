@@ -44,7 +44,6 @@ y <- "2026"
 
 # 1.0 Loading in Data
 # 1.1 Loading in Geodatabase with Parcel data and filtering for attributes
-
 ```{r}
 # Check which layers exist in the geodatabase
 layers <- st_layers(dsn = here("02_Data/Raw/MGIS Property Tax Parcels/MGIS Q1 2026/MassGIS_L3_Parcels.gdb"))
@@ -69,10 +68,6 @@ writexl::write_xlsx(use_codes, here(paste0("02_Data/Logs/L3_UC_LUT.",q,"_",y,".x
 # 1.2 Load Complementary Datasets
 
 ```{r}
-# # Load CAMA System and Maintainer file from MassGIS
-# # File download from 1/19/2026
-# cama <- read.csv(paste0(local_root, "/Complementary Data/Municipal_Parcel_Status_for_Dashboard_(Feature_Service)_Layer.csv"))
-
 # Load MHP Residensity product Land Use Codes
 # File download from
 mhp.luc.xwalk <- read_xlsx(here("02_Data/Raw/Land Use Codes/MHP/LUTstandards_Residensity.xlsx"), sheet = 1)
@@ -83,20 +78,19 @@ umdi.luc.xwalk <- read_xlsx(here("02_Data/Raw/Land Use Codes/UMDI/Standardized L
 
 ```
 
-# 1.3 Loads the USE_CODE Crosswalk and Address Points Files
+# 1.3 Loads the previous version of the MAPC Land Use Code Crosswalk and Address Points Files
 ```{r}
-# #Loads the land use codes crosswalk
-# USE_CODE_XWALK <- read.csv(paste0(local_root, "comprehensive_adj_use.code_xwalk.csv")) |>
-#   #Replace all N/A Variables with "Unknown"
-#   mutate(
-#     across(everything(), ~replace_na(.x, "Unknown"))
-#   ) |> 
-#   dplyr::rename(
-#     STD.USE_CODE = LUC_Assign,
-#     STD.USE_DESC = L3_Description,
-#     MUNI.USE_CODE = USE_CODE,
-#     MUNI.USE_DESC = USE_DESC
-#   )
+#Loads the land use codes crosswalk
+old.mapc.luc.xwalk <- read.csv(here("02_Data/Raw/Land Use Codes/MAPC/comprehensive_adj_use.code_xwalk.csv")) |>
+  #Replace all N/A Variables with "Unknown"
+  mutate(across(everything(), ~replace_na(.x, "Unknown"))) |>
+  dplyr::rename(
+    STD.USE_CODE = LUC_Assign,
+    STD.USE_DESC = L3_Description,
+    MUNI.USE_CODE = USE_CODE,
+    MUNI.USE_DESC = USE_DESC
+  )
+
 # 
 # #Loads Address points data
 # ADDRESS_PNTS <- read.csv(paste0(local_root, "Parcel_Address_Point_Sums.csv")) |> 
@@ -107,10 +101,8 @@ umdi.luc.xwalk <- read_xlsx(here("02_Data/Raw/Land Use Codes/UMDI/Standardized L
 
 ```
 
-# 2.0 Evaluating MassGIS Land-Use Code File
-
-# 2.1 Create a standard land use code data frame + QC
-
+# 2.0 Creating Land Use Code Data Frames
+# 2.1 Standard Land Use Codes df + QC
 ```{r}
 # Check Use Code Crosswalk data types
 str(use_codes)
@@ -192,10 +184,7 @@ print(length(unique(std_uc$xwalk_uc))) # Should be equal to 304 (296 + deprecate
 # 9 - Tax Exempt (72)
 ```
 
-# 3.0 Municipal Land Use Codes Analysis and QC
-
-# 3.1 Create a dataframe of municipal specific land use codes + eval \# of munis in the df
-
+# 2.2 Municipal-specific Land Use Codes df + QC
 ```{r}
 # Create Municipal Use Code dataframe
 muni_uc <- use_codes |> 
@@ -207,11 +196,7 @@ muni_uc <- use_codes |>
     MUNI.USE_CODE = USE_CODE,
     MUNI.USE_DESC = USE_DESC
   )
-```
 
-# 
-
-```{r}
 # QC Checks for municipal use code 
 print(length(unique(muni_uc$TOWN_ID))) # Only 328 municipalities are listed in the specific LUT
 
@@ -255,10 +240,8 @@ print(sapply(X = std_uc.check, FUN =  function(x) sum(is.na(x))))
 # ANSWER: The 26 municipalities NOT in the LUT land use code codebook DO exclusively use L3 standardized land use codes. 
 ```
 
-# 3.2 Top-Line Use Code Analysis
-
-# 3.2.1 Create a list of dataframes of use codes filtered by their one-digit group
-
+# 3.0 Create Text Analysis Dataframes
+# 3.1 One-Digit Unique Land Use Code Terms Dataframes
 ```{r}
 # Create a list of integers 0-9 to programmatically filter use code dataframes by the one-digit use code.
 od_uc.list <- as.character(0:9)
@@ -340,8 +323,7 @@ for (i in od_uc.list){
 
 ```
 
-# 3.2.2 Create a lexicon of three digit codes for each of the nine single use general codes
-
+# 3.2 Three-Digit Unique Land Use Code Terms Dataframes
 ```{r}
 # Create a list of terms for each three digit standard code
 td.std.desc_lexicon <- NULL
@@ -417,11 +399,10 @@ for (i in od_uc.list) {
   
 }
 
-
 ```
 
-# 3.2.2 Mixed-Use
-
+# 4.0 Municipal-specific to Standard Land Use Code Crosswalking
+# 4.1 Mixed-Use
 ```{r}
 # Pull out the Mixed Use use codes from the Muni and Standard Use Code lists
 x <- od_muni.uc$`0` |> select(xwalk_uc, MUNI.USE_CODE, MUNI.USE_DESC, muni_name)
@@ -793,8 +774,7 @@ write.csv(
 
 ```
 
-# 3.2.3 Residential
-
+# 4.2 Residential
 ```{r}
 # Pull out the Residential use codes from the Muni and Standard Use Code lists
 x <- od_muni.uc$`1` |> select(xwalk_uc, MUNI.USE_CODE, MUNI.USE_DESC, muni_name)
@@ -993,8 +973,7 @@ unmatched.unfixed <- unmatched |> filter(res.flag == FALSE & gen.flag == FALSE)
 
 ```
 
-# 3.2.4 Open Space
-
+# 4.3 Open Space
 ```{r}
 x <- od_muni.uc$`2` |> select(xwalk_uc, MUNI.USE_CODE, MUNI.USE_DESC, muni_name)
 y <- od_std.uc$`2` |> select(xwalk_uc, STD.USE_CODE, STD.USE_DESC)
@@ -1016,8 +995,7 @@ unmatched_text <- comp |>
 rm(x,y)
 ```
 
-# 3.2.5 Commercial
-
+# 4.3 Commercial
 ```{r}
 x <- od_muni.uc$`3` |> select(xwalk_uc, MUNI.USE_CODE, MUNI.USE_DESC, muni_name)
 y <- od_std.uc$`3` |> select(xwalk_uc, STD.USE_CODE, STD.USE_DESC)
@@ -1037,8 +1015,7 @@ unmatched_text <- comp |>
   count(word, sort = TRUE)
 ```
 
-# 3.2.6 Industrial
-
+# 4.5 Industrial
 ```{r}
 x <- od_muni.uc$`4` |> select(xwalk_uc, MUNI.USE_CODE, MUNI.USE_DESC, muni_name)
 y <- od_std.uc$`4` |> select(xwalk_uc, STD.USE_CODE, STD.USE_DESC)
@@ -1058,8 +1035,7 @@ unmatched_text <- comp |>
   count(word, sort = TRUE)
 ```
 
-# 3.2.7 Personal Property
-
+# 4.6 Personal Property
 ```{r}
 x <- od_muni.uc$`5` |> select(xwalk_uc, MUNI.USE_CODE, MUNI.USE_DESC, muni_name)
 y <- od_std.uc$`5` |> select(xwalk_uc, STD.USE_CODE, STD.USE_DESC)
@@ -1079,8 +1055,7 @@ unmatched_text <- comp |>
   count(word, sort = TRUE)
 ```
 
-# 3.2.8 Forest
-
+# 4.7 Forest
 ```{r}
 x <- od_muni.uc$`6` |> select(xwalk_uc, MUNI.USE_CODE, MUNI.USE_DESC, muni_name)
 y <- od_std.uc$`6` |> select(xwalk_uc, STD.USE_CODE, STD.USE_DESC)
@@ -1100,8 +1075,7 @@ unmatched_text <- comp |>
   count(word, sort = TRUE)
 ```
 
-# 3.2.9 Agriculture
-
+# 4.8 Agriculture
 ```{r}
 x <- od_muni.uc$`7` |> select(xwalk_uc, MUNI.USE_CODE, MUNI.USE_DESC, muni_name)
 y <- od_std.uc$`7` |> select(xwalk_uc, STD.USE_CODE, STD.USE_DESC)
@@ -1121,8 +1095,7 @@ unmatched_text <- comp |>
   count(word, sort = TRUE)
 ```
 
-# 3.2.10 Recreation
-
+# 4.9 Recreation
 ```{r}
 x <- od_muni.uc$`8` |> select(xwalk_uc, MUNI.USE_CODE, MUNI.USE_DESC, muni_name)
 y <- od_std.uc$`8` |> select(xwalk_uc, STD.USE_CODE, STD.USE_DESC)
@@ -1142,8 +1115,7 @@ unmatched_text <- comp |>
   count(word, sort = TRUE)
 ```
 
-# 3.2.11 Exempt
-
+# 4.10 Exempt
 ```{r}
 x <- od_muni.uc$`9` |> select(xwalk_uc, MUNI.USE_CODE, MUNI.USE_DESC, muni_name)
 y <- od_std.uc$`9` |> select(xwalk_uc, STD.USE_CODE, STD.USE_DESC)
@@ -1163,24 +1135,22 @@ unmatched_text <- comp |>
   count(word, sort = TRUE)
 ```
 
-# 4.0 Create Harmonized Use Code Crosswalk
-
-# 3.1
-
+# 5.0 Create Harmonized Use Code Crosswalk
+# 5.1
 ```{r}
-harmonized_uc <- left_join(std_uc, muni_uc, by = c("xwalk_uc")) |> 
-  relocate(
-    TOWN_ID,
-    muni_name,
-    STD.USE_CODE,
-    MUNI.USE_CODE,
-    STD.USE_DESC,
-    MUNI.USE_DESC
-  )
-
-func_use.code.count <- function(df){
-  test <- df |> 
-    mutate()
-}
+# harmonized_uc <- left_join(std_uc, muni_uc, by = c("xwalk_uc")) |> 
+#   relocate(
+#     TOWN_ID,
+#     muni_name,
+#     STD.USE_CODE,
+#     MUNI.USE_CODE,
+#     STD.USE_DESC,
+#     MUNI.USE_DESC
+#   )
+# 
+# func_use.code.count <- function(df){
+#   test <- df |> 
+#     mutate()
+# }
 
 ```
