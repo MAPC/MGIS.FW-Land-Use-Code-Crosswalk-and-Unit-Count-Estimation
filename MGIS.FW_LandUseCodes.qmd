@@ -40,7 +40,6 @@ set.seed(351)
 # Set Land Use Code Vintage
 q <- "Q1"
 y <- "2026"
-
 ```
 
 # 1.0 Loading in Data
@@ -55,8 +54,7 @@ print(layers$name)
 assessors <- st_read(dsn = "02_Data/Raw/MGIS Property Tax Parcels/MGIS Q1 2026//MassGIS_L3_Parcels.gdb", layer = layers$name[3])
 
 # Read in the MassGIS Land Use Code Crosswalk
-use_codes <- st_read(dsn = "02_Data/Raw/MGIS Property Tax Parcels/MGIS Q1 2026//MassGIS_L3_Parcels.gdb", layer = layers$name[2]) |> 
-  left_join(keys, by = c("TOWN_ID" = "muni_id"))
+use_codes <- st_read(dsn = "02_Data/Raw/MGIS Property Tax Parcels/MGIS Q1 2026//MassGIS_L3_Parcels.gdb", layer = layers$name[2]) |> left_join(keys, by = c("TOWN_ID" = "muni_id"))
 
 print(sapply(X = assessors, FUN =  function(x) sum(is.na(x))))
 
@@ -65,19 +63,19 @@ print(summary(assessors))
 print(str(assessors))
 
 # Writes a log of the Land Use Code file within the MassGIS Property Tax Parcel geodatabase.
-writexl::write_xlsx(use_codes, here(paste("02_Data/Logs/L3_UC_LUT.",q,"_",y,".xlsx")))
+writexl::write_xlsx(use_codes, here(paste0("02_Data/Logs/L3_UC_LUT.",q,"_",y,".xlsx")))
 ```
 
 # 1.2 Load Complementary Datasets
 
 ```{r}
-# Load CAMA System and Maintainer file from MassGIS
-# File download from 1/19/2026
-cama <- read.csv(paste0(local_root, "/Complementary Data/Municipal_Parcel_Status_for_Dashboard_(Feature_Service)_Layer.csv"))
+# # Load CAMA System and Maintainer file from MassGIS
+# # File download from 1/19/2026
+# cama <- read.csv(paste0(local_root, "/Complementary Data/Municipal_Parcel_Status_for_Dashboard_(Feature_Service)_Layer.csv"))
 
 # Load MHP Residensity product Land Use Codes
 # File download from
-mhp.luc.xwalk <- read_xlsx(here("02_Data/Raw/Land Use Codes/MHP/LUTstandards_Residensity"), sheet = 1)
+mhp.luc.xwalk <- read_xlsx(here("02_Data/Raw/Land Use Codes/MHP/LUTstandards_Residensity.xlsx"), sheet = 1)
   
 # Load UMDI Land Use Code Crosswalk
 # File download from 
@@ -87,25 +85,25 @@ umdi.luc.xwalk <- read_xlsx(here("02_Data/Raw/Land Use Codes/UMDI/Standardized L
 
 # 1.3 Loads the USE_CODE Crosswalk and Address Points Files
 ```{r}
-#Loads the land use codes crosswalk
-USE_CODE_XWALK <- read.csv(paste0(local_root, "comprehensive_adj_use.code_xwalk.csv")) |>
-  #Replace all N/A Variables with "Unknown"
-  mutate(
-    across(everything(), ~replace_na(.x, "Unknown"))
-  ) |> 
-  dplyr::rename(
-    STD.USE_CODE = LUC_Assign,
-    STD.USE_DESC = L3_Description,
-    MUNI.USE_CODE = USE_CODE,
-    MUNI.USE_DESC = USE_DESC
-  )
-
-#Loads Address points data
-ADDRESS_PNTS <- read.csv(paste0(local_root, "Parcel_Address_Point_Sums.csv")) |> 
-  #Renaming variable recording the sum of address points for a LOC_ID.
-  dplyr::rename(
-    sum_address_points = SUM_UNIQUE_ADDRESS_POINT_IDS
-  ) 
+# #Loads the land use codes crosswalk
+# USE_CODE_XWALK <- read.csv(paste0(local_root, "comprehensive_adj_use.code_xwalk.csv")) |>
+#   #Replace all N/A Variables with "Unknown"
+#   mutate(
+#     across(everything(), ~replace_na(.x, "Unknown"))
+#   ) |> 
+#   dplyr::rename(
+#     STD.USE_CODE = LUC_Assign,
+#     STD.USE_DESC = L3_Description,
+#     MUNI.USE_CODE = USE_CODE,
+#     MUNI.USE_DESC = USE_DESC
+#   )
+# 
+# #Loads Address points data
+# ADDRESS_PNTS <- read.csv(paste0(local_root, "Parcel_Address_Point_Sums.csv")) |> 
+#   #Renaming variable recording the sum of address points for a LOC_ID.
+#   dplyr::rename(
+#     sum_address_points = SUM_UNIQUE_ADDRESS_POINT_IDS
+#   ) 
 
 ```
 
@@ -209,107 +207,6 @@ muni_uc <- use_codes |>
     MUNI.USE_CODE = USE_CODE,
     MUNI.USE_DESC = USE_DESC
   )
-```
-
-# 3.1 Sidebar - Analysis of Non-Standard Land Use Codes for LUZI Task One
-
-```{r}
-# Load MAPC Data Keys for municipalities
-full.keys <- mapcdatakeys::all_muni_data_keys |> select(muni_id, rpa_acr, cmtyp08)
-
-# Create a list of standard use codes MassGIS details in the LUT file with a Town ID of "0"
-test <- std_uc |> select(STD.USE_CODE) |> pull()
-
-# Create a df of all non-standard use codes defined as all use codes NOT a standard use code as included in the MassGIS LUT file with a Town ID of "0"
-# Join mapcdatakeys for community type and RPA variables. 
-# Join MassGIS CAMA Systems dataframe for CAMA System and parcel maintainer information.
-non_std <- muni_uc |>
-  mutate(MUNI.USE_CODE = str_trim(MUNI.USE_CODE, "both")) |>
-  filter(!MUNI.USE_CODE %in% test) |> 
-  left_join(
-    full.keys,
-    by = c("TOWN_ID" = "muni_id")
-  ) |> 
-  left_join(
-    cama,
-    by = c("TOWN_ID")
-  )
-
-# Create summary tables.
-# 
-non_std.tbl <- non_std |>
-  group_by(muni_name) |>
-  summarise(
-    use_codes_1 = n()
-  ) |>
-  ungroup()
-
-# 
-non_std.tbl_sansmu <- non_std |>
-  mutate(
-    mu.flag = str_detect(MUNI.USE_DESC, paste(mu.strings, collapse = "|")),
-    lead_z = str_starts(MUNI.USE_CODE, "0"),
-    trail_z = str_ends(MUNI.USE_CODE, "0")
-  ) |>
-  filter(mu.flag == FALSE & lead_z == FALSE & trail_z == FALSE) |>
-  group_by(muni_name) |>
-  summarise(
-    use_codes_2 = n()
-  ) |>
-  ungroup()
-
-# Table of total non-standard codes by RPA
-non_std.rpa.tbl <- non_std |>
-  group_by(rpa_acr) |>
-  summarise(
-    use_codes_1 = n(),
-    muni = length(unique(TOWN_ID)),
-  ) |>
-  ungroup() |> 
-  mutate(
-    nsuc.per.muni = use_codes_1/muni
-  )
-
-# Table of total non-standard codes by Community Type
-non_std.cmtyp.tbl <- non_std |>
-  group_by(cmtyp08) |>
-  summarise(
-    use_codes_1 = n(),
-    muni = length(unique(TOWN_ID)),
-  ) |>
-  ungroup() |> 
-  mutate(
-    nsuc.per.muni = use_codes_1/muni
-  )
-
-# Table of total non-standard codes by CAMA System
-non_std.cama.tbl <- non_std |>
-  group_by(CAMA_SYS) |>
-  summarise(
-    use_codes_1 = n(),
-    muni = length(unique(TOWN_ID)),
-  ) |>
-  ungroup() |> 
-  mutate(
-    nsuc.per.muni = use_codes_1/muni
-  )
-
-# Table of total non-standard codes by Maintainer
-non_std.main.tbl <- non_std |>
-  group_by(PAR_MAINT_BY) |>
-  summarise(
-    use_codes_1 = n(),
-    muni = length(unique(TOWN_ID)),
-  ) |>
-  ungroup() |> 
-  mutate(
-    nsuc.per.muni = use_codes_1/muni
-  )
-
-# 
-tbl <- full_join(non_std.tbl, non_std.tbl_sansmu, by = c("muni_name")) |> mutate(use_codes_2 = replace_na(use_codes_2, 0))
-#
-write.csv(tbl, "C:/Project_Work/Local_Data/Parcel_DB/Data Request/non_std_use.code_muni_summary.csv", row.names = FALSE)
 ```
 
 # 
