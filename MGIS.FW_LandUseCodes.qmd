@@ -5,7 +5,6 @@ editor: visual
 ---
 
 # 0.0 Environment Set-up
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 # Load "here" library
@@ -66,7 +65,6 @@ writexl::write_xlsx(use_codes, here(paste0("02_Data/Logs/L3_UC_LUT.",q,"_",y,".x
 ```
 
 # 1.2 Load Complementary Datasets
-
 ```{r}
 # Load MHP Residensity product Land Use Codes
 # File download from
@@ -217,9 +215,9 @@ muni.diff <- left_join(keys, muni.df.LUT, by = c("muni_id" = "TOWN_ID")) |>
 muni.diff.list <- muni.diff |> pull(muni_name)
 
 # Print total number of missing munis
-print(length(muni.diff$muni_id)) # 26 municipalities NOT in the LUT land use code codebook.
+print(length(muni.diff$muni_id)) # 23 municipalities NOT in the LUT land use code codebook.
 
-# QUESTION: Do these 26 municipalities use L3 standardized use codes instead of municipally specific codes?
+# QUESTION: Do these 23 municipalities use L3 standardized use codes instead of municipally specific codes?
 
 # Filter full assessors records for missing munis and sum the number of parcels that belong to each code
 missing.muni.LUC <- assessors |>
@@ -237,7 +235,7 @@ std_uc.check <- full_join(std_uc, missing.muni.LUC, by = c("STD.USE_CODE" = "USE
 # Check if any NAs exist for the standard land use code
 print(sapply(X = std_uc.check, FUN =  function(x) sum(is.na(x))))
 
-# ANSWER: The 26 municipalities NOT in the LUT land use code codebook DO exclusively use L3 standardized land use codes. 
+# ANSWER: The 23 municipalities NOT in the LUT land use code codebook DO exclusively use L3 standardized land use codes. 
 ```
 
 # 3.0 Create Text Analysis Dataframes
