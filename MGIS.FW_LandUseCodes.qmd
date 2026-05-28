@@ -1,49 +1,47 @@
 ---
-title: "LPDB_MixedUseLUC_Research"
+title: "MGIS.FW_LandUseCodes"
 format: html
 editor: visual
 ---
+
 # 0.0 Environment Set-up
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+# Load "here" library
+library(here)
 
 # Loads libraries from LPDB_libraries.R script
-source("C:/Project_Work/parcels-processing/PDB_Update_2023/LPDB_libraries.R")
+source(here("03_Scripts/LPDB_libraries.R"))
 
 # Load functions from LPDB_functions.R script
-source("C:/Project_Work/parcels-processing/PDB_Update_2023/LPDB_functions.R")
+source(here("03_Scripts/LPDB_functions.R"))
 
-#
+# Load data keys to crosswalk municipality names to municipal IDs
 keys <- mapcdatakeys::all_muni_data_keys |> 
-  select(
-    c(muni_name,muni_id)
-  ) |> 
-  mutate(
-    muni_name = stringr::str_to_title(muni_name)
-  )
+  select(c(muni_name,muni_id)) |> 
+  mutate(muni_name = stringr::str_to_title(muni_name))
 
-#Set list of stopwords
+# Set list of stopwords
+# Create different case variations of stop words
 sw.upper <- str_to_upper(stopwords(source = "snowball"))
 sw.title <- str_to_title(stopwords(source = "snowball"))
 sw.lower <- str_to_lower(stopwords(source = "snowball"))
 
+# Create single list of case variant stop words
 sw <- c(sw.upper, sw.title, sw.lower)
-
+# Remove intermediate stop word lists
 rm(sw.upper, sw.title, sw.lower)
 
-#Global options to remove scientific notation.
+#Global options to remove scientific notation and set random seed
 options(scipen = 999)
 set.seed(351)
 
-#Set root variables for local data ingestion
-local_root <- "C:/Project_Work/Local_Data/Parcel_DB/"
-
-#Set root variable for network data ingestion
-network_root <- "K:/DataServices/Datasets/Parcel_DB/Data/LPDB_Update_Dec.23_Jan.24/parcels_by_muni/"
 ```
 
 # 1.0 Loading in Data
 # 1.1 Loading in Geodatabase with Parcel data and filtering for attributes
+
 ```{r}
 # Check which layers exist in the geodatabase
 layers <- st_layers(dsn = "C:/Project_Work/Local_Data/Parcel_DB/Q2_2025/MassGIS_L3_Parcels.gdb")
@@ -64,7 +62,9 @@ print(str(assessors))
 
 writexl::write_xlsx(use_codes, "C:/Project_Work/Local_Data/Parcel_DB/Land.Use.Code_Crosswalks/L3_UC_LUT.Q2_2025.xlsx")
 ```
+
 # 1.2 Load Complementary Datasets
+
 ```{r}
 # Load CAMA System and Maintainer file from MassGIS
 # File download from 1/19/2026
@@ -77,7 +77,9 @@ cama <- read.csv(paste0(local_root, "/Complementary Data/Municipal_Parcel_Status
 # File download from 
 
 ```
+
 # 1.3 Loads the USE_CODE Crosswalk and Address Points Files
+
 ```{r}
 #Loads the land use codes crosswalk
 USE_CODE_XWALK <- read.csv(paste0(local_root, "comprehensive_adj_use.code_xwalk.csv")) |>
@@ -102,7 +104,9 @@ ADDRESS_PNTS <- read.csv(paste0(local_root, "Parcel_Address_Point_Sums.csv")) |>
 ```
 
 # 2.0 Evaluating MassGIS Land-Use Code File
+
 # 2.1 Create a standard land use code data frame + QC
+
 ```{r}
 # Check Use Code Crosswalk data types
 str(use_codes)
@@ -185,7 +189,9 @@ print(length(unique(std_uc$xwalk_uc))) # Should be equal to 304 (296 + deprecate
 ```
 
 # 3.0 Municipal Land Use Codes Analysis and QC
-# 3.1 Create a dataframe of municipal specific land use codes + eval # of munis in the df
+
+# 3.1 Create a dataframe of municipal specific land use codes + eval \# of munis in the df
+
 ```{r}
 # Create Municipal Use Code dataframe
 muni_uc <- use_codes |> 
@@ -200,6 +206,7 @@ muni_uc <- use_codes |>
 ```
 
 # 3.1 Sidebar - Analysis of Non-Standard Land Use Codes for LUZI Task One
+
 ```{r}
 # Load MAPC Data Keys for municipalities
 full.keys <- mapcdatakeys::all_muni_data_keys |> select(muni_id, rpa_acr, cmtyp08)
@@ -297,8 +304,10 @@ non_std.main.tbl <- non_std |>
 tbl <- full_join(non_std.tbl, non_std.tbl_sansmu, by = c("muni_name")) |> mutate(use_codes_2 = replace_na(use_codes_2, 0))
 #
 write.csv(tbl, "C:/Project_Work/Local_Data/Parcel_DB/Data Request/non_std_use.code_muni_summary.csv", row.names = FALSE)
-``` 
+```
+
 # 
+
 ```{r}
 # QC Checks for municipal use code 
 print(length(unique(muni_uc$TOWN_ID))) # Only 328 municipalities are listed in the specific LUT
@@ -344,7 +353,9 @@ print(sapply(X = std_uc.check, FUN =  function(x) sum(is.na(x))))
 ```
 
 # 3.2 Top-Line Use Code Analysis
+
 # 3.2.1 Create a list of dataframes of use codes filtered by their one-digit group
+
 ```{r}
 # Create a list of integers 0-9 to programmatically filter use code dataframes by the one-digit use code.
 od_uc.list <- as.character(0:9)
@@ -425,7 +436,9 @@ for (i in od_uc.list){
 }
 
 ```
+
 # 3.2.2 Create a lexicon of three digit codes for each of the nine single use general codes
+
 ```{r}
 # Create a list of terms for each three digit standard code
 td.std.desc_lexicon <- NULL
@@ -505,6 +518,7 @@ for (i in od_uc.list) {
 ```
 
 # 3.2.2 Mixed-Use
+
 ```{r}
 # Pull out the Mixed Use use codes from the Muni and Standard Use Code lists
 x <- od_muni.uc$`0` |> select(xwalk_uc, MUNI.USE_CODE, MUNI.USE_DESC, muni_name)
@@ -877,6 +891,7 @@ write.csv(
 ```
 
 # 3.2.3 Residential
+
 ```{r}
 # Pull out the Residential use codes from the Muni and Standard Use Code lists
 x <- od_muni.uc$`1` |> select(xwalk_uc, MUNI.USE_CODE, MUNI.USE_DESC, muni_name)
@@ -1076,6 +1091,7 @@ unmatched.unfixed <- unmatched |> filter(res.flag == FALSE & gen.flag == FALSE)
 ```
 
 # 3.2.4 Open Space
+
 ```{r}
 x <- od_muni.uc$`2` |> select(xwalk_uc, MUNI.USE_CODE, MUNI.USE_DESC, muni_name)
 y <- od_std.uc$`2` |> select(xwalk_uc, STD.USE_CODE, STD.USE_DESC)
@@ -1098,6 +1114,7 @@ rm(x,y)
 ```
 
 # 3.2.5 Commercial
+
 ```{r}
 x <- od_muni.uc$`3` |> select(xwalk_uc, MUNI.USE_CODE, MUNI.USE_DESC, muni_name)
 y <- od_std.uc$`3` |> select(xwalk_uc, STD.USE_CODE, STD.USE_DESC)
@@ -1118,6 +1135,7 @@ unmatched_text <- comp |>
 ```
 
 # 3.2.6 Industrial
+
 ```{r}
 x <- od_muni.uc$`4` |> select(xwalk_uc, MUNI.USE_CODE, MUNI.USE_DESC, muni_name)
 y <- od_std.uc$`4` |> select(xwalk_uc, STD.USE_CODE, STD.USE_DESC)
@@ -1138,6 +1156,7 @@ unmatched_text <- comp |>
 ```
 
 # 3.2.7 Personal Property
+
 ```{r}
 x <- od_muni.uc$`5` |> select(xwalk_uc, MUNI.USE_CODE, MUNI.USE_DESC, muni_name)
 y <- od_std.uc$`5` |> select(xwalk_uc, STD.USE_CODE, STD.USE_DESC)
@@ -1156,7 +1175,9 @@ unmatched_text <- comp |>
   unnest_tokens(word, MUNI.USE_DESC) |> 
   count(word, sort = TRUE)
 ```
+
 # 3.2.8 Forest
+
 ```{r}
 x <- od_muni.uc$`6` |> select(xwalk_uc, MUNI.USE_CODE, MUNI.USE_DESC, muni_name)
 y <- od_std.uc$`6` |> select(xwalk_uc, STD.USE_CODE, STD.USE_DESC)
@@ -1175,7 +1196,9 @@ unmatched_text <- comp |>
   unnest_tokens(word, MUNI.USE_DESC) |> 
   count(word, sort = TRUE)
 ```
+
 # 3.2.9 Agriculture
+
 ```{r}
 x <- od_muni.uc$`7` |> select(xwalk_uc, MUNI.USE_CODE, MUNI.USE_DESC, muni_name)
 y <- od_std.uc$`7` |> select(xwalk_uc, STD.USE_CODE, STD.USE_DESC)
@@ -1194,7 +1217,9 @@ unmatched_text <- comp |>
   unnest_tokens(word, MUNI.USE_DESC) |> 
   count(word, sort = TRUE)
 ```
+
 # 3.2.10 Recreation
+
 ```{r}
 x <- od_muni.uc$`8` |> select(xwalk_uc, MUNI.USE_CODE, MUNI.USE_DESC, muni_name)
 y <- od_std.uc$`8` |> select(xwalk_uc, STD.USE_CODE, STD.USE_DESC)
@@ -1215,6 +1240,7 @@ unmatched_text <- comp |>
 ```
 
 # 3.2.11 Exempt
+
 ```{r}
 x <- od_muni.uc$`9` |> select(xwalk_uc, MUNI.USE_CODE, MUNI.USE_DESC, muni_name)
 y <- od_std.uc$`9` |> select(xwalk_uc, STD.USE_CODE, STD.USE_DESC)
@@ -1235,7 +1261,9 @@ unmatched_text <- comp |>
 ```
 
 # 4.0 Create Harmonized Use Code Crosswalk
-# 3.1 
+
+# 3.1
+
 ```{r}
 harmonized_uc <- left_join(std_uc, muni_uc, by = c("xwalk_uc")) |> 
   relocate(
