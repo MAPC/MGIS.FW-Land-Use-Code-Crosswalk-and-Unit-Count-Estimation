@@ -7,14 +7,11 @@ editor: visual
 # 0.0 Environment Set-up
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-# Load "here" library
-library(here)
-
 # Loads libraries from LPDB_libraries.R script
-source(here("03_Scripts/LPDB_libraries.R"))
+source(here::here("03_Scripts/LPDB_libraries.R"))
 
 # Load functions from LPDB_functions.R script
-source(here("03_Scripts/LPDB_functions.R"))
+source(here::here("03_Scripts/LPDB_functions.R"))
 
 # Load data keys to crosswalk municipality names to municipal IDs
 keys <- mapcdatakeys::all_muni_data_keys |> 
@@ -250,7 +247,7 @@ print(sapply(X = std_uc.check, FUN =  function(x) sum(is.na(x))))
 # Create a list of integers 0-9 to programmatically filter use code dataframes by the one-digit use code.
 od_uc.list <- as.character(0:9)
 #
-td_uc.list <- std_uc |> distinct(xwalk_uc, .keep_all = F) |> arrange(xwalk_uc) |>  pull()
+td_uc.list <- std_uc |> filter(od_uc != "0") |>  distinct(xwalk_uc, .keep_all = F) |> arrange(xwalk_uc) |>  pull()
 
 # Create empty dataframes to house list of dataframes created in subsequent for loop.
 od_muni.uc <- NULL
@@ -804,7 +801,7 @@ unmatched_text <- comp |>
   unnest_tokens(word, MUNI.USE_DESC) |> 
   count(word, sort = TRUE)
 
-gen.col <- c("mu.flag", "td.mu.flag", "com.flag", "ind.flag", "os.flag", "pp.flag", "agr.flag", "rec.flag", "exm.flag", "uk.flag")
+# gen.col <- c("mu.flag", "td.mu.flag", "com.flag", "ind.flag", "os.flag", "pp.flag", "agr.flag", "rec.flag", "exm.flag", "uk.flag")
 
 # List of strings common to undefined Mixed Use use codes which indicate whether or not they are ACTUALLY Mixed Use, as opposed to misclassified single use.
 mu.strings <- c("Mixed", "mixed", "MIXED", "mixedj", "mix", "Mix", "MIX", "MXD", "mxd", "MU ", "Mu ", "mu ", "primary", "Primary", "primarily", "Primarily", "PRI ", "pri ", "Pri ", "PRI- ", "pri- ", "Pri- ", "-use", "-Use", "-USE", " use", " USE", " Use", "predom", "Predom", "PREDOM")
@@ -852,153 +849,166 @@ res_132.strings <- c("unbuildable", "Unbuildable", "UNBUILDABLE")
 #~~~~~~~
 # Filter for unmatched use codes and create diagnostic variables.
 
-test_list <- c("101", "102", "103", "104", "105")
+unmatched <- comp |> filter(STD.USE_CODE == "UNDEFINED")
 
-for (i in test_list){
-  
+flag.df <- NULL
+
+for (i in td_uc.list){
+  flag.df <- bind_cols(flag.df, assign(paste0("flag.", i), str_detect(unmatched$MUNI.USE_DESC, regex(paste(td.std.desc_lexicon_unique[[i]], collapse = "|"), ignore_case = T))))
 }
 
+colnames(flag.df) <- paste0("flag.", td_uc.list)
 
-unmatched <- comp |> 
-  filter(STD.USE_CODE == "UNDEFINED") |> 
-  # Correct Use Three Digit Code Flags 
-  # Flags use codes which belong to a three digit use code (in this case Residential)
+unmatched.amend <- bind_cols(unmatched, flag.df) |> 
   mutate(
-    # 101 - Single Family Residential
-    res.101.flag = str_detect(MUNI.USE_DESC, regex(paste(td.std.desc_lexicon_unique$`101`, collapse = "|"), ignore_case = T)),
-    # 102 - Condominium
-    res.102.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`102`, res_102.strings), collapse = "|"), ignore_case = T)),
-    # 103 - Mobile Home Parks
-    res.103.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`103`, res_103.strings), collapse = "|"), ignore_case = T)),
-    # Open Space
-    res.104.flag = str_detect(MUNI.USE_DESC, regex(paste(td.std.desc_lexicon_unique$`104`, collapse = "|"), ignore_case = T)),
-    # Private Property
-    res.105.flag = str_detect(MUNI.USE_DESC, regex(paste(td.std.desc_lexicon_unique$`105`, collapse = "|"), ignore_case = T)),
-    # Forest
-    res.106.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`106`, res_106.strings), collapse = "|"), ignore_case = T)),
-    # Agriculture
-    res.109.flag = str_detect(MUNI.USE_DESC, regex(paste(td.std.desc_lexicon_unique$`109`, collapse = "|"), ignore_case = T)),
-    # Recreation
-    res.111.flag = str_detect(MUNI.USE_DESC, regex(paste(td.std.desc_lexicon_unique$`111`, collapse = "|"), ignore_case = T)),
-    # Exempt
-    res.112.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`112`, res_112.strings), collapse = "|"), ignore_case = T)),
-    # Flag for unknown use.
-    res.114.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`114`, res_114.strings), collapse = "|"), ignore_case = T)),
-    
-    res.121.flag = str_detect(MUNI.USE_DESC, regex(paste(td.std.desc_lexicon_unique$`121`, collapse = "|"), ignore_case = T)),
-    # Commercial
-    res.122.flag = str_detect(MUNI.USE_DESC, regex(paste(td.std.desc_lexicon_unique$`122`, collapse = "|"), ignore_case = T)),
-    # Industrial
-    res.123.flag = str_detect(MUNI.USE_DESC, regex(paste(td.std.desc_lexicon_unique$`123`, collapse = "|"), ignore_case = T)),
-    # Open Space
-    res.124.flag = str_detect(MUNI.USE_DESC, regex(paste(td.std.desc_lexicon_unique$`124`, collapse = "|"), ignore_case = T)),
-    # Private Property
-    res.125.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`125`, res_125.strings), collapse = "|"), ignore_case = T)),
-    # Forest
-    res.130.flag = str_detect(MUNI.USE_DESC, regex(paste(td.std.desc_lexicon_unique$`130`, collapse = "|"), ignore_case = T)),
-    # Agriculture
-    res.131.flag = str_detect(MUNI.USE_DESC, regex(paste(td.std.desc_lexicon_unique$`131`, collapse = "|"), ignore_case = T)),
-    # Recreation
-    res.132.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`132`, res_132.strings), collapse = "|"), ignore_case = T)),
-    # Exempt
-    res.140.flag = str_detect(MUNI.USE_DESC, regex(paste(td.std.desc_lexicon_unique$`140`, collapse = "|"), ignore_case = T)),
-    # 201 -  Residential Open Land 
-    os.201.flag = str_detect(MUNI.USE_DESC, regex(paste(td.std.desc_lexicon_unique$`201`, collapse = "|"), ignore_case = T)),
-    # 202 -  Underwater Land or Marshes not under public ownership located in residential area
-    os.202.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`202`, res_102.strings), collapse = "|"), ignore_case = T)),
-    # 210 - Non-Productive Agricultural Land
-    os.210.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`210`, res_103.strings), collapse = "|"), ignore_case = T)),
-    # 211 - Non-Productive Vacant Land 
-    os.211.flag = str_detect(MUNI.USE_DESC, regex(paste(td.std.desc_lexicon_unique$`211`, collapse = "|"), ignore_case = T)),
-    # 220 -  Commercial Vacant Land
-    os.220.flag = str_detect(MUNI.USE_DESC, regex(paste(td.std.desc_lexicon_unique$`220`, collapse = "|"), ignore_case = T)),
-    # 221
-    res.221.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`221`), collapse = "|"), ignore_case = T)),
-    # 221
-    res.230.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`230`), collapse = "|"), ignore_case = T)),
-        # 221
-    res.231.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`231`), collapse = "|"), ignore_case = T)),
-        # 221
-    res.261.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`261`), collapse = "|"), ignore_case = T)),
-    # 221
-    res.262.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`262`), collapse = "|"), ignore_case = T)),
-    res.270.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`270`), collapse = "|"), ignore_case = T)),
-        # 221
-    res.271.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`271`), collapse = "|"), ignore_case = T)),
-        # 221
-    res.272.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`272`), collapse = "|"), ignore_case = T)),
-    # 221
-    res.273.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`273`), collapse = "|"), ignore_case = T)),
-    res.274.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`274`), collapse = "|"), ignore_case = T)),
-        # 221
-    res.275.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`275`), collapse = "|"), ignore_case = T)),
-        # 221
-    res.276.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`276`), collapse = "|"), ignore_case = T)),
-    # 221
-    res.277.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`277`), collapse = "|"), ignore_case = T)),
-    res.278.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`278`), collapse = "|"), ignore_case = T)),
-        # 221
-    res.279.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`279`), collapse = "|"), ignore_case = T)),
-        # 221
-    res.280.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`280`), collapse = "|"), ignore_case = T)),
-    # 221
-    res.281.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`281`), collapse = "|"), ignore_case = T)),
-    res.282.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`282`), collapse = "|"), ignore_case = T)),
-        # 221
-    res.283.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`283`), collapse = "|"), ignore_case = T)),
-        # 221
-    res.272.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`272`), collapse = "|"), ignore_case = T)),
-    # 221
-    res.273.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`273`), collapse = "|"), ignore_case = T)),
-    
-  ) |> 
-  # Alternative Use One Digit Code Flags
-  # Flags use codes which belong to OTHER one digit use code blocs (things municipalities code that are interpreted as, say, residential which are actually a different use (e.g., commercial))
-    mutate(
-      # Flag for phrases or works in the municipal use description column which indicate potentially being mixed use.
-      mu.flag = str_detect(MUNI.USE_DESC, paste(mu.strings, collapse = "|")),
-      # Flag for special characters and conjunctions in the municipal use description which indicate potentially being mixed use.
-      td.mu.flag = str_detect(MUNI.USE_DESC, paste(td.mu.strings, collapse = "|")),
-      # Commercial
-      com.flag = str_detect(MUNI.USE_DESC, regex(
-        paste(std.desc_lexicon_unique$`3`, collapse = "|"), ignore_case = T
-      )),
-      # Industrial
-      ind.flag = str_detect(MUNI.USE_DESC, regex(
-        paste(std.desc_lexicon_unique$`4`, collapse = "|"), ignore_case = T
-      )),
-      # Open Space
-      os.flag = str_detect(MUNI.USE_DESC, regex(
-        paste(std.desc_lexicon_unique$`2`, collapse = "|"), ignore_case = T
-      )),
-      # Private Property
-      pp.flag = str_detect(MUNI.USE_DESC, regex(
-        paste(std.desc_lexicon_unique$`5`, collapse = "|"), ignore_case = T
-      )),
-      # Forest
-      #for.flag = str_detect(MUNI.USE_DESC, regex(
-        #paste(std.desc_lexicon$`6`, collapse = "|"), ignore_case = T
-      #)),
-      # Agriculture
-      agr.flag = str_detect(MUNI.USE_DESC, regex(
-        paste(std.desc_lexicon_unique$`7`, collapse = "|"), ignore_case = T
-      )),
-      # Recreation
-      rec.flag = str_detect(MUNI.USE_DESC, regex(
-        paste(std.desc_lexicon_unique$`8`, collapse = "|"), ignore_case = T
-      )),
-      # Exempt
-      exm.flag = str_detect(MUNI.USE_DESC, regex(
-        paste(std.desc_lexicon_unique$`9`, collapse = "|"), ignore_case = T
-      )),
-      # Flag for unknown use.
-      uk.flag = str_detect(MUNI.USE_DESC, paste(td.mu.other.strings, collapse = "|"))
-    ) |> 
-  rowwise() |> 
-  mutate(
-    res.flag = any(c_across(starts_with("res.")) == TRUE),
-    gen.flag = any(c_across(gen.col) == TRUE)
+    # 
+    mu.flag = str_detect(MUNI.USE_DESC, regex(paste(mu.strings, collapse = "|"), ignore_case = T)),
+    # Flag for special characters and conjunctions in the municipal use description which indicate potentially being mixed use.
+    td.mu.flag = str_detect(MUNI.USE_DESC, regex(paste(td.mu.strings, collapse = "|"), ignore_case = T)),
+    amend.flag = any(c_across(starts_with("flag.")) == TRUE)
   )
+
+
+# unmatched <- comp |> 
+#   filter(STD.USE_CODE == "UNDEFINED") |> 
+#   # Correct Use Three Digit Code Flags 
+#   # Flags use codes which belong to a three digit use code (in this case Residential)
+#   mutate(
+#     # 101 - Single Family Residential
+#     res.101.flag = str_detect(MUNI.USE_DESC, regex(paste(td.std.desc_lexicon_unique$`101`, collapse = "|"), ignore_case = T)),
+#     # 102 - Condominium
+#     res.102.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`102`, res_102.strings), collapse = "|"), ignore_case = T)),
+#     # 103 - Mobile Home Parks
+#     res.103.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`103`, res_103.strings), collapse = "|"), ignore_case = T)),
+#     # Open Space
+#     res.104.flag = str_detect(MUNI.USE_DESC, regex(paste(td.std.desc_lexicon_unique$`104`, collapse = "|"), ignore_case = T)),
+#     # Private Property
+#     res.105.flag = str_detect(MUNI.USE_DESC, regex(paste(td.std.desc_lexicon_unique$`105`, collapse = "|"), ignore_case = T)),
+#     # Forest
+#     res.106.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`106`, res_106.strings), collapse = "|"), ignore_case = T)),
+#     # Agriculture
+#     res.109.flag = str_detect(MUNI.USE_DESC, regex(paste(td.std.desc_lexicon_unique$`109`, collapse = "|"), ignore_case = T)),
+#     # Recreation
+#     res.111.flag = str_detect(MUNI.USE_DESC, regex(paste(td.std.desc_lexicon_unique$`111`, collapse = "|"), ignore_case = T)),
+#     # Exempt
+#     res.112.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`112`, res_112.strings), collapse = "|"), ignore_case = T)),
+#     # Flag for unknown use.
+#     res.114.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`114`, res_114.strings), collapse = "|"), ignore_case = T)),
+#     
+#     res.121.flag = str_detect(MUNI.USE_DESC, regex(paste(td.std.desc_lexicon_unique$`121`, collapse = "|"), ignore_case = T)),
+#     # Commercial
+#     res.122.flag = str_detect(MUNI.USE_DESC, regex(paste(td.std.desc_lexicon_unique$`122`, collapse = "|"), ignore_case = T)),
+#     # Industrial
+#     res.123.flag = str_detect(MUNI.USE_DESC, regex(paste(td.std.desc_lexicon_unique$`123`, collapse = "|"), ignore_case = T)),
+#     # Open Space
+#     res.124.flag = str_detect(MUNI.USE_DESC, regex(paste(td.std.desc_lexicon_unique$`124`, collapse = "|"), ignore_case = T)),
+#     # Private Property
+#     res.125.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`125`, res_125.strings), collapse = "|"), ignore_case = T)),
+#     # Forest
+#     res.130.flag = str_detect(MUNI.USE_DESC, regex(paste(td.std.desc_lexicon_unique$`130`, collapse = "|"), ignore_case = T)),
+#     # Agriculture
+#     res.131.flag = str_detect(MUNI.USE_DESC, regex(paste(td.std.desc_lexicon_unique$`131`, collapse = "|"), ignore_case = T)),
+#     # Recreation
+#     res.132.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`132`, res_132.strings), collapse = "|"), ignore_case = T)),
+#     # Exempt
+#     res.140.flag = str_detect(MUNI.USE_DESC, regex(paste(td.std.desc_lexicon_unique$`140`, collapse = "|"), ignore_case = T)),
+#     # 201 -  Residential Open Land 
+#     os.201.flag = str_detect(MUNI.USE_DESC, regex(paste(td.std.desc_lexicon_unique$`201`, collapse = "|"), ignore_case = T)),
+#     # 202 -  Underwater Land or Marshes not under public ownership located in residential area
+#     os.202.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`202`, res_102.strings), collapse = "|"), ignore_case = T)),
+#     # 210 - Non-Productive Agricultural Land
+#     os.210.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`210`, res_103.strings), collapse = "|"), ignore_case = T)),
+#     # 211 - Non-Productive Vacant Land 
+#     os.211.flag = str_detect(MUNI.USE_DESC, regex(paste(td.std.desc_lexicon_unique$`211`, collapse = "|"), ignore_case = T)),
+#     # 220 -  Commercial Vacant Land
+#     os.220.flag = str_detect(MUNI.USE_DESC, regex(paste(td.std.desc_lexicon_unique$`220`, collapse = "|"), ignore_case = T)),
+#     # 221
+#     res.221.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`221`), collapse = "|"), ignore_case = T)),
+#     # 221
+#     res.230.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`230`), collapse = "|"), ignore_case = T)),
+#         # 221
+#     res.231.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`231`), collapse = "|"), ignore_case = T)),
+#         # 221
+#     res.261.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`261`), collapse = "|"), ignore_case = T)),
+#     # 221
+#     res.262.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`262`), collapse = "|"), ignore_case = T)),
+#     res.270.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`270`), collapse = "|"), ignore_case = T)),
+#         # 221
+#     res.271.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`271`), collapse = "|"), ignore_case = T)),
+#         # 221
+#     res.272.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`272`), collapse = "|"), ignore_case = T)),
+#     # 221
+#     res.273.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`273`), collapse = "|"), ignore_case = T)),
+#     res.274.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`274`), collapse = "|"), ignore_case = T)),
+#         # 221
+#     res.275.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`275`), collapse = "|"), ignore_case = T)),
+#         # 221
+#     res.276.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`276`), collapse = "|"), ignore_case = T)),
+#     # 221
+#     res.277.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`277`), collapse = "|"), ignore_case = T)),
+#     res.278.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`278`), collapse = "|"), ignore_case = T)),
+#         # 221
+#     res.279.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`279`), collapse = "|"), ignore_case = T)),
+#         # 221
+#     res.280.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`280`), collapse = "|"), ignore_case = T)),
+#     # 221
+#     res.281.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`281`), collapse = "|"), ignore_case = T)),
+#     res.282.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`282`), collapse = "|"), ignore_case = T)),
+#         # 221
+#     res.283.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`283`), collapse = "|"), ignore_case = T)),
+#         # 221
+#     res.272.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`272`), collapse = "|"), ignore_case = T)),
+#     # 221
+#     res.273.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`273`), collapse = "|"), ignore_case = T)),
+#     
+#   ) |> 
+#   # Alternative Use One Digit Code Flags
+#   # Flags use codes which belong to OTHER one digit use code blocs (things municipalities code that are interpreted as, say, residential which are actually a different use (e.g., commercial))
+#     mutate(
+#       # Flag for phrases or works in the municipal use description column which indicate potentially being mixed use.
+#       mu.flag = str_detect(MUNI.USE_DESC, paste(mu.strings, collapse = "|")),
+#       # Flag for special characters and conjunctions in the municipal use description which indicate potentially being mixed use.
+#       td.mu.flag = str_detect(MUNI.USE_DESC, paste(td.mu.strings, collapse = "|")),
+#       # Commercial
+#       com.flag = str_detect(MUNI.USE_DESC, regex(
+#         paste(std.desc_lexicon_unique$`3`, collapse = "|"), ignore_case = T
+#       )),
+#       # Industrial
+#       ind.flag = str_detect(MUNI.USE_DESC, regex(
+#         paste(std.desc_lexicon_unique$`4`, collapse = "|"), ignore_case = T
+#       )),
+#       # Open Space
+#       os.flag = str_detect(MUNI.USE_DESC, regex(
+#         paste(std.desc_lexicon_unique$`2`, collapse = "|"), ignore_case = T
+#       )),
+#       # Private Property
+#       pp.flag = str_detect(MUNI.USE_DESC, regex(
+#         paste(std.desc_lexicon_unique$`5`, collapse = "|"), ignore_case = T
+#       )),
+#       # Forest
+#       #for.flag = str_detect(MUNI.USE_DESC, regex(
+#         #paste(std.desc_lexicon$`6`, collapse = "|"), ignore_case = T
+#       #)),
+#       # Agriculture
+#       agr.flag = str_detect(MUNI.USE_DESC, regex(
+#         paste(std.desc_lexicon_unique$`7`, collapse = "|"), ignore_case = T
+#       )),
+#       # Recreation
+#       rec.flag = str_detect(MUNI.USE_DESC, regex(
+#         paste(std.desc_lexicon_unique$`8`, collapse = "|"), ignore_case = T
+#       )),
+#       # Exempt
+#       exm.flag = str_detect(MUNI.USE_DESC, regex(
+#         paste(std.desc_lexicon_unique$`9`, collapse = "|"), ignore_case = T
+#       )),
+#       # Flag for unknown use.
+#       uk.flag = str_detect(MUNI.USE_DESC, paste(td.mu.other.strings, collapse = "|"))
+#     ) |> 
+#   rowwise() |> 
+#   mutate(
+#     res.flag = any(c_across(starts_with("res.")) == TRUE),
+#     gen.flag = any(c_across(gen.col) == TRUE)
+#   )
 
 # QA Analysis of unmatched residential land use codes
 # Print the percentage of unmatched mixed use codes.
@@ -1007,7 +1017,7 @@ print(1-(nrow(unmatched)/nrow(comp)))
 # 83% of unique municipal Mixed Use Codes can be matched to a standard land use code
 
 # Filter for codes that have been flagged via the text analysis script.
-unmatched.fixed <- unmatched |> filter(res.flag == TRUE | gen.flag == TRUE)
+unmatched.fixed <- unmatched |> filter(amend.flag == TRUE)
 
 print(nrow(unmatched.fixed))
 print(nrow(unmatched.fixed)/nrow(unmatched))
