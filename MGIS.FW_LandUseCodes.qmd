@@ -192,7 +192,7 @@ muni_uc <- use_codes |>
   filter(TOWN_ID != 0) |> 
   mutate(
     xwalk_uc = str_sub(USE_CODE, start = 1, end = 3)
-  )|> 
+  ) |> 
   dplyr::rename(
     MUNI.USE_CODE = USE_CODE,
     MUNI.USE_DESC = USE_DESC
@@ -324,7 +324,7 @@ for (i in od_uc.list){
 
 ```
 
-# 3.2 Three-Digit Unique Land Use Code Terms Dataframes
+# 3.2 Three-Digit Unique Land Use Code Terms Dataframes for Standard Codes
 ```{r}
 # Create a list of terms for each three digit standard code
 td.std.desc <- NULL
@@ -403,6 +403,364 @@ for (i in od_uc.list) {
   rm(tmp_list)
   
 }
+
+```
+
+# 3.3 Paste Municipal Code Unique Terms into 
+```{r}
+# Join Municipal Use Codes to Standard Use Codes by Three-digit Use Code ID.
+# Indicate where Municipal and Standard Use Codes do not join.
+comp <- full_join(std_uc, muni_uc, by = c("xwalk_uc")) |> 
+  mutate(
+    STD.USE_CODE = replace_na(STD.USE_CODE, "UNDEFINED"),
+    STD.USE_DESC = replace_na(STD.USE_DESC, "UNDEFINED")
+  ) |> 
+  distinct(MUNI.USE_CODE, muni_name, .keep_all = TRUE) |> 
+  filter(STD.USE_CODE == "UNDEFINED")
+  
+
+# Create a list of terms for each three digit standard code
+od.muni.desc_lexicon <- NULL
+
+for (i in od_uc.list){
+  
+  # Creates a list of individual terms found in each unique standard three digit land use code.
+  od.muni.desc_lexicon[[i]] <- comp |>
+    mutate(od_uc = str_sub(MUNI.USE_CODE, start = 1, end = 1)) |> 
+    filter(od_uc == i) |>
+    distinct(xwalk_uc, .keep_all = T) |>
+    unnest_tokens(word, MUNI.USE_DESC) |> count(word, sort = TRUE) |>
+    filter(!word %in% sw) |>
+    pull(word)
+  
+  #Print statement to log completion of three digit code lexicon.
+  print(paste("Created Lexicon for code: ", i, "."))
+
+}
+
+# Compare each one digit land use code's list of use code description terms to terms included in every other one digit land use code's list to determine which terms are unique to a specific land use.
+
+#Remove Mixed Use from the list since there will be term overlap that we would like to ignore and this framework will not be used for the mixed use bloc of codes.
+od_uc.list <- tibble(value = od_uc.list)
+# Remove one of the one-digit codes.
+od_uc.list <-  od_uc.list |>  filter(!value %in% "0")
+  # Extract the updated vector of one digit codes.
+od_uc.list <- pull(od_uc.list, value)
+print(od_uc.list)
+
+# Create a null list where unique use description terms are saved.
+od.muni.desc_lexicon_unique <- NULL
+
+for (i in od_uc.list){
+  
+  print(paste0("One Digit Use Code ", i, "."))
+  # Create a temporary list of one digit land use codes. 
+  # Convert to tibble.
+  tmp <- tibble(value = od_uc.list)
+  # Remove one of the one-digit codes.
+  tmp <-  tmp |>  filter(!value %in% c(i))
+  # Extract the updated vector of one digit codes.
+  tmp <- pull(tmp, value)
+  print(tmp)
+  # Create a null list to which the terms representative of each one digit code are stored.
+  comp_terms_full <- NULL
+  
+  for (j in tmp){
+    # Paste the use description terms from each one digit use code.
+    comp_terms_full <- c(comp_terms_full, od.muni.desc_lexicon[[j]])
+  }
+# Evaluate each three digit use description for unique terms relative to the other three digit use codes within each one digit category. Some solution for three digit use codes without unique terms.
+    if (length(setdiff(od.muni.desc_lexicon[[i]], comp_terms_full)) > 0){
+     od.muni.desc_lexicon_unique[[i]] <- setdiff(od.muni.desc_lexicon[[i]], comp_terms_full)
+      
+    } else{
+      od.muni.desc_lexicon_unique[[j]] <- "ZUT"
+    }
+  #
+  print(od.muni.desc_lexicon_unique[[i]])
+  
+  rm(tmp, comp_terms_full)
+  
+}
+
+# Add strings to unique standard terms list
+# Residential (19)
+td.std.desc_lexicon_unique$`101` <- c(td.std.desc_lexicon_unique$`101`, "sing")
+td.std.desc_lexicon_unique$`102` <- c(td.std.desc_lexicon_unique$`102`, "condo")
+td.std.desc_lexicon_unique$`103` <- c(td.std.desc_lexicon_unique$`103`, "mobile", "mbl")
+td.std.desc_lexicon_unique$`104` <- c(td.std.desc_lexicon_unique$`104`, "")
+td.std.desc_lexicon_unique$`105` <- c(td.std.desc_lexicon_unique$`105`, "")
+td.std.desc_lexicon_unique$`106` <- c(td.std.desc_lexicon_unique$`106`, "acc")
+td.std.desc_lexicon_unique$`109` <- c(td.std.desc_lexicon_unique$`109`, "")
+td.std.desc_lexicon_unique$`111` <- c(td.std.desc_lexicon_unique$`111`, "")
+td.std.desc_lexicon_unique$`112` <- c(td.std.desc_lexicon_unique$`112`, "")
+td.std.desc_lexicon_unique$`114` <- c(td.std.desc_lexicon_unique$`114`, "")
+td.std.desc_lexicon_unique$`121` <- c(td.std.desc_lexicon_unique$`121`, "")
+td.std.desc_lexicon_unique$`122` <- c(td.std.desc_lexicon_unique$`122`, "")
+td.std.desc_lexicon_unique$`123` <- c(td.std.desc_lexicon_unique$`123`, "")
+td.std.desc_lexicon_unique$`124` <- c(td.std.desc_lexicon_unique$`124`, "")
+td.std.desc_lexicon_unique$`125` <- c(td.std.desc_lexicon_unique$`125`, "")
+td.std.desc_lexicon_unique$`130` <- c(td.std.desc_lexicon_unique$`130`, "")
+td.std.desc_lexicon_unique$`131` <- c(td.std.desc_lexicon_unique$`131`, "")
+td.std.desc_lexicon_unique$`132` <- c(td.std.desc_lexicon_unique$`132`, "unbuildable")
+td.std.desc_lexicon_unique$`140` <- c(td.std.desc_lexicon_unique$`140`, "sing")
+# Open Space (31)
+td.std.desc_lexicon_unique$`201` <- c(td.std.desc_lexicon_unique$`201`, "sing")
+td.std.desc_lexicon_unique$`202` <- c(td.std.desc_lexicon_unique$`202`, "sing")
+td.std.desc_lexicon_unique$`210` <- c(td.std.desc_lexicon_unique$`210`, "sing")
+td.std.desc_lexicon_unique$`211` <- c(td.std.desc_lexicon_unique$`211`, "sing")
+td.std.desc_lexicon_unique$`220` <- c(td.std.desc_lexicon_unique$`220`, "sing")
+td.std.desc_lexicon_unique$`221` <- c(td.std.desc_lexicon_unique$`221`, "sing")
+td.std.desc_lexicon_unique$`230` <- c(td.std.desc_lexicon_unique$`230`, "sing")
+td.std.desc_lexicon_unique$`231` <- c(td.std.desc_lexicon_unique$`231`, "sing")
+td.std.desc_lexicon_unique$`261` <- c(td.std.desc_lexicon_unique$`261`, "sing")
+td.std.desc_lexicon_unique$`262` <- c(td.std.desc_lexicon_unique$`262`, "sing")
+td.std.desc_lexicon_unique$`270` <- c(td.std.desc_lexicon_unique$`270`, "sing")
+td.std.desc_lexicon_unique$`271` <- c(td.std.desc_lexicon_unique$`271`, "sing")
+td.std.desc_lexicon_unique$`272` <- c(td.std.desc_lexicon_unique$`272`, "sing")
+td.std.desc_lexicon_unique$`273` <- c(td.std.desc_lexicon_unique$`273`, "sing")
+td.std.desc_lexicon_unique$`274` <- c(td.std.desc_lexicon_unique$`274`, "sing")
+td.std.desc_lexicon_unique$`275` <- c(td.std.desc_lexicon_unique$`275`, "sing")
+td.std.desc_lexicon_unique$`276` <- c(td.std.desc_lexicon_unique$`276`, "sing")
+td.std.desc_lexicon_unique$`277` <- c(td.std.desc_lexicon_unique$`277`, "sing")
+td.std.desc_lexicon_unique$`278` <- c(td.std.desc_lexicon_unique$`278`, "sing")
+td.std.desc_lexicon_unique$`279` <- c(td.std.desc_lexicon_unique$`279`, "sing")
+td.std.desc_lexicon_unique$`280` <- c(td.std.desc_lexicon_unique$`280`, "sing")
+td.std.desc_lexicon_unique$`281` <- c(td.std.desc_lexicon_unique$`281`, "sing")
+td.std.desc_lexicon_unique$`282` <- c(td.std.desc_lexicon_unique$`282`, "sing")
+td.std.desc_lexicon_unique$`283` <- c(td.std.desc_lexicon_unique$`283`, "sing")
+td.std.desc_lexicon_unique$`284` <- c(td.std.desc_lexicon_unique$`284`, "sing")
+td.std.desc_lexicon_unique$`285` <- c(td.std.desc_lexicon_unique$`285`, "sing")
+td.std.desc_lexicon_unique$`286` <- c(td.std.desc_lexicon_unique$`286`, "sing")
+td.std.desc_lexicon_unique$`287` <- c(td.std.desc_lexicon_unique$`287`, "sing")
+td.std.desc_lexicon_unique$`288` <- c(td.std.desc_lexicon_unique$`288`, "sing")
+td.std.desc_lexicon_unique$`289` <- c(td.std.desc_lexicon_unique$`289`, "sing")
+td.std.desc_lexicon_unique$`290` <- c(td.std.desc_lexicon_unique$`290`, "sing")
+# Commercial (72)
+td.std.desc_lexicon_unique$`300` <- c(td.std.desc_lexicon_unique$`300`, "sing")
+td.std.desc_lexicon_unique$`301` <- c(td.std.desc_lexicon_unique$`301`, "sing")
+td.std.desc_lexicon_unique$`302` <- c(td.std.desc_lexicon_unique$`302`, "sing")
+td.std.desc_lexicon_unique$`304` <- c(td.std.desc_lexicon_unique$`304`, "sing")
+td.std.desc_lexicon_unique$`305` <- c(td.std.desc_lexicon_unique$`305`, "sing")
+td.std.desc_lexicon_unique$`306` <- c(td.std.desc_lexicon_unique$`306`, "sing")
+td.std.desc_lexicon_unique$`310` <- c(td.std.desc_lexicon_unique$`310`, "sing")
+td.std.desc_lexicon_unique$`311` <- c(td.std.desc_lexicon_unique$`311`, "sing")
+td.std.desc_lexicon_unique$`312` <- c(td.std.desc_lexicon_unique$`312`, "sing")
+td.std.desc_lexicon_unique$`313` <- c(td.std.desc_lexicon_unique$`313`, "sing")
+td.std.desc_lexicon_unique$`314` <- c(td.std.desc_lexicon_unique$`314`, "sing")
+td.std.desc_lexicon_unique$`315` <- c(td.std.desc_lexicon_unique$`315`, "sing")
+td.std.desc_lexicon_unique$`316` <- c(td.std.desc_lexicon_unique$`316`, "sing")
+td.std.desc_lexicon_unique$`317` <- c(td.std.desc_lexicon_unique$`317`, "sing")
+td.std.desc_lexicon_unique$`318` <- c(td.std.desc_lexicon_unique$`318`, "sing")
+td.std.desc_lexicon_unique$`321` <- c(td.std.desc_lexicon_unique$`321`, "sing")
+td.std.desc_lexicon_unique$`322` <- c(td.std.desc_lexicon_unique$`322`, "sing")
+td.std.desc_lexicon_unique$`323` <- c(td.std.desc_lexicon_unique$`323`, "sing")
+td.std.desc_lexicon_unique$`324` <- c(td.std.desc_lexicon_unique$`324`, "sing")
+td.std.desc_lexicon_unique$`325` <- c(td.std.desc_lexicon_unique$`325`, "sing")
+td.std.desc_lexicon_unique$`326` <- c(td.std.desc_lexicon_unique$`326`, "sing")
+td.std.desc_lexicon_unique$`330` <- c(td.std.desc_lexicon_unique$`330`, "sing")
+td.std.desc_lexicon_unique$`331` <- c(td.std.desc_lexicon_unique$`331`, "sing")
+td.std.desc_lexicon_unique$`332` <- c(td.std.desc_lexicon_unique$`332`, "sing")
+td.std.desc_lexicon_unique$`333` <- c(td.std.desc_lexicon_unique$`333`, "sing")
+td.std.desc_lexicon_unique$`334` <- c(td.std.desc_lexicon_unique$`334`, "sing")
+td.std.desc_lexicon_unique$`335` <- c(td.std.desc_lexicon_unique$`335`, "sing")
+td.std.desc_lexicon_unique$`336` <- c(td.std.desc_lexicon_unique$`336`, "sing")
+td.std.desc_lexicon_unique$`337` <- c(td.std.desc_lexicon_unique$`337`, "sing")
+td.std.desc_lexicon_unique$`338` <- c(td.std.desc_lexicon_unique$`338`, "sing")
+td.std.desc_lexicon_unique$`340` <- c(td.std.desc_lexicon_unique$`340`, "sing")
+td.std.desc_lexicon_unique$`341` <- c(td.std.desc_lexicon_unique$`341`, "sing")
+td.std.desc_lexicon_unique$`342` <- c(td.std.desc_lexicon_unique$`342`, "sing")
+td.std.desc_lexicon_unique$`350` <- c(td.std.desc_lexicon_unique$`350`, "sing")
+td.std.desc_lexicon_unique$`351` <- c(td.std.desc_lexicon_unique$`351`, "sing")
+td.std.desc_lexicon_unique$`352` <- c(td.std.desc_lexicon_unique$`352`, "sing")
+td.std.desc_lexicon_unique$`353` <- c(td.std.desc_lexicon_unique$`353`, "sing")
+td.std.desc_lexicon_unique$`354` <- c(td.std.desc_lexicon_unique$`354`, "sing")
+td.std.desc_lexicon_unique$`355` <- c(td.std.desc_lexicon_unique$`355`, "sing")
+td.std.desc_lexicon_unique$`356` <- c(td.std.desc_lexicon_unique$`356`, "sing")
+td.std.desc_lexicon_unique$`360` <- c(td.std.desc_lexicon_unique$`360`, "sing")
+td.std.desc_lexicon_unique$`361` <- c(td.std.desc_lexicon_unique$`361`, "sing")
+td.std.desc_lexicon_unique$`362` <- c(td.std.desc_lexicon_unique$`362`, "sing")
+td.std.desc_lexicon_unique$`363` <- c(td.std.desc_lexicon_unique$`363`, "sing")
+td.std.desc_lexicon_unique$`364` <- c(td.std.desc_lexicon_unique$`364`, "sing")
+td.std.desc_lexicon_unique$`365` <- c(td.std.desc_lexicon_unique$`365`, "sing")
+td.std.desc_lexicon_unique$`366` <- c(td.std.desc_lexicon_unique$`366`, "sing")
+td.std.desc_lexicon_unique$`367` <- c(td.std.desc_lexicon_unique$`367`, "sing")
+td.std.desc_lexicon_unique$`368` <- c(td.std.desc_lexicon_unique$`368`, "sing")
+td.std.desc_lexicon_unique$`369` <- c(td.std.desc_lexicon_unique$`369`, "sing")
+td.std.desc_lexicon_unique$`370` <- c(td.std.desc_lexicon_unique$`370`, "sing")
+td.std.desc_lexicon_unique$`371` <- c(td.std.desc_lexicon_unique$`371`, "sing")
+td.std.desc_lexicon_unique$`372` <- c(td.std.desc_lexicon_unique$`372`, "sing")
+td.std.desc_lexicon_unique$`373` <- c(td.std.desc_lexicon_unique$`373`, "sing")
+td.std.desc_lexicon_unique$`374` <- c(td.std.desc_lexicon_unique$`374`, "sing")
+td.std.desc_lexicon_unique$`375` <- c(td.std.desc_lexicon_unique$`375`, "sing")
+td.std.desc_lexicon_unique$`376` <- c(td.std.desc_lexicon_unique$`376`, "sing")
+td.std.desc_lexicon_unique$`377` <- c(td.std.desc_lexicon_unique$`377`, "sing")
+td.std.desc_lexicon_unique$`380` <- c(td.std.desc_lexicon_unique$`380`, "sing")
+td.std.desc_lexicon_unique$`381` <- c(td.std.desc_lexicon_unique$`381`, "sing")
+td.std.desc_lexicon_unique$`382` <- c(td.std.desc_lexicon_unique$`382`, "sing")
+td.std.desc_lexicon_unique$`383` <- c(td.std.desc_lexicon_unique$`383`, "sing")
+td.std.desc_lexicon_unique$`384` <- c(td.std.desc_lexicon_unique$`384`, "sing")
+td.std.desc_lexicon_unique$`385` <- c(td.std.desc_lexicon_unique$`385`, "sing")
+td.std.desc_lexicon_unique$`386` <- c(td.std.desc_lexicon_unique$`386`, "sing")
+td.std.desc_lexicon_unique$`387` <- c(td.std.desc_lexicon_unique$`387`, "sing")
+td.std.desc_lexicon_unique$`388` <- c(td.std.desc_lexicon_unique$`388`, "sing")
+td.std.desc_lexicon_unique$`389` <- c(td.std.desc_lexicon_unique$`389`, "sing")
+td.std.desc_lexicon_unique$`390` <- c(td.std.desc_lexicon_unique$`390`, "sing")
+td.std.desc_lexicon_unique$`391` <- c(td.std.desc_lexicon_unique$`391`, "sing")
+td.std.desc_lexicon_unique$`392` <- c(td.std.desc_lexicon_unique$`392`, "sing")
+td.std.desc_lexicon_unique$`393` <- c(td.std.desc_lexicon_unique$`393`, "sing")
+# Industrial
+td.std.desc_lexicon_unique$`400` <- c(td.std.desc_lexicon_unique$`400`, "sing")
+td.std.desc_lexicon_unique$`401` <- c(td.std.desc_lexicon_unique$`401`, "sing")
+td.std.desc_lexicon_unique$`402` <- c(td.std.desc_lexicon_unique$`402`, "sing")
+td.std.desc_lexicon_unique$`403` <- c(td.std.desc_lexicon_unique$`403`, "sing")
+td.std.desc_lexicon_unique$`404` <- c(td.std.desc_lexicon_unique$`404`, "sing")
+td.std.desc_lexicon_unique$`410` <- c(td.std.desc_lexicon_unique$`410`, "sing")
+td.std.desc_lexicon_unique$`411` <- c(td.std.desc_lexicon_unique$`411`, "sing")
+td.std.desc_lexicon_unique$`412` <- c(td.std.desc_lexicon_unique$`412`, "sing")
+td.std.desc_lexicon_unique$`413` <- c(td.std.desc_lexicon_unique$`413`, "sing")
+td.std.desc_lexicon_unique$`420` <- c(td.std.desc_lexicon_unique$`420`, "sing")
+td.std.desc_lexicon_unique$`421` <- c(td.std.desc_lexicon_unique$`421`, "sing")
+td.std.desc_lexicon_unique$`422` <- c(td.std.desc_lexicon_unique$`422`, "sing")
+td.std.desc_lexicon_unique$`423` <- c(td.std.desc_lexicon_unique$`423`, "sing")
+td.std.desc_lexicon_unique$`424` <- c(td.std.desc_lexicon_unique$`424`, "sing")
+td.std.desc_lexicon_unique$`425` <- c(td.std.desc_lexicon_unique$`425`, "sing")
+td.std.desc_lexicon_unique$`426` <- c(td.std.desc_lexicon_unique$`426`, "sing")
+td.std.desc_lexicon_unique$`427` <- c(td.std.desc_lexicon_unique$`427`, "sing")
+td.std.desc_lexicon_unique$`428` <- c(td.std.desc_lexicon_unique$`428`, "sing")
+td.std.desc_lexicon_unique$`430` <- c(td.std.desc_lexicon_unique$`430`, "sing")
+td.std.desc_lexicon_unique$`431` <- c(td.std.desc_lexicon_unique$`431`, "sing")
+td.std.desc_lexicon_unique$`432` <- c(td.std.desc_lexicon_unique$`432`, "sing")
+td.std.desc_lexicon_unique$`434` <- c(td.std.desc_lexicon_unique$`434`, "sing")
+td.std.desc_lexicon_unique$`440` <- c(td.std.desc_lexicon_unique$`440`, "sing")
+td.std.desc_lexicon_unique$`441` <- c(td.std.desc_lexicon_unique$`441`, "sing")
+td.std.desc_lexicon_unique$`442` <- c(td.std.desc_lexicon_unique$`442`, "sing")
+td.std.desc_lexicon_unique$`450` <- c(td.std.desc_lexicon_unique$`450`, "sing")
+td.std.desc_lexicon_unique$`451` <- c(td.std.desc_lexicon_unique$`451`, "sing")
+td.std.desc_lexicon_unique$`452` <- c(td.std.desc_lexicon_unique$`452`, "sing")
+# Private Property (10)
+td.std.desc_lexicon_unique$`501` <- c(td.std.desc_lexicon_unique$`501`, "sing")
+td.std.desc_lexicon_unique$`502` <- c(td.std.desc_lexicon_unique$`502`, "sing")
+td.std.desc_lexicon_unique$`503` <- c(td.std.desc_lexicon_unique$`503`, "sing")
+td.std.desc_lexicon_unique$`504` <- c(td.std.desc_lexicon_unique$`504`, "sing")
+td.std.desc_lexicon_unique$`505` <- c(td.std.desc_lexicon_unique$`505`, "sing")
+td.std.desc_lexicon_unique$`506` <- c(td.std.desc_lexicon_unique$`506`, "sing")
+td.std.desc_lexicon_unique$`508` <- c(td.std.desc_lexicon_unique$`508`, "sing")
+td.std.desc_lexicon_unique$`550` <- c(td.std.desc_lexicon_unique$`550`, "sing")
+td.std.desc_lexicon_unique$`551` <- c(td.std.desc_lexicon_unique$`551`, "sing")
+td.std.desc_lexicon_unique$`552` <- c(td.std.desc_lexicon_unique$`552`, "sing")
+# Forest (2)
+td.std.desc_lexicon_unique$`601` <- c(td.std.desc_lexicon_unique$`601`, "sing")
+td.std.desc_lexicon_unique$`602` <- c(td.std.desc_lexicon_unique$`602`, "sing")
+# Agriculture (11)
+td.std.desc_lexicon_unique$`710` <- c(td.std.desc_lexicon_unique$`710`, "sing")
+td.std.desc_lexicon_unique$`711` <- c(td.std.desc_lexicon_unique$`711`, "sing")
+td.std.desc_lexicon_unique$`712` <- c(td.std.desc_lexicon_unique$`712`, "sing")
+td.std.desc_lexicon_unique$`713` <- c(td.std.desc_lexicon_unique$`713`, "sing")
+td.std.desc_lexicon_unique$`714` <- c(td.std.desc_lexicon_unique$`714`, "sing")
+td.std.desc_lexicon_unique$`715` <- c(td.std.desc_lexicon_unique$`715`, "sing")
+td.std.desc_lexicon_unique$`716` <- c(td.std.desc_lexicon_unique$`716`, "sing")
+td.std.desc_lexicon_unique$`717` <- c(td.std.desc_lexicon_unique$`717`, "sing")
+td.std.desc_lexicon_unique$`718` <- c(td.std.desc_lexicon_unique$`718`, "sing")
+td.std.desc_lexicon_unique$`719` <- c(td.std.desc_lexicon_unique$`719`, "sing")
+td.std.desc_lexicon_unique$`720` <- c(td.std.desc_lexicon_unique$`720`, "sing")
+# Recreation (15)
+td.std.desc_lexicon_unique$`801` <- c(td.std.desc_lexicon_unique$`801`, "sing")
+td.std.desc_lexicon_unique$`802` <- c(td.std.desc_lexicon_unique$`802`, "sing")
+td.std.desc_lexicon_unique$`803` <- c(td.std.desc_lexicon_unique$`803`, "sing")
+td.std.desc_lexicon_unique$`804` <- c(td.std.desc_lexicon_unique$`804`, "sing")
+td.std.desc_lexicon_unique$`805` <- c(td.std.desc_lexicon_unique$`805`, "sing")
+td.std.desc_lexicon_unique$`806` <- c(td.std.desc_lexicon_unique$`806`, "sing")
+td.std.desc_lexicon_unique$`807` <- c(td.std.desc_lexicon_unique$`807`, "sing")
+td.std.desc_lexicon_unique$`808` <- c(td.std.desc_lexicon_unique$`808`, "sing")
+td.std.desc_lexicon_unique$`809` <- c(td.std.desc_lexicon_unique$`809`, "sing")
+td.std.desc_lexicon_unique$`810` <- c(td.std.desc_lexicon_unique$`810`, "sing")
+td.std.desc_lexicon_unique$`811` <- c(td.std.desc_lexicon_unique$`811`, "sing")
+td.std.desc_lexicon_unique$`812` <- c(td.std.desc_lexicon_unique$`812`, "sing")
+td.std.desc_lexicon_unique$`813` <- c(td.std.desc_lexicon_unique$`813`, "sing")
+td.std.desc_lexicon_unique$`814` <- c(td.std.desc_lexicon_unique$`814`, "sing")
+td.std.desc_lexicon_unique$`815` <- c(td.std.desc_lexicon_unique$`815`, "sing")
+# Exempt (80)
+td.std.desc_lexicon_unique$`900` <- c(td.std.desc_lexicon_unique$`900`, "sing")
+td.std.desc_lexicon_unique$`901` <- c(td.std.desc_lexicon_unique$`901`, "sing")
+td.std.desc_lexicon_unique$`902` <- c(td.std.desc_lexicon_unique$`902`, "sing")
+td.std.desc_lexicon_unique$`903` <- c(td.std.desc_lexicon_unique$`903`, "sing")
+td.std.desc_lexicon_unique$`904` <- c(td.std.desc_lexicon_unique$`904`, "sing")
+td.std.desc_lexicon_unique$`905` <- c(td.std.desc_lexicon_unique$`905`, "sing")
+td.std.desc_lexicon_unique$`906` <- c(td.std.desc_lexicon_unique$`906`, "sing")
+td.std.desc_lexicon_unique$`907` <- c(td.std.desc_lexicon_unique$`907`, "sing")
+td.std.desc_lexicon_unique$`908` <- c(td.std.desc_lexicon_unique$`908`, "sing")
+td.std.desc_lexicon_unique$`910` <- c(td.std.desc_lexicon_unique$`910`, "sing")
+td.std.desc_lexicon_unique$`911` <- c(td.std.desc_lexicon_unique$`911`, "sing")
+td.std.desc_lexicon_unique$`912` <- c(td.std.desc_lexicon_unique$`912`, "sing")
+td.std.desc_lexicon_unique$`913` <- c(td.std.desc_lexicon_unique$`913`, "sing")
+td.std.desc_lexicon_unique$`914` <- c(td.std.desc_lexicon_unique$`914`, "sing")
+td.std.desc_lexicon_unique$`915` <- c(td.std.desc_lexicon_unique$`915`, "sing")
+td.std.desc_lexicon_unique$`916` <- c(td.std.desc_lexicon_unique$`916`, "sing")
+td.std.desc_lexicon_unique$`917` <- c(td.std.desc_lexicon_unique$`917`, "sing")
+td.std.desc_lexicon_unique$`918` <- c(td.std.desc_lexicon_unique$`918`, "sing")
+td.std.desc_lexicon_unique$`919` <- c(td.std.desc_lexicon_unique$`919`, "sing")
+td.std.desc_lexicon_unique$`920` <- c(td.std.desc_lexicon_unique$`920`, "sing")
+td.std.desc_lexicon_unique$`921` <- c(td.std.desc_lexicon_unique$`921`, "sing")
+td.std.desc_lexicon_unique$`922` <- c(td.std.desc_lexicon_unique$`922`, "sing")
+td.std.desc_lexicon_unique$`923` <- c(td.std.desc_lexicon_unique$`923`, "sing")
+td.std.desc_lexicon_unique$`924` <- c(td.std.desc_lexicon_unique$`924`, "sing")
+td.std.desc_lexicon_unique$`925` <- c(td.std.desc_lexicon_unique$`925`, "sing")
+td.std.desc_lexicon_unique$`926` <- c(td.std.desc_lexicon_unique$`926`, "sing")
+td.std.desc_lexicon_unique$`927` <- c(td.std.desc_lexicon_unique$`927`, "sing")
+td.std.desc_lexicon_unique$`928` <- c(td.std.desc_lexicon_unique$`928`, "sing")
+td.std.desc_lexicon_unique$`929` <- c(td.std.desc_lexicon_unique$`929`, "sing")
+td.std.desc_lexicon_unique$`930` <- c(td.std.desc_lexicon_unique$`930`, "sing")
+td.std.desc_lexicon_unique$`931` <- c(td.std.desc_lexicon_unique$`931`, "sing")
+td.std.desc_lexicon_unique$`932` <- c(td.std.desc_lexicon_unique$`932`, "sing")
+td.std.desc_lexicon_unique$`933` <- c(td.std.desc_lexicon_unique$`933`, "sing")
+td.std.desc_lexicon_unique$`934` <- c(td.std.desc_lexicon_unique$`934`, "sing")
+td.std.desc_lexicon_unique$`935` <- c(td.std.desc_lexicon_unique$`935`, "sing")
+td.std.desc_lexicon_unique$`936` <- c(td.std.desc_lexicon_unique$`936`, "sing")
+td.std.desc_lexicon_unique$`937` <- c(td.std.desc_lexicon_unique$`937`, "sing")
+td.std.desc_lexicon_unique$`938` <- c(td.std.desc_lexicon_unique$`938`, "sing")
+td.std.desc_lexicon_unique$`939` <- c(td.std.desc_lexicon_unique$`939`, "sing")
+td.std.desc_lexicon_unique$`940` <- c(td.std.desc_lexicon_unique$`940`, "sing")
+td.std.desc_lexicon_unique$`941` <- c(td.std.desc_lexicon_unique$`941`, "sing")
+td.std.desc_lexicon_unique$`942` <- c(td.std.desc_lexicon_unique$`942`, "sing")
+td.std.desc_lexicon_unique$`943` <- c(td.std.desc_lexicon_unique$`943`, "sing")
+td.std.desc_lexicon_unique$`944` <- c(td.std.desc_lexicon_unique$`944`, "sing")
+td.std.desc_lexicon_unique$`945` <- c(td.std.desc_lexicon_unique$`945`, "sing")
+td.std.desc_lexicon_unique$`946` <- c(td.std.desc_lexicon_unique$`946`, "sing")
+td.std.desc_lexicon_unique$`947` <- c(td.std.desc_lexicon_unique$`947`, "sing")
+td.std.desc_lexicon_unique$`950` <- c(td.std.desc_lexicon_unique$`950`, "sing")
+td.std.desc_lexicon_unique$`951` <- c(td.std.desc_lexicon_unique$`951`, "sing")
+td.std.desc_lexicon_unique$`952` <- c(td.std.desc_lexicon_unique$`952`, "sing")
+td.std.desc_lexicon_unique$`953` <- c(td.std.desc_lexicon_unique$`953`, "sing")
+td.std.desc_lexicon_unique$`954` <- c(td.std.desc_lexicon_unique$`954`, "sing")
+td.std.desc_lexicon_unique$`955` <- c(td.std.desc_lexicon_unique$`955`, "sing")
+td.std.desc_lexicon_unique$`956` <- c(td.std.desc_lexicon_unique$`956`, "sing")
+td.std.desc_lexicon_unique$`957` <- c(td.std.desc_lexicon_unique$`957`, "sing")
+td.std.desc_lexicon_unique$`958` <- c(td.std.desc_lexicon_unique$`958`, "sing")
+td.std.desc_lexicon_unique$`959` <- c(td.std.desc_lexicon_unique$`959`, "sing")
+td.std.desc_lexicon_unique$`960` <- c(td.std.desc_lexicon_unique$`960`, "sing")
+td.std.desc_lexicon_unique$`961` <- c(td.std.desc_lexicon_unique$`961`, "sing")
+td.std.desc_lexicon_unique$`962` <- c(td.std.desc_lexicon_unique$`962`, "sing")
+td.std.desc_lexicon_unique$`970` <- c(td.std.desc_lexicon_unique$`970`, "sing")
+td.std.desc_lexicon_unique$`971` <- c(td.std.desc_lexicon_unique$`971`, "sing")
+td.std.desc_lexicon_unique$`972` <- c(td.std.desc_lexicon_unique$`972`, "sing")
+td.std.desc_lexicon_unique$`973` <- c(td.std.desc_lexicon_unique$`973`, "sing")
+td.std.desc_lexicon_unique$`974` <- c(td.std.desc_lexicon_unique$`974`, "sing")
+td.std.desc_lexicon_unique$`975` <- c(td.std.desc_lexicon_unique$`975`, "sing")
+td.std.desc_lexicon_unique$`980` <- c(td.std.desc_lexicon_unique$`980`, "sing")
+td.std.desc_lexicon_unique$`981` <- c(td.std.desc_lexicon_unique$`981`, "sing")
+td.std.desc_lexicon_unique$`982` <- c(td.std.desc_lexicon_unique$`982`, "sing")
+td.std.desc_lexicon_unique$`985` <- c(td.std.desc_lexicon_unique$`985`, "sing")
+td.std.desc_lexicon_unique$`988` <- c(td.std.desc_lexicon_unique$`988`, "sing")
+td.std.desc_lexicon_unique$`989` <- c(td.std.desc_lexicon_unique$`989`, "sing")
+td.std.desc_lexicon_unique$`990` <- c(td.std.desc_lexicon_unique$`990`, "sing")
+td.std.desc_lexicon_unique$`991` <- c(td.std.desc_lexicon_unique$`991`, "sing")
+td.std.desc_lexicon_unique$`992` <- c(td.std.desc_lexicon_unique$`992`, "sing")
+td.std.desc_lexicon_unique$`993` <- c(td.std.desc_lexicon_unique$`993`, "sing")
+td.std.desc_lexicon_unique$`994` <- c(td.std.desc_lexicon_unique$`994`, "sing")
+td.std.desc_lexicon_unique$`995` <- c(td.std.desc_lexicon_unique$`995`, "sing")
+td.std.desc_lexicon_unique$`996` <- c(td.std.desc_lexicon_unique$`996`, "sing")
+td.std.desc_lexicon_unique$`997` <- c(td.std.desc_lexicon_unique$`997`, "sing")
 
 ```
 
