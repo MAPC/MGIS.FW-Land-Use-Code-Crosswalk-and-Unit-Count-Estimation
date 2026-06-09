@@ -484,6 +484,14 @@ for (i in od_uc.list){
 }
 
 # Add strings to unique standard terms list
+# Mixed Use
+# List of strings common to undefined Mixed Use use codes which indicate whether or not they are ACTUALLY Mixed Use, as opposed to misclassified single use.
+mu.strings <- c("Mixed", "mixed", "MIXED", "mixedj", "mix", "Mix", "MIX", "MXD", "mxd", "MU ", "Mu ", "mu ", "primary", "Primary", "primarily", "Primarily", "PRI ", "pri ", "Pri ", "PRI- ", "pri- ", "Pri- ", "-use", "-Use", "-USE", " use", " USE", " Use", "predom", "Predom", "PREDOM")
+
+# 
+td.mu.strings <- c("//,", "///", " and", " AND", " And", " with", " With", " WITH", " on", " On", " ON")
+# 
+td.mu.other.strings <- c("other", "Other", "OTHER", "unknown", "Unknown", "UNKNOWN")
 # Residential (19)
 td.std.desc_lexicon_unique$`101` <- c(td.std.desc_lexicon_unique$`101`, "sing")
 td.std.desc_lexicon_unique$`102` <- c(td.std.desc_lexicon_unique$`102`, "condo")
@@ -493,17 +501,17 @@ td.std.desc_lexicon_unique$`105` <- c(td.std.desc_lexicon_unique$`105`, "")
 td.std.desc_lexicon_unique$`106` <- c(td.std.desc_lexicon_unique$`106`, "acc")
 td.std.desc_lexicon_unique$`109` <- c(td.std.desc_lexicon_unique$`109`, "")
 td.std.desc_lexicon_unique$`111` <- c(td.std.desc_lexicon_unique$`111`, "")
-td.std.desc_lexicon_unique$`112` <- c(td.std.desc_lexicon_unique$`112`, "")
-td.std.desc_lexicon_unique$`114` <- c(td.std.desc_lexicon_unique$`114`, "")
+td.std.desc_lexicon_unique$`112` <- c(td.std.desc_lexicon_unique$`112`, "over")
+td.std.desc_lexicon_unique$`114` <- c(td.std.desc_lexicon_unique$`114`, "subsd")
 td.std.desc_lexicon_unique$`121` <- c(td.std.desc_lexicon_unique$`121`, "")
 td.std.desc_lexicon_unique$`122` <- c(td.std.desc_lexicon_unique$`122`, "")
 td.std.desc_lexicon_unique$`123` <- c(td.std.desc_lexicon_unique$`123`, "")
 td.std.desc_lexicon_unique$`124` <- c(td.std.desc_lexicon_unique$`124`, "")
-td.std.desc_lexicon_unique$`125` <- c(td.std.desc_lexicon_unique$`125`, "")
+td.std.desc_lexicon_unique$`125` <- c(td.std.desc_lexicon_unique$`125`, "congregate", "cooperative", "coopertive")
 td.std.desc_lexicon_unique$`130` <- c(td.std.desc_lexicon_unique$`130`, "")
 td.std.desc_lexicon_unique$`131` <- c(td.std.desc_lexicon_unique$`131`, "")
 td.std.desc_lexicon_unique$`132` <- c(td.std.desc_lexicon_unique$`132`, "unbuildable")
-td.std.desc_lexicon_unique$`140` <- c(td.std.desc_lexicon_unique$`140`, "sing")
+td.std.desc_lexicon_unique$`140` <- c(td.std.desc_lexicon_unique$`140`, "")
 # Open Space (31)
 td.std.desc_lexicon_unique$`201` <- c(td.std.desc_lexicon_unique$`201`, "sing")
 td.std.desc_lexicon_unique$`202` <- c(td.std.desc_lexicon_unique$`202`, "sing")
@@ -1158,48 +1166,8 @@ unmatched_text <- comp |>
   unnest_tokens(word, MUNI.USE_DESC) |> 
   count(word, sort = TRUE)
 
-# List of strings common to undefined Mixed Use use codes which indicate whether or not they are ACTUALLY Mixed Use, as opposed to misclassified single use.
-mu.strings <- c("Mixed", "mixed", "MIXED", "mixedj", "mix", "Mix", "MIX", "MXD", "mxd", "MU ", "Mu ", "mu ", "primary", "Primary", "primarily", "Primarily", "PRI ", "pri ", "Pri ", "PRI- ", "pri- ", "Pri- ", "-use", "-Use", "-USE", " use", " USE", " Use", "predom", "Predom", "PREDOM")
 
-# 
-td.mu.strings <- c("//,", "///", " and", " AND", " And", " with", " With", " WITH", " on", " On", " ON")
-# 
-td.mu.other.strings <- c("other", "Other", "OTHER", "unknown", "Unknown", "UNKNOWN")
 
-# Additional Residential specific strings
-res_101.strings <- c("sing", "SING", "Sing")
-res_102.strings <- c("Condo", "condo", "CONDO")
-res_103.strings <- c("MBL", "mbl", "Mbl")
-# res_104.strings <- c("two", "Two", "TWO")
-# res_105.strings <- c("three", "Three", "THREE")
-# 
-res_106.strings <- c("acc", "Acc", "ACC")
-# res_109.strings <- c()
-# res_111.strings <- c("Four", "four", "FOUR")
-res_112.strings <- c("OVER", "over", "Over")
-res_114.strings <- c("subsd", "Subsd", "SUBSD")
-# 
-# res_121.strings <- c("Rooming", "ROOMING", "rooming", "Boarding", "BOARDING", "boarding")
-# res_122.strings <- c("Frat", "frat", "FRAT", "fraternity", "Fraternity", "FRATERNITY", "sorority", "Sorority", "SORORITY")
-# res_123.strings <- c("dorm", "Dorm", "DORM", "dormitory", "Dormitory", "DORMITORY")
-# res_124.strings <- c("Rectories", "rectories", "RECTORIES", "Rectory", "rectory", "RECTORY", "Convents", "convents", "CONVENTS", "Convents", "Convents", "Convents", "Monasteries")
-res_125.strings <- c("Congregate", "CONGREGATE", "congregate", "cooperative", "Cooperative", "COOPERATIVE", "coopertive", "Coopertive", "COOPERTIVE")
-# 
-# res_130.strings <- c()
-# res_131.strings <- c("Potentially", "potentially", "POTENTIALLY")
-res_132.strings <- c("unbuildable", "Unbuildable", "UNBUILDABLE")
-# res_140.strings <- c("Child", "child", "CHILD", "Childcare", "childcare", "CHILDCARE")
-# 
-# # Commercial
-# # Industrial
-# # Open Space
-# # Private Property
-# # Forest
-# # Agriculture
-# # Recreation
-# # Exempt
-# 
-# # Ch. 61
 
 #~~~~~~~
 # Filter for unmatched use codes and create diagnostic variables.
