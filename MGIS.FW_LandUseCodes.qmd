@@ -29,6 +29,9 @@ sw <- c(sw.upper, sw.title, sw.lower)
 # Remove intermediate stop word lists
 rm(sw.upper, sw.title, sw.lower)
 
+# Common terms list
+cmn_terms <- c("buildings", "building", "land", "primarily", "chapter", "ch", "61a", "part")
+
 #Global options to remove scientific notation and set random seed
 options(scipen = 999)
 set.seed(351)
@@ -338,7 +341,7 @@ for (i in td_uc.list){
   # Creates a list of individual terms found in each unique standard three digit land use code.
   td.std.desc_lexicon[[i]] <- std_uc |> distinct(xwalk_uc, .keep_all = T) |> filter(xwalk_uc == i) |>
     unnest_tokens(word, STD.USE_DESC) |> count(word, sort = TRUE) |>
-    filter(!word %in% sw) |>
+    filter(!word %in% sw) |> filter(!word %in% cmn_terms) |> 
     pull(word)
   
   #Print statement to log completion of three digit code lexicon.
@@ -430,7 +433,7 @@ for (i in od_uc.list){
     filter(od_uc == i) |>
     distinct(xwalk_uc, .keep_all = T) |>
     unnest_tokens(word, MUNI.USE_DESC) |> count(word, sort = TRUE) |>
-    filter(!word %in% sw) |>
+    filter(!word %in% sw) |> filter(!word %in% cmn_terms) |> 
     pull(word)
   
   #Print statement to log completion of three digit code lexicon.
@@ -486,7 +489,7 @@ for (i in od_uc.list){
 # Add strings to unique standard terms list
 # Mixed Use
 # List of strings common to undefined Mixed Use use codes which indicate whether or not they are ACTUALLY Mixed Use, as opposed to misclassified single use.
-mu.strings <- c("Mixed", "mixed", "MIXED", "mixedj", "mix", "Mix", "MIX", "MXD", "mxd", "MU ", "Mu ", "mu ", "primary", "Primary", "primarily", "Primarily", "PRI ", "pri ", "Pri ", "PRI- ", "pri- ", "Pri- ", "-use", "-Use", "-USE", " use", " USE", " Use", "predom", "Predom", "PREDOM")
+mu.strings <- c("Mixed", "mixed", "MIXED", "mixedj", "mix", "Mix", "MIX", "MXD", "mxd", "MU ", "Mu ", "mu ", "primary", "Primary", "primarily", "Primarily","PR ", "Pr ", "pr ",  "PRI ", "pri ", "Pri ", "PRI- ", "pri- ", "Pri- ", "-use", "-Use", "-USE", " use", " USE", " Use", "predom", "Predom", "PREDOM")
 
 # 
 td.mu.strings <- c("//,", "///", " and", " AND", " And", " with", " With", " WITH", " on", " On", " ON")
@@ -495,10 +498,10 @@ td.mu.other.strings <- c("other", "Other", "OTHER", "unknown", "Unknown", "UNKNO
 # Residential (19)
 td.std.desc_lexicon_unique$`101` <- c(td.std.desc_lexicon_unique$`101`, "sing")
 td.std.desc_lexicon_unique$`102` <- c(td.std.desc_lexicon_unique$`102`, "condo")
-td.std.desc_lexicon_unique$`103` <- c(td.std.desc_lexicon_unique$`103`, "mobile", "mbl")
+td.std.desc_lexicon_unique$`103` <- c(td.std.desc_lexicon_unique$`103`, "mobile", "mbl", "trlr", "trailer")
 td.std.desc_lexicon_unique$`104` <- c(td.std.desc_lexicon_unique$`104`)
 td.std.desc_lexicon_unique$`105` <- c(td.std.desc_lexicon_unique$`105`)
-td.std.desc_lexicon_unique$`106` <- c(td.std.desc_lexicon_unique$`106`, "acc", "ac")
+td.std.desc_lexicon_unique$`106` <- c(td.std.desc_lexicon_unique$`106`, "acc", "ac", "outbuilding")
 td.std.desc_lexicon_unique$`109` <- c(td.std.desc_lexicon_unique$`109`, "law", "colony")
 td.std.desc_lexicon_unique$`111` <- c(td.std.desc_lexicon_unique$`111`)
 td.std.desc_lexicon_unique$`112` <- c(td.std.desc_lexicon_unique$`112`, "over")
@@ -547,7 +550,7 @@ td.std.desc_lexicon_unique$`290` <- c(td.std.desc_lexicon_unique$`290`)
 # Commercial (72)
 td.std.desc_lexicon_unique$`300` <- c(td.std.desc_lexicon_unique$`300`)
 td.std.desc_lexicon_unique$`301` <- c(td.std.desc_lexicon_unique$`301`)
-td.std.desc_lexicon_unique$`302` <- c(td.std.desc_lexicon_unique$`302`, "inn")
+td.std.desc_lexicon_unique$`302` <- c(td.std.desc_lexicon_unique$`302`, "inn", "brkf")
 td.std.desc_lexicon_unique$`304` <- c(td.std.desc_lexicon_unique$`304`)
 td.std.desc_lexicon_unique$`305` <- c(td.std.desc_lexicon_unique$`305`)
 td.std.desc_lexicon_unique$`306` <- c(td.std.desc_lexicon_unique$`306`)
@@ -1289,15 +1292,15 @@ unmatched.amend <- bind_cols(unmatched, flag.df) |>
   )
 
 #
-test0 <- unmatched.amend |> filter(numTRUE == 0)
-test1 <- unmatched.amend |> filter(numTRUE == 1)
-test2 <- unmatched.amend |> filter(numTRUE == 2)
-test3 <- unmatched.amend |> filter(numTRUE == 3 & MUNI.USE_DESC == "Day Care") |> select_if(~any(. == TRUE))
-test4 <- unmatched.amend |> filter(numTRUE == 4) |> select_if(~any(. == TRUE))
-test5 <- unmatched.amend |> filter(numTRUE == 5) |> select_if(~any(. == TRUE))
-test6 <- unmatched.amend |> filter(numTRUE == 6) |> select_if(~any(. == TRUE))
-test7 <- unmatched.amend |> filter(numTRUE == 7) |> select_if(~any(. == TRUE))
-test8 <- unmatched.amend |> filter(numTRUE == 8) |> select_if(~any(. == TRUE))
+test0 <- unmatched.amend |> filter(numTRUE == 0) |> filter(mu.amend.flag == FALSE)|>  filter(su.amend.flag == FALSE)
+test1 <- unmatched.amend |> filter(numTRUE == 1) |> filter(mu.amend.flag == FALSE) |>  filter(su.amend.flag == FALSE)
+test2 <- unmatched.amend |> filter(numTRUE == 2) |> filter(mu.amend.flag == FALSE)
+test3 <- unmatched.amend |> filter(numTRUE == 3) |> filter(mu.amend.flag == FALSE)
+test4 <- unmatched.amend |> filter(numTRUE == 4) |> filter(mu.amend.flag == FALSE)|>  filter(su.amend.flag == FALSE)
+test5 <- unmatched.amend |> filter(numTRUE == 5) |> filter(mu.amend.flag == FALSE)|>  filter(su.amend.flag == FALSE)
+test6 <- unmatched.amend |> filter(numTRUE == 6) |> filter(mu.amend.flag == FALSE)|>  filter(su.amend.flag == FALSE)
+test7 <- unmatched.amend |> filter(numTRUE == 7) |> filter(mu.amend.flag == FALSE)|>  filter(su.amend.flag == FALSE)
+test8 <- unmatched.amend |> filter(numTRUE == 8) |> filter(mu.amend.flag == FALSE)|>  filter(su.amend.flag == FALSE)
 
 # test <- unmatched.amend |> filter(numTRUE == 8) |> select_if(~any(. == TRUE))
 # 
@@ -1315,7 +1318,7 @@ test8 <- unmatched.amend |> filter(numTRUE == 8) |> select_if(~any(. == TRUE))
 # Create null QA table
 flag.QA <- NULL
 # Create QA Table column names
-flag.QA.cols <- c("Unmatched.Rows", "Unmatched.Rows_pct", "Unmatched.Rows.Fixed", "Unmatched.Rows.Fixed_pct", "Matched_pct")
+flag.QA.cols <- c("Unmatched.Rows", "Unmatched.Rows_pct", "Unmatched.Rows.Fixed", "Unmatched.Rows.Fixed_pct", "Matched_pct", "OD_UC_Category")
 
 # Print the percentage of unmatched mixed use codes.
 print(nrow(unmatched))
@@ -1325,7 +1328,7 @@ b <- 1-(nrow(unmatched)/nrow(comp))
 # 83% of unique municipal Mixed Use Codes can be matched to a standard land use code
 
 # Filter for codes that have been flagged via the text analysis script.
-unmatched.fixed <- unmatched.amend |> filter(amend.flag == TRUE)
+unmatched.fixed <- unmatched.amend |> filter(mu.amend.flag == TRUE)|>  filter(su.amend.flag == TRUE)
 
 print(nrow(unmatched.fixed))
 c <- nrow(unmatched.fixed)
@@ -1336,8 +1339,10 @@ print(1-(nrow(unmatched) - nrow(unmatched.fixed))/nrow(comp))
 e <- 1-(nrow(unmatched) - nrow(unmatched.fixed))/nrow(comp)
 # 96% of unique municipal Residential Use Codes can be matched to a standard land use code after residential-specific and non-residential text matching administered. An improvement of 13 percentage points in matching performance.
 
+f <- unique(unmatched.amend$od_uc)
+
 # Fill in QA Table
-flag.QA <- bind_cols(a, b, c, d, e)
+flag.QA <- bind_cols(a, b, c, d, e, f)
 # Assign column names
 colnames(flag.QA) <- flag.QA.cols
 # Calculate percentage point improvement in standard code matching after text analysis flagging.
@@ -1345,6 +1350,12 @@ flag.QA <- flag.QA |>
   mutate(
     improvement = Matched_pct - Unmatched.Rows_pct
   )
+
+write.csv(
+  flag.QA,
+  here(paste0("02_Data/Logs/.",q,"_",y,".csv")),
+  row.names = FALSE
+)
 
 #
 amended.uc <- unmatched |>
