@@ -487,6 +487,8 @@ for (i in od_uc.list){
 }
 
 # Add strings to unique standard terms list
+#
+dls.duplicative.terms <- c("woodland", "cranberry", "garage", "day care")
 # Mixed Use
 # List of strings common to undefined Mixed Use use codes which indicate whether or not they are ACTUALLY Mixed Use, as opposed to misclassified single use.
 mu.strings <- c("Mixed", "mixed", "MIXED", "mixedj", "mix", "Mix", "MIX", "MXD", "mxd", "MU ", "Mu ", "mu ", "primary", "Primary", "primarily", "Primarily","PR ", "Pr ", "pr ",  "PRI ", "pri ", "Pri ", "PRI- ", "pri- ", "Pri- ", "-use", "-Use", "-USE", " use", " USE", " Use", "predom", "Predom", "PREDOM")
@@ -494,7 +496,7 @@ mu.strings <- c("Mixed", "mixed", "MIXED", "mixedj", "mix", "Mix", "MIX", "MXD",
 # 
 td.mu.strings <- c("//,", "///", " and", " AND", " And", " with", " With", " WITH", " on", " On", " ON")
 # 
-td.mu.other.strings <- c("other", "Other", "OTHER", "unknown", "Unknown", "UNKNOWN", "known", "blank", "intentionally", "left")
+td.mu.other.strings <- c("other", "Other", "OTHER", "unknown", "Unknown", "UNKNOWN", "known", "blank", "intentionally", "left", "[:digit:]")
 # Residential (19)
 td.std.desc_lexicon_unique$`101` <- c(td.std.desc_lexicon_unique$`101`, "sing")
 td.std.desc_lexicon_unique$`102` <- c(td.std.desc_lexicon_unique$`102`, "condo")
@@ -1150,16 +1152,22 @@ write.csv(
 
 ```
 
-# 4.2 Residential
+# 4.2 Non Mixed-Use
 ```{r}
-
-# Create
+# Create a table of land use codes flagged for stanard use code assignment.
 unmatched.amend_tbl <- NULL
-# Create full flagging QA table dataframe
+# Create a table of "known" unknown land use codes for hardcoding/human review.
+unmatched.uk.k_tbl <- NULL
+# Create a table of unknown unknown land use codes.
+unmatched.uk.uk_tbl <- NULL
+# Create a table of codes flagged for duplicative, non-specific DLS land use descriptions.
+dls.dupes_tbl <- NULL
+# Create full flagging QA table dataframe.
 flag.QA_tbl <- NULL
 # Create QA Table column names
 flag.QA.cols <- c("Unmatched.Rows","Matched.Rows_pct","Unmatched.Rows.Fixed","Unmatched.Rows.Fixed_pct","Matched_pct")
 
+# 
 for (i in od_uc.list) {
   x <- od_muni.uc[[i]] |> select(xwalk_uc, MUNI.USE_CODE, MUNI.USE_DESC, muni_name)
   y <- od_std.uc[[i]] |> select(xwalk_uc, STD.USE_CODE, STD.USE_DESC)
@@ -1234,21 +1242,18 @@ for (i in od_uc.list) {
   # Print the percentage of unmatched mixed use codes.
   print(nrow(unmatched))
   a <- nrow(unmatched)
-  print(1 - (nrow(unmatched) / nrow(comp)))
+  print(paste(1 - (nrow(unmatched) / nrow(comp)), "of unique ",i," can be matched to a standard land use codes."))
   b <- 1 - (nrow(unmatched) / nrow(comp))
-  # 83% of unique municipal Mixed Use Codes can be matched to a standard land use code
   
   # Filter for codes that have been flagged via the text analysis script.
   unmatched.fixed <- unmatched.amend |> filter(mu.amend.flag == TRUE) |>  filter(su.amend.flag == TRUE)
-  
-  print(nrow(unmatched.fixed))
+  print(paste(nrow(unmatched.fixed),"out of",nrow(unmatched),"unmatched land use codes were flagged to be amended to a standard land use code." ))
   c <- nrow(unmatched.fixed)
-  print(nrow(unmatched.fixed) / nrow(unmatched))
-  d <- nrow(unmatched.fixed) / nrow(unmatched)
-  #  144 of 191 unmatched land use codes were flagged to be single use residential (75 percent of unmatched codes.).
-  print(1 - (nrow(unmatched) - nrow(unmatched.fixed)) / nrow(comp))
+  print(nrow(unmatched.fixed)/nrow(unmatched))
+  d <- nrow(unmatched.fixed)/nrow(unmatched)
+
+  print(paste(1 - (nrow(unmatched) - nrow(unmatched.fixed)) / nrow(comp), "of unique municipal use codes from one digit category ",i," can be matched to a standard land use code after text matching is administered."))
   e <- 1 - (nrow(unmatched) - nrow(unmatched.fixed)) / nrow(comp)
-  # 96% of unique municipal Residential Use Codes can be matched to a standard land use code after residential-specific and non-residential text matching administered. An improvement of 13 percentage points in matching performance.
   
   # Fill in QA Table
   flag.QA <- bind_cols(a, b, c, d, e)
@@ -1266,11 +1271,14 @@ for (i in od_uc.list) {
   
   # Remove various dataframes and lists used in each loop iteration.
   rm(x, y, comp, unmatched, flag.df, unmatched.amedn, flag.QA, a, b, c, d, e)
+  
 }
 
 # Write fill flagging diagnostic table to 
 write.csv(flag.QA, here(paste0("02_Data/Logs/Unmatched.Diagnostics_.",q,"_",y,".csv")), row.names = FALSE)
 
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Pull out the Residential use codes from the Muni and Standard Use Code lists
 x <- od_muni.uc$`1` |> select(xwalk_uc, MUNI.USE_CODE, MUNI.USE_DESC, muni_name)
 y <- od_std.uc$`1` |> select(xwalk_uc, STD.USE_CODE, STD.USE_DESC)
@@ -1313,12 +1321,21 @@ unmatched.amend <- bind_cols(unmatched, flag.df) |>
     mu.flag = str_detect(MUNI.USE_DESC, regex(paste(mu.strings, collapse = "|"), ignore_case = T)),
     # Flag for special characters and conjunctions in the municipal use description which indicate potentially being mixed use.
     td.mu.flag = str_detect(MUNI.USE_DESC, regex(paste(td.mu.strings, collapse = "|"), ignore_case = T)),
+    # 
     uk = str_detect(MUNI.USE_DESC, regex(paste(td.mu.other.strings, collapse = "|"), ignore_case = T)),
+    #
+    dls.dupes = str_detect(MUNI.USE_DESC, regex(paste(dls.duplicative.terms, collapse = "|"), ignore_case = T)),
     # Boolean indicating, generally, if a flag is present and the use code can be amended via the text analysis.
     su.amend.flag = any(c_across(starts_with("flag.")) == "TRUE"),
         # Boolean indicating, generally, if a flag is present and the use code can be amended via the text analysis.
     mu.amend.flag = any(c_across(ends_with(".flag")) == "TRUE")
   )
+
+uk.k <- unmatched.amend |> filter(mu.amend.flag == FALSE & su.amend.flag == FALSE & uk == FALSE)
+# 
+uk.uk <- unmatched.amend |> filter(mu.amend.flag == FALSE & su.amend.flag == FALSE & uk == TRUE)
+#
+dls.dupes <- unmatched.amend |> filter(dls.dupes == TRUE)
 
 #
 test0 <- unmatched.amend |> filter(numTRUE == 0) |> filter(mu.amend.flag == FALSE)|>  filter(su.amend.flag == FALSE)
@@ -1490,311 +1507,6 @@ umdi_comp <- res_xwalk |> full_join(umdi.res.xwalk, by = c("muni_name", "MUNI.US
 
 ```
 
-# 4.3 Open Space
-```{r}
-x <- od_muni.uc$`2` |> select(xwalk_uc, MUNI.USE_CODE, MUNI.USE_DESC, muni_name)
-y <- od_std.uc$`2` |> select(xwalk_uc, STD.USE_CODE, STD.USE_DESC)
-
-comp <- full_join(x, y, by = c("xwalk_uc")) |> 
-  mutate(
-    STD.USE_CODE = replace_na(STD.USE_CODE, "UNDEFINED"),
-    STD.USE_DESC = replace_na(STD.USE_DESC, "UNDEFINED")
-  )
-
-unmatched <- comp |> 
-  filter(STD.USE_CODE == "UNDEFINED")
-
-unmatched_text <- comp |>  
-  filter(STD.USE_CODE == "UNDEFINED") |> 
-  unnest_tokens(word, MUNI.USE_DESC) |> 
-  count(word, sort = TRUE)
-
-gen.col <- c("mu.flag", "td.mu.flag", "res.flag", "com.flag", "ind.flag", "pp.flag", "agr.flag", "rec.flag", "exm.flag", "uk.flag")
-
-# List of strings common to undefined Mixed Use use codes which indicate whether or not they are ACTUALLY Mixed Use, as opposed to misclassified single use.
-mu.strings <- c("Mixed", "mixed", "MIXED", "mixedj", "mix", "Mix", "MIX", "MXD", "mxd", "MU ", "Mu ", "mu ", "primary", "Primary", "primarily", "Primarily", "PRI ", "pri ", "Pri ", "PRI- ", "pri- ", "Pri- ", "-use", "-Use", "-USE", " use", " USE", " Use", "predom", "Predom", "PREDOM")
-
-# 
-td.mu.strings <- c("//,", "///", " and", " AND", " And", " with", " With", " WITH", " on", " On", " ON")
-# 
-td.mu.other.strings <- c("other", "Other", "OTHER", "unknown", "Unknown", "UNKNOWN")
-
-unmatched <- comp |> 
-  filter(STD.USE_CODE == "UNDEFINED") |> 
-  # Correct Use Three Digit Code Flags 
-  # Flags use codes which belong to a three digit use code (in this case Residential)
-  mutate(
-    # 201 -  Residential Open Land 
-    os.201.flag = str_detect(MUNI.USE_DESC, regex(paste(td.std.desc_lexicon_unique$`201`, collapse = "|"), ignore_case = T)),
-    # 202 -  Underwater Land or Marshes not under public ownership located in residential area
-    os.202.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`202`, res_102.strings), collapse = "|"), ignore_case = T)),
-    # 210 - Non-Productive Agricultural Land
-    os.210.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`210`, res_103.strings), collapse = "|"), ignore_case = T)),
-    # 211 - Non-Productive Vacant Land 
-    os.211.flag = str_detect(MUNI.USE_DESC, regex(paste(td.std.desc_lexicon_unique$`211`, collapse = "|"), ignore_case = T)),
-    # 220 -  Commercial Vacant Land
-    os.220.flag = str_detect(MUNI.USE_DESC, regex(paste(td.std.desc_lexicon_unique$`220`, collapse = "|"), ignore_case = T)),
-    # 221
-    res.221.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`221`, res_106.strings), collapse = "|"), ignore_case = T)),
-    # Agriculture
-    res.109.flag = str_detect(MUNI.USE_DESC, regex(paste(td.std.desc_lexicon_unique$`109`, collapse = "|"), ignore_case = T)),
-    # Recreation
-    res.111.flag = str_detect(MUNI.USE_DESC, regex(paste(td.std.desc_lexicon_unique$`111`, collapse = "|"), ignore_case = T)),
-    # Exempt
-    res.112.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`112`, res_112.strings), collapse = "|"), ignore_case = T)),
-    # Flag for unknown use.
-    res.114.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`114`, res_114.strings), collapse = "|"), ignore_case = T)),
-    
-    res.121.flag = str_detect(MUNI.USE_DESC, regex(paste(td.std.desc_lexicon_unique$`121`, collapse = "|"), ignore_case = T)),
-    # Commercial
-    res.122.flag = str_detect(MUNI.USE_DESC, regex(paste(td.std.desc_lexicon_unique$`122`, collapse = "|"), ignore_case = T)),
-    # Industrial
-    res.123.flag = str_detect(MUNI.USE_DESC, regex(paste(td.std.desc_lexicon_unique$`123`, collapse = "|"), ignore_case = T)),
-    # Open Space
-    res.124.flag = str_detect(MUNI.USE_DESC, regex(paste(td.std.desc_lexicon_unique$`124`, collapse = "|"), ignore_case = T)),
-    # Private Property
-    res.125.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`125`, res_125.strings), collapse = "|"), ignore_case = T)),
-    # Forest
-    res.130.flag = str_detect(MUNI.USE_DESC, regex(paste(td.std.desc_lexicon_unique$`130`, collapse = "|"), ignore_case = T)),
-    # Agriculture
-    res.131.flag = str_detect(MUNI.USE_DESC, regex(paste(td.std.desc_lexicon_unique$`131`, collapse = "|"), ignore_case = T)),
-    # Recreation
-    res.132.flag = str_detect(MUNI.USE_DESC, regex(paste(c(td.std.desc_lexicon_unique$`132`, res_132.strings), collapse = "|"), ignore_case = T)),
-    # Exempt
-    res.140.flag = str_detect(MUNI.USE_DESC, regex(paste(td.std.desc_lexicon_unique$`140`, collapse = "|"), ignore_case = T))
-  ) |> 
-  # Alternative Use One Digit Code Flags
-  # Flags use codes which belong to OTHER one digit use code blocs (things municipalities code that are interpreted as, say, residential which are actually a different use (e.g., commercial))
-    mutate(
-      # Flag for phrases or works in the municipal use description column which indicate potentially being mixed use.
-      mu.flag = str_detect(MUNI.USE_DESC, paste(mu.strings, collapse = "|")),
-      # Flag for special characters and conjunctions in the municipal use description which indicate potentially being mixed use.
-      td.mu.flag = str_detect(MUNI.USE_DESC, paste(td.mu.strings, collapse = "|")),
-      # Commercial
-      com.flag = str_detect(MUNI.USE_DESC, regex(
-        paste(std.desc_lexicon_unique$`3`, collapse = "|"), ignore_case = T
-      )),
-      # Industrial
-      ind.flag = str_detect(MUNI.USE_DESC, regex(
-        paste(std.desc_lexicon_unique$`4`, collapse = "|"), ignore_case = T
-      )),
-      # Open Space
-      res.flag = str_detect(MUNI.USE_DESC, regex(
-        paste(std.desc_lexicon_unique$`1`, collapse = "|"), ignore_case = T
-      )),
-      # Private Property
-      pp.flag = str_detect(MUNI.USE_DESC, regex(
-        paste(std.desc_lexicon_unique$`5`, collapse = "|"), ignore_case = T
-      )),
-      # Forest
-      #for.flag = str_detect(MUNI.USE_DESC, regex(
-        #paste(std.desc_lexicon$`6`, collapse = "|"), ignore_case = T
-      #)),
-      # Agriculture
-      agr.flag = str_detect(MUNI.USE_DESC, regex(
-        paste(std.desc_lexicon_unique$`7`, collapse = "|"), ignore_case = T
-      )),
-      # Recreation
-      rec.flag = str_detect(MUNI.USE_DESC, regex(
-        paste(std.desc_lexicon_unique$`8`, collapse = "|"), ignore_case = T
-      )),
-      # Exempt
-      exm.flag = str_detect(MUNI.USE_DESC, regex(
-        paste(std.desc_lexicon_unique$`9`, collapse = "|"), ignore_case = T
-      )),
-      # Flag for unknown use.
-      uk.flag = str_detect(MUNI.USE_DESC, paste(td.mu.other.strings, collapse = "|"))
-    ) |> 
-  rowwise() |> 
-  mutate(
-    os.flag = any(c_across(starts_with("os.")) == TRUE),
-    gen.flag = any(c_across(gen.col) == TRUE)
-  )
-
-# QA Analysis of unmatched residential land use codes
-# Print the percentage of unmatched mixed use codes.
-print(nrow(unmatched))
-print(1-(nrow(unmatched)/nrow(comp)))
-# 83% of unique municipal Mixed Use Codes can be matched to a standard land use code
-
-# Filter for codes that have been flagged via the text analysis script.
-unmatched.fixed <- unmatched |> filter(os.flag == TRUE | gen.flag == TRUE)
-
-print(nrow(unmatched.fixed))
-print(nrow(unmatched.fixed)/nrow(unmatched))
-#  144 of 191 unmatched land use codes were flagged to be single use residential (75 percent of unmatched codes.).
-print(1-(nrow(unmatched) - nrow(unmatched.fixed))/nrow(comp))
-# 96% of unique municipal Residential Use Codes can be matched to a standard land use code after residential-specific and non-residential text matching administered. An improvement of 13 percentage points in matching performance.
-
-# Filter for codes that have been flagged via the residential specific text analysis.
-unmatched.fixed.res <- unmatched |> filter(os.flag == TRUE)
-
-print(nrow(unmatched.fixed.os))
-print(nrow(unmatched.fixed.os)/nrow(unmatched))
-# 60 of 191 unmatched land use codes were flagged to be single use residential (31 percent of unmatched codes.).
-print(1-(nrow(unmatched) - nrow(unmatched.fixed.res))/nrow(comp))
-# 88% of unique municipal Mixed Use Codes can be matched to a standard land use code after residential-specific text matching administered. An improvement of 5 percentage points in matching performance.
-
-# Filter for codes that have been flagged by the non-residential text analysis.
-unmatched.fixed.gen <- unmatched |> filter(gen.flag == TRUE)
-
-print(nrow(unmatched.fixed.gen))
-print(nrow(unmatched.fixed.gen)/nrow(unmatched))
-# 108 of 191 unmatched land use codes were flagged to be non-residential (57 percent of unmatched codes.).
-print(1-(nrow(unmatched) - nrow(unmatched.fixed.gen))/nrow(comp))
-# 92% of unique municipal Mixed Use Codes can be matched to a standard land use code after non-residential text matching administered. An improvement of 9 percentage points in matching performance.
-
-# Filter for codes that could not be flagged by the residential-specific or non-residential land use code flags.
-unmatched.unfixed <- unmatched |> filter(os.flag == FALSE & gen.flag == FALSE)
-
-print(nrow(unmatched.unfixed))
-print(nrow(unmatched.unfixed)/nrow(unmatched))
-# 47 of 191 unmatched land use codes could not be programmatically flagged for a standard land use (25 percent of unmatched codes.).
-print((nrow(unmatched.unfixed))/nrow(comp))
-# 4% of unique municipal Mixed Use Codes cannot be matched to a standard land use code after non-residential text matching administered.
-
-rm(x,y)
-```
-
-# 4.3 Commercial
-```{r}
-x <- od_muni.uc$`3` |> select(xwalk_uc, MUNI.USE_CODE, MUNI.USE_DESC, muni_name)
-y <- od_std.uc$`3` |> select(xwalk_uc, STD.USE_CODE, STD.USE_DESC)
-
-comp <- full_join(x, y, by = c("xwalk_uc")) |> 
-  mutate(
-    STD.USE_CODE = replace_na(STD.USE_CODE, "UNDEFINED"),
-    STD.USE_DESC = replace_na(STD.USE_DESC, "UNDEFINED")
-  )
-
-unmatched <- comp |> 
-  filter(STD.USE_CODE == "UNDEFINED")
-
-unmatched_text <- comp |>  
-  filter(STD.USE_CODE == "UNDEFINED") |> 
-  unnest_tokens(word, MUNI.USE_DESC) |> 
-  count(word, sort = TRUE)
-```
-
-# 4.5 Industrial
-```{r}
-x <- od_muni.uc$`4` |> select(xwalk_uc, MUNI.USE_CODE, MUNI.USE_DESC, muni_name)
-y <- od_std.uc$`4` |> select(xwalk_uc, STD.USE_CODE, STD.USE_DESC)
-
-comp <- full_join(x, y, by = c("xwalk_uc")) |> 
-  mutate(
-    STD.USE_CODE = replace_na(STD.USE_CODE, "UNDEFINED"),
-    STD.USE_DESC = replace_na(STD.USE_DESC, "UNDEFINED")
-  )
-
-unmatched <- comp |> 
-  filter(STD.USE_CODE == "UNDEFINED")
-
-unmatched_text <- comp |>  
-  filter(STD.USE_CODE == "UNDEFINED") |> 
-  unnest_tokens(word, MUNI.USE_DESC) |> 
-  count(word, sort = TRUE)
-```
-
-# 4.6 Personal Property
-```{r}
-x <- od_muni.uc$`5` |> select(xwalk_uc, MUNI.USE_CODE, MUNI.USE_DESC, muni_name)
-y <- od_std.uc$`5` |> select(xwalk_uc, STD.USE_CODE, STD.USE_DESC)
-
-comp <- full_join(x, y, by = c("xwalk_uc")) |> 
-  mutate(
-    STD.USE_CODE = replace_na(STD.USE_CODE, "UNDEFINED"),
-    STD.USE_DESC = replace_na(STD.USE_DESC, "UNDEFINED")
-  )
-
-unmatched <- comp |> 
-  filter(STD.USE_CODE == "UNDEFINED")
-
-unmatched_text <- comp |>  
-  filter(STD.USE_CODE == "UNDEFINED") |> 
-  unnest_tokens(word, MUNI.USE_DESC) |> 
-  count(word, sort = TRUE)
-```
-
-# 4.7 Forest
-```{r}
-x <- od_muni.uc$`6` |> select(xwalk_uc, MUNI.USE_CODE, MUNI.USE_DESC, muni_name)
-y <- od_std.uc$`6` |> select(xwalk_uc, STD.USE_CODE, STD.USE_DESC)
-
-comp <- full_join(x, y, by = c("xwalk_uc")) |> 
-  mutate(
-    STD.USE_CODE = replace_na(STD.USE_CODE, "UNDEFINED"),
-    STD.USE_DESC = replace_na(STD.USE_DESC, "UNDEFINED")
-  )
-
-unmatched <- comp |> 
-  filter(STD.USE_CODE == "UNDEFINED")
-
-unmatched_text <- comp |>  
-  filter(STD.USE_CODE == "UNDEFINED") |> 
-  unnest_tokens(word, MUNI.USE_DESC) |> 
-  count(word, sort = TRUE)
-```
-
-# 4.8 Agriculture
-```{r}
-x <- od_muni.uc$`7` |> select(xwalk_uc, MUNI.USE_CODE, MUNI.USE_DESC, muni_name)
-y <- od_std.uc$`7` |> select(xwalk_uc, STD.USE_CODE, STD.USE_DESC)
-
-comp <- full_join(x, y, by = c("xwalk_uc")) |> 
-  mutate(
-    STD.USE_CODE = replace_na(STD.USE_CODE, "UNDEFINED"),
-    STD.USE_DESC = replace_na(STD.USE_DESC, "UNDEFINED")
-  )
-
-unmatched <- comp |> 
-  filter(STD.USE_CODE == "UNDEFINED")
-
-unmatched_text <- comp |>  
-  filter(STD.USE_CODE == "UNDEFINED") |> 
-  unnest_tokens(word, MUNI.USE_DESC) |> 
-  count(word, sort = TRUE)
-```
-
-# 4.9 Recreation
-```{r}
-x <- od_muni.uc$`8` |> select(xwalk_uc, MUNI.USE_CODE, MUNI.USE_DESC, muni_name)
-y <- od_std.uc$`8` |> select(xwalk_uc, STD.USE_CODE, STD.USE_DESC)
-
-comp <- full_join(x, y, by = c("xwalk_uc")) |> 
-  mutate(
-    STD.USE_CODE = replace_na(STD.USE_CODE, "UNDEFINED"),
-    STD.USE_DESC = replace_na(STD.USE_DESC, "UNDEFINED")
-  )
-
-unmatched <- comp |> 
-  filter(STD.USE_CODE == "UNDEFINED")
-
-unmatched_text <- comp |>  
-  filter(STD.USE_CODE == "UNDEFINED") |> 
-  unnest_tokens(word, MUNI.USE_DESC) |> 
-  count(word, sort = TRUE)
-```
-
-# 4.10 Exempt
-```{r}
-x <- od_muni.uc$`9` |> select(xwalk_uc, MUNI.USE_CODE, MUNI.USE_DESC, muni_name)
-y <- od_std.uc$`9` |> select(xwalk_uc, STD.USE_CODE, STD.USE_DESC)
-
-comp <- full_join(x, y, by = c("xwalk_uc")) |> 
-  mutate(
-    STD.USE_CODE = replace_na(STD.USE_CODE, "UNDEFINED"),
-    STD.USE_DESC = replace_na(STD.USE_DESC, "UNDEFINED")
-  )
-
-unmatched <- comp |> 
-  filter(STD.USE_CODE == "UNDEFINED")
-
-unmatched_text <- comp |>  
-  filter(STD.USE_CODE == "UNDEFINED") |> 
-  unnest_tokens(word, MUNI.USE_DESC) |> 
-  count(word, sort = TRUE)
-```
 
 # 5.0 Create Harmonized Use Code Crosswalk
 # 5.1
