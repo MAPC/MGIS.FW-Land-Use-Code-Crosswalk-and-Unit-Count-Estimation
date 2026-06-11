@@ -30,7 +30,7 @@ sw <- c(sw.upper, sw.title, sw.lower)
 rm(sw.upper, sw.title, sw.lower)
 
 # Common terms list
-cmn_terms <- c("buildings", "building", "land", "primarily", "chapter", "ch", "61a", "part")
+cmn_terms <- c("buildings", "building", "land", "primarily", "chapter", "ch", "61a", "part", "code")
 
 #Global options to remove scientific notation and set random seed
 options(scipen = 999)
@@ -38,7 +38,7 @@ set.seed(351)
 
 # Set Land Use Code Vintage
 q <- "Q1"
-y <- "2026"
+yr <- "2026"
 ```
 
 # 1.0 Loading in Data
@@ -61,7 +61,7 @@ print(summary(assessors))
 print(str(assessors))
 
 # Writes a log of the Land Use Code file within the MassGIS Property Tax Parcel geodatabase.
-writexl::write_xlsx(use_codes, here(paste0("02_Data/Logs/L3_UC_LUT.",q,"_",y,".xlsx")))
+writexl::write_xlsx(use_codes, here(paste0("02_Data/Logs/L3_UC_LUT.",q,"_",yr,".xlsx")))
 ```
 
 # 1.2 Load Complementary Datasets
@@ -496,11 +496,13 @@ mu.strings <- c("Mixed", "mixed", "MIXED", "mixedj", "mix", "Mix", "MIX", "MXD",
 # 
 td.mu.strings <- c("//,", "///", " and", " AND", " And", " with", " With", " WITH", " on", " On", " ON")
 # 
-td.mu.other.strings <- c("other", "Other", "OTHER", "unknown", "Unknown", "UNKNOWN", "known", "blank", "intentionally", "left", "[:digit:]")
+td.mu.other.strings <- c("other", "Other", "OTHER", "unknown", "Unknown", "UNKNOWN", "known", "blank", "intentionally", "left", "not known")
+#
+numerics.strings <- c("[:digit:]")
 # Residential (19)
 td.std.desc_lexicon_unique$`101` <- c(td.std.desc_lexicon_unique$`101`, "sing")
 td.std.desc_lexicon_unique$`102` <- c(td.std.desc_lexicon_unique$`102`, "condo")
-td.std.desc_lexicon_unique$`103` <- c(td.std.desc_lexicon_unique$`103`, "mobile", "mbl", "trlr", "trailer")
+td.std.desc_lexicon_unique$`103` <- c(td.std.desc_lexicon_unique$`103`, "mbl", "trlr", "trailer")
 td.std.desc_lexicon_unique$`104` <- c(td.std.desc_lexicon_unique$`104`)
 td.std.desc_lexicon_unique$`105` <- c(td.std.desc_lexicon_unique$`105`)
 td.std.desc_lexicon_unique$`106` <- c(td.std.desc_lexicon_unique$`106`, "acc", "ac", "outbuilding")
@@ -673,7 +675,7 @@ td.std.desc_lexicon_unique$`713` <- c(td.std.desc_lexicon_unique$`713`)
 td.std.desc_lexicon_unique$`714` <- c(td.std.desc_lexicon_unique$`714`, "maple")
 td.std.desc_lexicon_unique$`715` <- c(td.std.desc_lexicon_unique$`715`)
 td.std.desc_lexicon_unique$`716` <- c(td.std.desc_lexicon_unique$`716`)
-td.std.desc_lexicon_unique$`717` <- c(td.std.desc_lexicon_unique$`717`)
+td.std.desc_lexicon_unique$`717` <- c(td.std.desc_lexicon_unique$`717`, "c61 ten yr")
 td.std.desc_lexicon_unique$`718` <- c(td.std.desc_lexicon_unique$`718`)
 td.std.desc_lexicon_unique$`719` <- c(td.std.desc_lexicon_unique$`719`)
 td.std.desc_lexicon_unique$`720` <- c(td.std.desc_lexicon_unique$`720`, "productive")
@@ -1157,9 +1159,7 @@ write.csv(
 # Create a table of land use codes flagged for stanard use code assignment.
 unmatched.amend_tbl <- NULL
 # Create a table of "known" unknown land use codes for hardcoding/human review.
-unmatched.uk.k_tbl <- NULL
-# Create a table of unknown unknown land use codes.
-unmatched.uk.uk_tbl <- NULL
+unmatched.uk_tbl <- NULL
 # Create a table of codes flagged for duplicative, non-specific DLS land use descriptions.
 dls.dupes_tbl <- NULL
 # Create full flagging QA table dataframe.
@@ -1169,6 +1169,8 @@ flag.QA.cols <- c("Unmatched.Rows","Matched.Rows_pct","Unmatched.Rows.Fixed","Un
 
 # 
 for (i in od_uc.list) {
+  print(paste("Beginning Flagging Process for One Digit Use Code Category: ",i,"."))
+  #      
   x <- od_muni.uc[[i]] |> select(xwalk_uc, MUNI.USE_CODE, MUNI.USE_DESC, muni_name)
   y <- od_std.uc[[i]] |> select(xwalk_uc, STD.USE_CODE, STD.USE_DESC)
   
@@ -1207,53 +1209,80 @@ for (i in od_uc.list) {
     ) |>
     mutate(
       # Flag municipally-specific use codes for mixed-use terms.
-      mu.flag = str_detect(MUNI.USE_DESC, regex(
+      mxu.flag = str_detect(MUNI.USE_DESC, regex(
         paste(mu.strings, collapse = "|"), ignore_case = T
       )),
       # Flag for special characters and conjunctions in the municipal use description which indicate potentially being mixed use.
-      td.mu.flag = str_detect(MUNI.USE_DESC, regex(
+      mxu.td.flag = str_detect(MUNI.USE_DESC, regex(
         paste(td.mu.strings, collapse = "|"), ignore_case = T
       )),
+      #
       uk = str_detect(MUNI.USE_DESC, regex(
         paste(td.mu.other.strings, collapse = "|"), ignore_case = T
+      )),
+      #
+      dls.dupes = str_detect(MUNI.USE_DESC, regex(
+        paste(dls.duplicative.terms, collapse = "|"), ignore_case = T
       )),
       # Boolean indicating, generally, if a flag is present and the use code can be amended via the text analysis.
       su.amend.flag = any(c_across(starts_with("flag.")) == "TRUE"),
       # Boolean indicating, generally, if a flag is present and the use code can be amended via the text analysis.
-      mu.amend.flag = any(c_across(ends_with(".flag")) == "TRUE")
+      mxu.amend.flag = any(c_across(starts_with("mxu")) == "TRUE")
     )
   
-  # Add table of flagged municipal specific use codes to 
-  unmatched.amend_tbl <- bind_rows(unmatched.amend_tbl, unmatched.amend)
+  # Allocate unmatched municipal specific use codes to categories for future amendment or hard coding.
+  # 1. Unmatched codes flagged to be allocated to a standard land use code.
+  unmatched.amend_tmp <- unmatched.amend |> filter(numTRUE > 0 & dls.dupes == FALSE | (numTRUE == 0 & mxu.amend.flag == TRUE))
+  # 2. Unmatched codes with an unknown standard use code allocation.
+  uk_tmp <- unmatched.amend |> filter(numTRUE == 0 & mxu.amend.flag == FALSE & dls.dupes == FALSE)
+  # 3. Unmatched use codes belonging to a DLS non-specific standard code.
+  dls.dupes_tmp <- unmatched.amend |> filter(dls.dupes == TRUE)
+  
+  # Appending each set of unmatched code data to categorized table
+  # Add table of flagged municipal specific use codes to
+  unmatched.amend_tbl <- bind_rows(unmatched.amend_tbl, unmatched.amend_tmp)
+  # Add to full table of unknown municipal specific use codes.
+  unmatched.uk_tbl <- bind_rows(unmatched.uk_tbl, uk_tmp)
+  # Add to full table of DLS duplicate municipal specific use codes.
+  dls.dupes_tbl <- bind_rows(dls.dupes_tbl, dls.dupes_tmp)
   
   # QA Analysis of unmatched land use codes
   # Create null QA table
   flag.QA <- NULL
-  # Create QA Table column names
-  flag.QA.cols <- c(
-    "Unmatched.Rows",
-    "Unmatched.Rows_pct",
-    "Unmatched.Rows.Fixed",
-    "Unmatched.Rows.Fixed_pct",
-    "Matched_pct",
-    "OD_UC_Category"
-  )
   
   # Print the percentage of unmatched mixed use codes.
   print(nrow(unmatched))
   a <- nrow(unmatched)
-  print(paste(1 - (nrow(unmatched) / nrow(comp)), "of unique ",i," can be matched to a standard land use codes."))
+  print(paste(
+    1 - (nrow(unmatched) / nrow(comp)),
+    "of unique ",
+    i,
+    " can be matched to a standard land use codes."
+  ))
   b <- 1 - (nrow(unmatched) / nrow(comp))
   
   # Filter for codes that have been flagged via the text analysis script.
-  unmatched.fixed <- unmatched.amend |> filter(mu.amend.flag == TRUE) |>  filter(su.amend.flag == TRUE)
-  print(paste(nrow(unmatched.fixed),"out of",nrow(unmatched),"unmatched land use codes were flagged to be amended to a standard land use code." ))
-  c <- nrow(unmatched.fixed)
-  print(nrow(unmatched.fixed)/nrow(unmatched))
-  d <- nrow(unmatched.fixed)/nrow(unmatched)
-
-  print(paste(1 - (nrow(unmatched) - nrow(unmatched.fixed)) / nrow(comp), "of unique municipal use codes from one digit category ",i," can be matched to a standard land use code after text matching is administered."))
-  e <- 1 - (nrow(unmatched) - nrow(unmatched.fixed)) / nrow(comp)
+  print(
+    paste(
+      nrow(unmatched.amend_tmp),
+      "out of",
+      nrow(unmatched),
+      "unmatched land use codes were flagged to be amended to a standard land use code."
+    )
+  )
+  c <- nrow(unmatched.amend_tmp)
+  print(nrow(unmatched.amend_tmp) / nrow(unmatched))
+  d <- nrow(unmatched.amend_tmp) / nrow(unmatched)
+  
+  print(
+    paste(
+      1 - (nrow(unmatched) - nrow(unmatched.amend_tmp)) / nrow(comp),
+      "of unique municipal use codes from one digit category ",
+      i,
+      " can be matched to a standard land use code after text matching is administered."
+    )
+  )
+  e <- 1 - (nrow(unmatched) - nrow(unmatched.amend_tmp)) / nrow(comp)
   
   # Fill in QA Table
   flag.QA <- bind_cols(a, b, c, d, e)
@@ -1262,7 +1291,7 @@ for (i in od_uc.list) {
   # Calculate percentage point improvement in standard code matching after text analysis flagging.
   flag.QA <- flag.QA |>
     mutate(
-      improvement = Matched_pct - Unmatched.Rows_pct,
+      improvement = Matched_pct - Matched.Rows_pct,
       od_uc = i
     )
   
@@ -1270,138 +1299,12 @@ for (i in od_uc.list) {
   flag.QA_tbl <- bind_rows(flag.QA_tbl, flag.QA)
   
   # Remove various dataframes and lists used in each loop iteration.
-  rm(x, y, comp, unmatched, flag.df, unmatched.amedn, flag.QA, a, b, c, d, e)
+  rm(x,y, comp,unmatched, flag.df,unmatched.amend,unmatched.amend_tmp,uk_tmp,dls.dupes_tmp,flag.QA,a,b,c,d,e)
   
 }
 
 # Write fill flagging diagnostic table to 
-write.csv(flag.QA, here(paste0("02_Data/Logs/Unmatched.Diagnostics_.",q,"_",y,".csv")), row.names = FALSE)
-
-
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Pull out the Residential use codes from the Muni and Standard Use Code lists
-x <- od_muni.uc$`1` |> select(xwalk_uc, MUNI.USE_CODE, MUNI.USE_DESC, muni_name)
-y <- od_std.uc$`1` |> select(xwalk_uc, STD.USE_CODE, STD.USE_DESC)
-
-# Join Municipal Use Codes to Standard Use Codes by Three-digit Use Code ID.
-# Indicate where Municipal and Standard Use Codes do not join.
-comp <- full_join(x, y, by = c("xwalk_uc")) |> 
-  mutate(
-    STD.USE_CODE = replace_na(STD.USE_CODE, "UNDEFINED"),
-    STD.USE_DESC = replace_na(STD.USE_DESC, "UNDEFINED")
-  ) |> distinct(MUNI.USE_CODE, muni_name, .keep_all = TRUE) 
-
-
-# Filter for unmatched use codes and create diagnostic variables.
-
-# Assign three digit use code flags based on unique text identification
-# Filter for unmatched use codes
-unmatched <- comp |> filter(STD.USE_CODE == "UNDEFINED") |> mutate(od_uc = "1")
-
-# Create empty dataframe for TRUE/FALSE flags for each three digit code
-flag.df <- NULL
-
-# Iterate compare MUNI.USE_DESC to each three digit unique term lexicon to determine if a term exists. Flag TRUE for if the term exists in the municipal-specific use decsription, FALSE if it does not.
-for (i in td_uc.list){
-  flag.df <- bind_cols(flag.df, str_detect(unmatched$MUNI.USE_DESC, regex(paste(td.std.desc_lexicon_unique[[i]], collapse = "|"), ignore_case = T)))
-}
-
-# Set column names to the names
-colnames(flag.df) <- paste0("flag.", td_uc.list)
-
-# Bind flag.df to dataframe of unmatched use codes
-unmatched.amend <- bind_cols(unmatched, flag.df) |> 
-  rowwise() |> 
-  mutate(
-    # Calculate the number of times each municipally-specific code is flagged via the text analysis.
-    numTRUE = sum(c_across(starts_with("flag.")) == "TRUE", na.rm = TRUE)
-  ) |> 
-  mutate(
-    # Flag municipally-specific use codes for mixed-use terms.
-    mu.flag = str_detect(MUNI.USE_DESC, regex(paste(mu.strings, collapse = "|"), ignore_case = T)),
-    # Flag for special characters and conjunctions in the municipal use description which indicate potentially being mixed use.
-    td.mu.flag = str_detect(MUNI.USE_DESC, regex(paste(td.mu.strings, collapse = "|"), ignore_case = T)),
-    # 
-    uk = str_detect(MUNI.USE_DESC, regex(paste(td.mu.other.strings, collapse = "|"), ignore_case = T)),
-    #
-    dls.dupes = str_detect(MUNI.USE_DESC, regex(paste(dls.duplicative.terms, collapse = "|"), ignore_case = T)),
-    # Boolean indicating, generally, if a flag is present and the use code can be amended via the text analysis.
-    su.amend.flag = any(c_across(starts_with("flag.")) == "TRUE"),
-        # Boolean indicating, generally, if a flag is present and the use code can be amended via the text analysis.
-    mu.amend.flag = any(c_across(ends_with(".flag")) == "TRUE")
-  )
-
-uk.k <- unmatched.amend |> filter(mu.amend.flag == FALSE & su.amend.flag == FALSE & uk == FALSE)
-# 
-uk.uk <- unmatched.amend |> filter(mu.amend.flag == FALSE & su.amend.flag == FALSE & uk == TRUE)
-#
-dls.dupes <- unmatched.amend |> filter(dls.dupes == TRUE)
-
-#
-test0 <- unmatched.amend |> filter(numTRUE == 0) |> filter(mu.amend.flag == FALSE)|>  filter(su.amend.flag == FALSE)
-test1 <- unmatched.amend |> filter(numTRUE == 1) |> filter(mu.amend.flag == FALSE) |>  filter(su.amend.flag == FALSE)
-test2 <- unmatched.amend |> filter(numTRUE == 2) |> filter(mu.amend.flag == FALSE)
-test3 <- unmatched.amend |> filter(numTRUE == 3) |> filter(mu.amend.flag == FALSE)
-test4 <- unmatched.amend |> filter(numTRUE == 4) |> filter(mu.amend.flag == FALSE)|>  filter(su.amend.flag == FALSE)
-test5 <- unmatched.amend |> filter(numTRUE == 5) |> filter(mu.amend.flag == FALSE)|>  filter(su.amend.flag == FALSE)
-test6 <- unmatched.amend |> filter(numTRUE == 6) |> filter(mu.amend.flag == FALSE)|>  filter(su.amend.flag == FALSE)
-test7 <- unmatched.amend |> filter(numTRUE == 7) |> filter(mu.amend.flag == FALSE)|>  filter(su.amend.flag == FALSE)
-test8 <- unmatched.amend |> filter(numTRUE == 8) |> filter(mu.amend.flag == FALSE)|>  filter(su.amend.flag == FALSE)
-
-# test <- unmatched.amend |> filter(numTRUE == 8) |> select_if(~any(. == TRUE))
-# 
-# print(sapply(X = test, FUN =  function(x) sum(isTRUE(x))))
-
-
-# Decision making for whether to accept and amend the use code or to prusue further screening.
-# If Primary Code is TRUE and Secondary Code is FALSE and numTRUE is 1 = Primary Code
-
-# If Primary Code is TRUE and Secondary Code is FALSE and numTRUE is > 1 = 
-
-# If Primary Code is FALSE and Secondary Code is TRUE = Secondary Code
-
-# QA Analysis of unmatched land use codes
-# Create null QA table
-flag.QA <- NULL
-# Create QA Table column names
-flag.QA.cols <- c("Unmatched.Rows", "Unmatched.Rows_pct", "Unmatched.Rows.Fixed", "Unmatched.Rows.Fixed_pct", "Matched_pct", "OD_UC_Category")
-
-# Print the percentage of unmatched mixed use codes.
-print(nrow(unmatched))
-a <- nrow(unmatched)
-print(1-(nrow(unmatched)/nrow(comp)))
-b <- 1-(nrow(unmatched)/nrow(comp))
-# 83% of unique municipal Mixed Use Codes can be matched to a standard land use code
-
-# Filter for codes that have been flagged via the text analysis script.
-unmatched.fixed <- unmatched.amend |> filter(mu.amend.flag == TRUE)|>  filter(su.amend.flag == TRUE)
-
-print(nrow(unmatched.fixed))
-c <- nrow(unmatched.fixed)
-print(nrow(unmatched.fixed)/nrow(unmatched))
-d <- nrow(unmatched.fixed)/nrow(unmatched)
-#  144 of 191 unmatched land use codes were flagged to be single use residential (75 percent of unmatched codes.).
-print(1-(nrow(unmatched) - nrow(unmatched.fixed))/nrow(comp))
-e <- 1-(nrow(unmatched) - nrow(unmatched.fixed))/nrow(comp)
-# 96% of unique municipal Residential Use Codes can be matched to a standard land use code after residential-specific and non-residential text matching administered. An improvement of 13 percentage points in matching performance.
-
-f <- unique(unmatched.amend$od_uc)
-
-# Fill in QA Table
-flag.QA <- bind_cols(a, b, c, d, e, f)
-# Assign column names
-colnames(flag.QA) <- flag.QA.cols
-# Calculate percentage point improvement in standard code matching after text analysis flagging.
-flag.QA <- flag.QA |>
-  mutate(
-    improvement = Matched_pct - Unmatched.Rows_pct
-  )
-
-write.csv(
-  flag.QA,
-  here(paste0("02_Data/Logs/.",q,"_",y,".csv")),
-  row.names = FALSE
-)
+write.csv(flag.QA_tbl, here(paste0("02_Data/Logs/Unmatched.Diagnostics_.",q,"_",yr,".csv")), row.names = FALSE)
 
 #
 amended.uc <- unmatched |>
