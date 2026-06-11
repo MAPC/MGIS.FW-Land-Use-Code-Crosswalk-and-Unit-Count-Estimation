@@ -1152,95 +1152,124 @@ write.csv(
 
 # 4.2 Residential
 ```{r}
-# for (i in od_uc.list) {
-#   x <- od_muni.uc[[i]] |> select(xwalk_uc, MUNI.USE_CODE, MUNI.USE_DESC, muni_name)
-#   y <- od_std.uc[[i]] |> select(xwalk_uc, STD.USE_CODE, STD.USE_DESC)
-#   
-#   # Join Standard Use Codes to Municipal Specific Land Use codes on
-#   comp <- full_join(x, y, by = c("xwalk_uc")) |>
-#     mutate(
-#       STD.USE_CODE = replace_na(STD.USE_CODE, "UNDEFINED"),
-#       STD.USE_DESC = replace_na(STD.USE_DESC, "UNDEFINED")
-#     ) |> distinct(MUNI.USE_CODE, muni_name, .keep_all = TRUE)
-#   
-#   # Filter for unmatched use codes and create diagnostic variables.
-#   unmatched <- comp |> filter(STD.USE_CODE == "UNDEFINED")
-#   
-#   # Assign three digit use code flags based on unique text identification
-#   # Filter for unmatched use codes
-#   # Create empty dataframe for TRUE/FALSE flags for each three digit code
-#   flag.df <- NULL
-#   
-#   # Iterate compare MUNI.USE_DESC to each three digit unique term lexicon to determine if a term exists. Flag TRUE for if the term exists in the municipal-specific use decsription, FALSE if it does not.
-#   for (j in td_uc.list) {
-#     flag.df <- bind_cols(flag.df, str_detect(unmatched$MUNI.USE_DESC, regex(
-#       paste(td.std.desc_lexicon_unique[[j]], collapse = "|"),
-#       ignore_case = T
-#     )))
-#   }
-#   
-#   # Set column names to the names
-#   colnames(flag.df) <- paste0("flag.", td_uc.list)
-#   
-#   # Bind flag.df to dataframe of unmatched use codes
-#   unmatched.amend <- bind_cols(unmatched, flag.df) |>
-#     rowwise() |>
-#     mutate(
-#       # Calculate the number of times each municipally-specific code is flagged via the text analysis.
-#       numTRUE = sum(c_across(starts_with("flag.")) == "TRUE", na.rm = TRUE)
-#     ) |>
-#     mutate(
-#       # Flag municipally-specific use codes for mixed-use terms.
-#       mu.flag = str_detect(MUNI.USE_DESC, regex(
-#         paste(mu.strings, collapse = "|"), ignore_case = T
-#       )),
-#       # Flag for special characters and conjunctions in the municipal use description which indicate potentially being mixed use.
-#       td.mu.flag = str_detect(MUNI.USE_DESC, regex(
-#         paste(td.mu.strings, collapse = "|"), ignore_case = T
-#       )),
-#       # Boolean indicating, generally, if a flag is present and the use code can be amended via the text analysis.
-#       amend.flag = any(c_across(starts_with("flag.")) == "TRUE")
-#     )
-#   
-#   # QA Analysis of unmatched land use codes
-#   # Create null QA table
-#   flag.QA <- NULL
-#   # Create QA Table column names
-#   flag.QA.cols <- c(
-#     "Unmatched.Rows",
-#     "Unmatched.Rows_pct",
-#     "Unmatched.Rows.Fixed",
-#     "Unmatched.Rows.Fixed_pct",
-#     "Matched_pct"
-#   )
-#   
-#   # Print the percentage of unmatched mixed use codes.
-#   print(nrow(unmatched))
-#   a <- nrow(unmatched)
-#   print(1 - (nrow(unmatched) / nrow(comp)))
-#   b <- 1 - (nrow(unmatched) / nrow(comp))
-#   # 83% of unique municipal Mixed Use Codes can be matched to a standard land use code
-#   
-#   # Filter for codes that have been flagged via the text analysis script.
-#   unmatched.fixed <- unmatched.amend |> filter(amend.flag == TRUE)
-#   
-#   print(nrow(unmatched.fixed))
-#   c <- nrow(unmatched.fixed)
-#   print(nrow(unmatched.fixed) / nrow(unmatched))
-#   d <- nrow(unmatched.fixed) / nrow(unmatched)
-#   #  144 of 191 unmatched land use codes were flagged to be single use residential (75 percent of unmatched codes.).
-#   print(1 - (nrow(unmatched) - nrow(unmatched.fixed)) / nrow(comp))
-#   e <- 1 - (nrow(unmatched) - nrow(unmatched.fixed)) / nrow(comp)
-#   # 96% of unique municipal Residential Use Codes can be matched to a standard land use code after residential-specific and non-residential text matching administered. An improvement of 13 percentage points in matching performance.
-#   
-#   # Fill in QA Table
-#   flag.QA <- bind_cols(a, b, c, d, e)
-#   # Assign column names
-#   colnames(flag.QA) <- flag.QA.cols
-#   # Calculate percentage point improvement in standard code matching after text analysis flagging.
-#   flag.QA <- flag.QA |>
-#     mutate(improvement = Matched_pct - Unmatched.Rows_pct)
-# }
+
+# Create
+unmatched.amend_tbl <- NULL
+# Create full flagging QA table dataframe
+flag.QA_tbl <- NULL
+# Create QA Table column names
+flag.QA.cols <- c("Unmatched.Rows","Matched.Rows_pct","Unmatched.Rows.Fixed","Unmatched.Rows.Fixed_pct","Matched_pct")
+
+for (i in od_uc.list) {
+  x <- od_muni.uc[[i]] |> select(xwalk_uc, MUNI.USE_CODE, MUNI.USE_DESC, muni_name)
+  y <- od_std.uc[[i]] |> select(xwalk_uc, STD.USE_CODE, STD.USE_DESC)
+  
+  # Join Standard Use Codes to Municipal Specific Land Use codes on
+  comp <- full_join(x, y, by = c("xwalk_uc")) |>
+    mutate(
+      STD.USE_CODE = replace_na(STD.USE_CODE, "UNDEFINED"),
+      STD.USE_DESC = replace_na(STD.USE_DESC, "UNDEFINED")
+    ) |> distinct(MUNI.USE_CODE, muni_name, .keep_all = TRUE)
+  
+  # Filter for unmatched use codes and create diagnostic variables.
+  unmatched <- comp |> filter(STD.USE_CODE == "UNDEFINED") |> mutate(od_uc = i)
+  
+  # Assign three digit use code flags based on unique text identification
+  # Filter for unmatched use codes
+  # Create empty dataframe for TRUE/FALSE flags for each three digit code
+  flag.df <- NULL
+  
+  # Iterate compare MUNI.USE_DESC to each three digit unique term lexicon to determine if a term exists. Flag TRUE for if the term exists in the municipal-specific use decsription, FALSE if it does not.
+  for (j in td_uc.list) {
+    flag.df <- bind_cols(flag.df, str_detect(unmatched$MUNI.USE_DESC, regex(
+      paste(td.std.desc_lexicon_unique[[j]], collapse = "|"),
+      ignore_case = T
+    )))
+  }
+  
+  # Set column names to the names
+  colnames(flag.df) <- paste0("flag.", td_uc.list)
+  
+  # Bind flag.df to dataframe of unmatched use codes
+  unmatched.amend <- bind_cols(unmatched, flag.df) |>
+    rowwise() |>
+    mutate(
+      # Calculate the number of times each municipally-specific code is flagged via the text analysis.
+      numTRUE = sum(c_across(starts_with("flag.")) == "TRUE", na.rm = TRUE)
+    ) |>
+    mutate(
+      # Flag municipally-specific use codes for mixed-use terms.
+      mu.flag = str_detect(MUNI.USE_DESC, regex(
+        paste(mu.strings, collapse = "|"), ignore_case = T
+      )),
+      # Flag for special characters and conjunctions in the municipal use description which indicate potentially being mixed use.
+      td.mu.flag = str_detect(MUNI.USE_DESC, regex(
+        paste(td.mu.strings, collapse = "|"), ignore_case = T
+      )),
+      uk = str_detect(MUNI.USE_DESC, regex(
+        paste(td.mu.other.strings, collapse = "|"), ignore_case = T
+      )),
+      # Boolean indicating, generally, if a flag is present and the use code can be amended via the text analysis.
+      su.amend.flag = any(c_across(starts_with("flag.")) == "TRUE"),
+      # Boolean indicating, generally, if a flag is present and the use code can be amended via the text analysis.
+      mu.amend.flag = any(c_across(ends_with(".flag")) == "TRUE")
+    )
+  
+  # Add table of flagged municipal specific use codes to 
+  unmatched.amend_tbl <- bind_rows(unmatched.amend_tbl, unmatched.amend)
+  
+  # QA Analysis of unmatched land use codes
+  # Create null QA table
+  flag.QA <- NULL
+  # Create QA Table column names
+  flag.QA.cols <- c(
+    "Unmatched.Rows",
+    "Unmatched.Rows_pct",
+    "Unmatched.Rows.Fixed",
+    "Unmatched.Rows.Fixed_pct",
+    "Matched_pct",
+    "OD_UC_Category"
+  )
+  
+  # Print the percentage of unmatched mixed use codes.
+  print(nrow(unmatched))
+  a <- nrow(unmatched)
+  print(1 - (nrow(unmatched) / nrow(comp)))
+  b <- 1 - (nrow(unmatched) / nrow(comp))
+  # 83% of unique municipal Mixed Use Codes can be matched to a standard land use code
+  
+  # Filter for codes that have been flagged via the text analysis script.
+  unmatched.fixed <- unmatched.amend |> filter(mu.amend.flag == TRUE) |>  filter(su.amend.flag == TRUE)
+  
+  print(nrow(unmatched.fixed))
+  c <- nrow(unmatched.fixed)
+  print(nrow(unmatched.fixed) / nrow(unmatched))
+  d <- nrow(unmatched.fixed) / nrow(unmatched)
+  #  144 of 191 unmatched land use codes were flagged to be single use residential (75 percent of unmatched codes.).
+  print(1 - (nrow(unmatched) - nrow(unmatched.fixed)) / nrow(comp))
+  e <- 1 - (nrow(unmatched) - nrow(unmatched.fixed)) / nrow(comp)
+  # 96% of unique municipal Residential Use Codes can be matched to a standard land use code after residential-specific and non-residential text matching administered. An improvement of 13 percentage points in matching performance.
+  
+  # Fill in QA Table
+  flag.QA <- bind_cols(a, b, c, d, e)
+  # Assign column names
+  colnames(flag.QA) <- flag.QA.cols
+  # Calculate percentage point improvement in standard code matching after text analysis flagging.
+  flag.QA <- flag.QA |>
+    mutate(
+      improvement = Matched_pct - Unmatched.Rows_pct,
+      od_uc = i
+    )
+  
+  # Add flagging diagnostic table for one digit use code i to full diagnostic table.
+  flag.QA_tbl <- bind_rows(flag.QA_tbl, flag.QA)
+  
+  # Remove various dataframes and lists used in each loop iteration.
+  rm(x, y, comp, unmatched, flag.df, unmatched.amedn, flag.QA, a, b, c, d, e)
+}
+
+# Write fill flagging diagnostic table to 
+write.csv(flag.QA, here(paste0("02_Data/Logs/Unmatched.Diagnostics_.",q,"_",y,".csv")), row.names = FALSE)
 
 # Pull out the Residential use codes from the Muni and Standard Use Code lists
 x <- od_muni.uc$`1` |> select(xwalk_uc, MUNI.USE_CODE, MUNI.USE_DESC, muni_name)
