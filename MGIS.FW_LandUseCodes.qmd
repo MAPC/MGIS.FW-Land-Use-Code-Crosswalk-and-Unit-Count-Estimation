@@ -1310,19 +1310,33 @@ for (i in od_uc.list) {
 }
 
 # Write fill flagging diagnostic table to 
-write.csv(flag.QA_tbl, here(paste0("02_Data/Logs/Unmatched.Diagnostics_.",q,"_",yr,".csv")), row.names = FALSE)
+write.csv(flag.QA_tbl, here(paste0("02_Data/Logs/Unmatched.Diagnostics_SU_.",q,"_",yr,".csv")), row.names = FALSE)
 
 # Write the full matched table.
-write.csv(flag.QA_tbl, here(paste0("02_Data/Logs/Unmatched.Diagnostics_.",q,"_",yr,".csv")), row.names = FALSE)
+write.csv(flag.QA_tbl, here(paste0("02_Data/Processed/Matched_tbl_SU_.",q,"_",yr,".csv")), row.names = FALSE)
 
 # Write the full flagged unmatched table.
-write.csv(flag.QA_tbl, here(paste0("02_Data/Logs/Unmatched.Diagnostics_.",q,"_",yr,".csv")), row.names = FALSE)
+write.csv(flag.QA_tbl, here(paste0("02_Data/Processed/Unmatched_tbl_SU_.",q,"_",yr,".csv")), row.names = FALSE)
 
 # Write the full unknown table.
-write.csv(flag.QA_tbl, here(paste0("02_Data/Logs/Unmatched.Diagnostics_.",q,"_",yr,".csv")), row.names = FALSE)
+write.csv(flag.QA_tbl, here(paste0("02_Data/Processed/Unknown_tbl_SU_.",q,"_",yr,".csv")), row.names = FALSE)
 
 # Write the full DLS Duplicates table.
-write.csv(flag.QA_tbl, here(paste0("02_Data/Logs/Unmatched.Diagnostics_.",q,"_",yr,".csv")), row.names = FALSE)
+write.csv(flag.QA_tbl, here(paste0("02_Data/Processed/DLS.Duplicates_tbl_SU_.",q,"_",yr,".csv")), row.names = FALSE)
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Standard Use Code Assignment Process
+# Create a list 
+numTRUE_list <- unmatched.amend_tbl |> distinct(numTRUE) |> pull()
+
+numTRUE_tbl <- unmatched.amend_tbl |> 
+  group_by(numTRUE, mxu.amend.flag) |> 
+  summarise(
+    n= n()
+  ) |> 
+  ungroup()
+
+numTRUE_2 <- unmatched.amend_tbl |> filter(numTRUE == 2)
 
 #
 amended.uc <- unmatched |>
