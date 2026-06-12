@@ -1156,6 +1156,8 @@ write.csv(
 
 # 4.2 Non Mixed-Use
 ```{r}
+# Create a table of land use codes which match based on the initial three digit crosswalk.
+matched_tbl <- NULL
 # Create a table of land use codes flagged for stanard use code assignment.
 unmatched.amend_tbl <- NULL
 # Create a table of "known" unknown land use codes for hardcoding/human review.
@@ -1180,6 +1182,10 @@ for (i in od_uc.list) {
       STD.USE_CODE = replace_na(STD.USE_CODE, "UNDEFINED"),
       STD.USE_DESC = replace_na(STD.USE_DESC, "UNDEFINED")
     ) |> distinct(MUNI.USE_CODE, muni_name, .keep_all = TRUE)
+  
+  # Filter for matched use codes.
+  matched <- comp |> filter(STD.USE_CODE != "UNDEFINED") |> mutate(od_uc = i)
+  matched_tbl <- bind_rows(matched_tbl, matched)
   
   # Filter for unmatched use codes and create diagnostic variables.
   unmatched <- comp |> filter(STD.USE_CODE == "UNDEFINED") |> mutate(od_uc = i)
@@ -1299,11 +1305,23 @@ for (i in od_uc.list) {
   flag.QA_tbl <- bind_rows(flag.QA_tbl, flag.QA)
   
   # Remove various dataframes and lists used in each loop iteration.
-  rm(x,y, comp,unmatched, flag.df,unmatched.amend,unmatched.amend_tmp,uk_tmp,dls.dupes_tmp,flag.QA,a,b,c,d,e)
+  rm(x,y, comp,matched,unmatched, flag.df,unmatched.amend,unmatched.amend_tmp,uk_tmp,dls.dupes_tmp,flag.QA,a,b,c,d,e)
   
 }
 
 # Write fill flagging diagnostic table to 
+write.csv(flag.QA_tbl, here(paste0("02_Data/Logs/Unmatched.Diagnostics_.",q,"_",yr,".csv")), row.names = FALSE)
+
+# Write the full matched table.
+write.csv(flag.QA_tbl, here(paste0("02_Data/Logs/Unmatched.Diagnostics_.",q,"_",yr,".csv")), row.names = FALSE)
+
+# Write the full flagged unmatched table.
+write.csv(flag.QA_tbl, here(paste0("02_Data/Logs/Unmatched.Diagnostics_.",q,"_",yr,".csv")), row.names = FALSE)
+
+# Write the full unknown table.
+write.csv(flag.QA_tbl, here(paste0("02_Data/Logs/Unmatched.Diagnostics_.",q,"_",yr,".csv")), row.names = FALSE)
+
+# Write the full DLS Duplicates table.
 write.csv(flag.QA_tbl, here(paste0("02_Data/Logs/Unmatched.Diagnostics_.",q,"_",yr,".csv")), row.names = FALSE)
 
 #
