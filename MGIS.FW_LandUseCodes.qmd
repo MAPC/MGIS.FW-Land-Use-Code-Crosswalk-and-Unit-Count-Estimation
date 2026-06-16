@@ -1326,8 +1326,37 @@ write.csv(flag.QA_tbl, here(paste0("02_Data/Processed/DLS.Duplicates_tbl_SU_.",q
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Standard Use Code Assignment Process
-# Create a list 
+# Create a list of numTRUE values
 numTRUE_list <- unmatched.amend_tbl |> distinct(numTRUE) |> pull()
+
+# Separate by Single and Mixed Use
+unmatched.amend_su <- unmatched.amend_tbl |> filter(mxu.amend.flag == FALSE)
+
+test <- unmatched.amend_tbl |> select_if(~any(. == TRUE)) |> names() |> str_remove("flag.")
+
+unmatched.amend_mxu <- unmatched.amend_tbl |> filter(mxu.amend.flag == TRUE)
+
+# Single Use
+unmatched.amend_su.fix <- unmatched.amend_su |> 
+  mutate(
+    MUNI.USE_CODE.fix = case_when(
+      numTRUE == 1 
+    )
+  )
+
+# Mixed Use Amendment
+
+# Loop
+for (i in od_uc.list) {
+  if(mxu.amend.flag == FALSE){ # Single Use Assignment
+    
+  } else{ # Mixed-Use Assignment
+    
+  }
+  
+}
+
+#
 
 numTRUE_tbl <- unmatched.amend_tbl |> 
   group_by(numTRUE, mxu.amend.flag) |> 
@@ -1336,7 +1365,34 @@ numTRUE_tbl <- unmatched.amend_tbl |>
   ) |> 
   ungroup()
 
-numTRUE_2 <- unmatched.amend_tbl |> filter(numTRUE == 2)
+numTRUE_0 <- unmatched.amend_tbl |> filter(numTRUE == 0)
+numTRUE_1 <- unmatched.amend_tbl |> filter(numTRUE == 1)
+numTRUE_2 <- unmatched.amend_tbl |> filter(numTRUE == 2 & mxu.amend.flag == FALSE)
+numTRUE_3 <- unmatched.amend_tbl |> filter(numTRUE == 3 & MUNI.USE_DESC == "Office" & muni_name == "Rockland")
+numTRUE_4 <- unmatched.amend_tbl |> filter(numTRUE == 4)
+numTRUE_5 <- unmatched.amend_tbl |> filter(numTRUE == 5)
+numTRUE_6 <- unmatched.amend_tbl |> filter(numTRUE == 6)
+numTRUE_7 <- unmatched.amend_tbl |> filter(numTRUE == 7)
+numTRUE_8 <- unmatched.amend_tbl |> filter(numTRUE == 8)
+numTRUE_14 <- unmatched.amend_tbl |> filter(numTRUE == 14)
+
+# Two axes - Mixed Use v Single Use
+# Mixed Use - 84 Codes
+# Single Use - 709 Codes
+
+# Mixed Use
+# mxu.amend.flag == TRUE
+# Clear Primary [text], some [text] construction
+# - Use this text to allocate the primary and seconodary uses. 
+# Unclear Primary [text], some [text] construction
+# - 
+
+# Single Use
+# numTRUE == 1 
+# - Use the three digit use code flagged.
+# numTRUE > 1
+# - if od_uc matches first digit of first flagged land use code group
+# - if oc_uc does not match first digit of first flagged land use code group
 
 #
 amended.uc <- unmatched |>
