@@ -66,15 +66,17 @@ print(str(assessors))
 # 1.2 Load Complementary Datasets
 
 ```{r}
-# # Load CAMA System and Maintainer file from MassGIS
-# # File download from 1/19/2026
-# cama <- read.csv(paste0(local_root, "/Complementary Data/Municipal_Parcel_Status_for_Dashboard_(Feature_Service)_Layer.csv"))
+# Load CAMA System and Maintainer file from MassGIS
+# File download from 1/19/2026
+cama <- read.csv(here("02_Data/Raw/Land Use Codes/Municipal_Parcel_Status_for_Dashboard_(Feature_Service)_Layer.csv"))
+
+# Load MAPC Data Keys for municipalities
+full.keys <- mapcdatakeys::all_muni_data_keys |> select(muni_id, rpa_acr, cmtyp08)
 
 ```
 
-# 2.0 Evaluating MassGIS Land-Use Code File
-
-# 2.1 Create a standard land use code data frame + QC
+# 2.0 Cleaning MassGIS Land-Use Code File
+# 2.1 Create a standard land use code data frame
 
 ```{r}
 # Check Use Code Crosswalk data types
@@ -157,16 +159,27 @@ print(length(unique(std_uc$xwalk_uc))) # Should be equal to 304 (296 + deprecate
 # 9 - Tax Exempt (72)
 ```
 
-# 3.0 Municipal Land Use Codes Analysis and QC
-
-# 3.1 Create a dataframe of municipal specific land use codes + eval \# of munis in the df
-
+# 2.2 Create a dataframe of municipal specific land use codes
 ```{r}
+# List of strings common to undefined Mixed Use use codes which indicate whether or not they are ACTUALLY Mixed Use, as opposed to misclassified single use.
+# Primary Mixed Use Strings
+mu.strings <- c("Mixed", "mixed", "MIXED", "mixedj", "mix", "Mix", "MIX", "MXD", "mxd", "MU ", "Mu ", "mu ", "primary", "Primary", "primarily", "Primarily","PR ", "Pr ", "pr ",  "PRI ", "pri ", "Pri ", "PRI- ", "pri- ", "Pri- ", "-use", "-Use", "-USE", " use", " USE", " Use", "predom", "Predom", "PREDOM")
+
+# Secondary Mixed Use terms/indicators
+td.mu.strings <- c("//,", "///", " and", " AND", " And", " with", " With", " WITH", " on", " On", " ON")
+
 # Create Municipal Use Code dataframe
 muni_uc <- use_codes |> 
   filter(TOWN_ID != 0) |> 
   mutate(
-    xwalk_uc = str_sub(USE_CODE, start = 1, end = 3)
+    # Create three-digit x_walk
+    xwalk_uc = str_sub(USE_CODE, start = 1, end = 3),
+    # Mixed Use Flag
+    mu.flag = str_detect(MUNI.USE_DESC, paste(mu.strings, collapse = "|")),
+    # Flag for a leading zero
+    lead_z = str_starts(MUNI.USE_CODE, "0"),
+    # Flag for a trailing zero
+    trail_z = str_ends(MUNI.USE_CODE, "0")
   )|> 
   dplyr::rename(
     MUNI.USE_CODE = USE_CODE,
@@ -174,11 +187,28 @@ muni_uc <- use_codes |>
   )
 ```
 
+# 3.0 Municipal Land Use Codes Analysis and QC
+# 3.1 With Mixed Use Codes
+```{r}
+# Filter out Leading and Trailing Zeros
+
+# No filter for leading and trailing zeros
+
+```
+
+# 3.2 Without Mixed Use Codes
+
+```{r}
+# Filter out Leading and Trailing Zeros
+
+# No filter for leading and trailing zeros
+
+```
+
 # 3.1 Sidebar - Analysis of Non-Standard Land Use Codes for LUZI Task One
 
 ```{r}
-# Load MAPC Data Keys for municipalities
-full.keys <- mapcdatakeys::all_muni_data_keys |> select(muni_id, rpa_acr, cmtyp08)
+
 
 # Create a list of standard use codes MassGIS details in the LUT file with a Town ID of "0"
 test <- std_uc |> select(STD.USE_CODE) |> pull()
