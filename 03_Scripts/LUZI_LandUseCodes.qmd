@@ -51,16 +51,16 @@ layers <- st_layers(dsn = here("02_Data/Raw/MGIS Property Tax Parcels/MGIS Q1 20
 print(layers$name)
 
 # Read in the assessors records from the geodatabase
-assessors <- st_read(dsn = "02_Data/Raw/MGIS Property Tax Parcels/MGIS Q1 2026//MassGIS_L3_Parcels.gdb", layer = layers$name[3])
+assessors <- st_read(dsn = here("02_Data/Raw/MGIS Property Tax Parcels/MGIS Q1 2026/MassGIS_L3_Parcels.gdb"), layer = layers$name[3])
 
 # Read in the MassGIS Land Use Code Crosswalk
-use_codes <- st_read(dsn = "02_Data/Raw/MGIS Property Tax Parcels/MGIS Q1 2026//MassGIS_L3_Parcels.gdb", layer = layers$name[2]) |> left_join(keys, by = c("TOWN_ID" = "muni_id"))
+use_codes <- st_read(dsn = here("02_Data/Raw/MGIS Property Tax Parcels/MGIS Q1 2026/MassGIS_L3_Parcels.gdb"), layer = layers$name[2]) |> left_join(keys, by = c("TOWN_ID" = "muni_id"))
 
-print(sapply(X = assessors, FUN =  function(x) sum(is.na(x))))
+print(sapply(X = use_codes, FUN =  function(x) sum(is.na(x))))
 
-print(summary(assessors))
+print(summary(use_codes))
 
-print(str(assessors))
+print(str(use_codes))
 ```
 
 # 1.2 Load Complementary Datasets
@@ -105,6 +105,9 @@ std_uc <- use_codes |>
 print(length(unique(std_uc$od_uc))) # Should be equal to 10 (0-9)
 print(length(unique(std_uc$td_uc))) # Should be equal to 54
 print(length(unique(std_uc$xwalk_uc))) # Should be equal to 304 (296 + deprecated 901-908 codes)
+
+# Create a list of standard use codes MassGIS details in the LUT file with a Town ID of "0"
+std_uc_list <- std_uc |> select(STD.USE_CODE) |> pull()
 
 # Two-digit Use Codes not in the codebook
 # 00 - Unknown use
@@ -172,27 +175,200 @@ td.mu.strings <- c("//,", "///", " and", " AND", " And", " with", " With", " WIT
 muni_uc <- use_codes |> 
   filter(TOWN_ID != 0) |> 
   mutate(
+    # Clean whitespace out of the Muni Use Codes
+    USE_CODE = str_trim(USE_CODE, "both"),
     # Create three-digit x_walk
     xwalk_uc = str_sub(USE_CODE, start = 1, end = 3),
     # Mixed Use Flag
-    mu.flag = str_detect(MUNI.USE_DESC, paste(mu.strings, collapse = "|")),
+    mu.flag = str_detect(USE_DESC, paste(mu.strings, collapse = "|")),
     # Flag for a leading zero
-    lead_z = str_starts(MUNI.USE_CODE, "0"),
+    lead_z = str_starts(USE_CODE, "0"),
     # Flag for a trailing zero
-    trail_z = str_ends(MUNI.USE_CODE, "0")
+    trail_z = str_ends(USE_CODE, "0"),
+    # Counts the number of digits in each use code.
+    digits = str_length(USE_CODE),
+    # Boolean for presence of contextual extension
+    letters = str_detect(USE_CODE, "[:alpha:]")
   )|> 
   dplyr::rename(
     MUNI.USE_CODE = USE_CODE,
     MUNI.USE_DESC = USE_DESC
-  )
+  ) |>  
+  # Join Data Keys dataframe
+  left_join(full.keys, by = c("TOWN_ID" = "muni_id")) |> 
+  # Join CAMA Data frame from MassGIS
+  left_join(cama, by = c("TOWN_ID"))
+
+# Create Dataframe of Non-standard use codes from the muni list
+non_std <- muni_uc |> filter(!MUNI.USE_CODE %in% std_uc_list)
+
+print(nrow(non_std)/nrow(muni_uc))
+
 ```
 
 # 3.0 Municipal Land Use Codes Analysis and QC
 # 3.1 With Mixed Use Codes
 ```{r}
 # Filter out Leading and Trailing Zeros
+nonstd_w.mu_wo.ltz <- non_std |> 
+  filter(lead_z == FALSE & trail_z == FALSE)
+
+# Number of digits
+tbl.1_digits <- nonstd_w.mu_wo.ltz |> 
+  group_by(digits) |> 
+  summarise(
+    tot_uc = n()
+  ) |> 
+  ungroup() |> 
+  mutate(
+    pct_uc = round(tot_uc/sum(tot_uc), 4)*100
+  )
+
+# Municipality
+tbl.1_muni <- nonstd_w.mu_wo.ltz |> 
+  group_by(muni_name) |> 
+  summarise(
+    tot_uc = n()
+  ) |> 
+  ungroup() |> 
+  mutate(
+    pct_uc = round(tot_uc/sum(tot_uc), 4)*100
+  ) 
+
+# RPA
+tbl.1_rpa <- nonstd_w.mu_wo.ltz |> 
+  group_by(rpa_acr) |> 
+  summarise(
+    tot_uc = n()
+  ) |> 
+  ungroup() |> 
+  mutate(
+    pct_uc = round(tot_uc/sum(tot_uc), 4)*100
+  )
+
+# Community Type
+tbl.1_cmtyp08 <- nonstd_w.mu_wo.ltz |> 
+  group_by(cmtyp08) |> 
+  summarise(
+    tot_uc = n()
+  ) |> 
+  ungroup() |> 
+  mutate(
+    pct_uc = round(tot_uc/sum(tot_uc), 4)*100
+  )
+
+# CAMA System
+tbl.1_cama <- nonstd_w.mu_wo.ltz |> 
+  group_by(CAMA_SYS) |> 
+  summarise(
+    tot_uc = n()
+  ) |> 
+  ungroup() |> 
+  mutate(
+    pct_uc = round(tot_uc/sum(tot_uc), 4)*100
+  )
+
+# Maintainer
+tbl.1_maint <- nonstd_w.mu_wo.ltz |> 
+  group_by(PAR_MAINT_BY) |> 
+  summarise(
+    tot_uc = n()
+  ) |> 
+  ungroup() |> 
+  mutate(
+    pct_uc = round(tot_uc/sum(tot_uc), 4)*100
+  )
+
+# Contextualizing Non-numerics
+tbl.1_letters <- nonstd_w.mu_wo.ltz |> 
+  group_by(letters) |> 
+  summarise(
+    tot_uc = n()
+  ) |> 
+  ungroup() |> 
+  mutate(
+    pct_uc = round(tot_uc/sum(tot_uc), 4)*100
+  )
 
 # No filter for leading and trailing zeros
+nonstd_w.mu_w.ltz <- non_std
+
+# Number of digits
+tbl.2_digits <- nonstd_w.mu_w.ltz |> 
+  group_by(digits) |> 
+  summarise(
+    tot_uc = n()
+  ) |> 
+  ungroup() |> 
+  mutate(
+    pct_uc = round(tot_uc/sum(tot_uc), 4)*100
+  )
+
+# Municipality
+tbl.2_muni <- nonstd_w.mu_w.ltz |> 
+  group_by(muni_name) |> 
+  summarise(
+    tot_uc = n()
+  ) |> 
+  ungroup() |> 
+  mutate(
+    pct_uc = round(tot_uc/sum(tot_uc), 4)*100
+  ) 
+
+# RPA
+tbl.2_rpa <- nonstd_w.mu_w.ltz |> 
+  group_by(rpa_acr) |> 
+  summarise(
+    tot_uc = n()
+  ) |> 
+  ungroup() |> 
+  mutate(
+    pct_uc = round(tot_uc/sum(tot_uc), 4)*100
+  )
+
+# Community Type
+tbl.2_cmtyp08 <- nonstd_w.mu_w.ltz|> 
+  group_by(cmtyp08) |> 
+  summarise(
+    tot_uc = n()
+  ) |> 
+  ungroup() |> 
+  mutate(
+    pct_uc = round(tot_uc/sum(tot_uc), 4)*100
+  )
+
+# CAMA System
+tbl.2_cama <- nonstd_w.mu_w.ltz |> 
+  group_by(CAMA_SYS) |> 
+  summarise(
+    tot_uc = n()
+  ) |> 
+  ungroup() |> 
+  mutate(
+    pct_uc = round(tot_uc/sum(tot_uc), 4)*100
+  )
+
+# Maintainer
+tbl.2_maint <- nonstd_w.mu_w.ltz |> 
+  group_by(PAR_MAINT_BY) |> 
+  summarise(
+    tot_uc = n()
+  ) |> 
+  ungroup() |> 
+  mutate(
+    pct_uc = round(tot_uc/sum(tot_uc), 4)*100
+  )
+
+# Contextualizing Non-numerics
+tbl.2_letters <- nonstd_w.mu_w.ltz |> 
+  group_by(letters) |> 
+  summarise(
+    tot_uc = n()
+  ) |> 
+  ungroup() |> 
+  mutate(
+    pct_uc = round(tot_uc/sum(tot_uc), 4)*100
+  )
 
 ```
 
@@ -200,19 +376,171 @@ muni_uc <- use_codes |>
 
 ```{r}
 # Filter out Leading and Trailing Zeros
+nonstd_wo.mu_wo.ltz <- non_std |> 
+  filter(mu.flag == FALSE & lead_z == FALSE & trail_z == FALSE)
+
+# Number of digits
+tbl.3_digits <- nonstd_wo.mu_wo.ltz |> 
+  group_by(digits) |> 
+  summarise(
+    tot_uc = n()
+  ) |> 
+  ungroup() |> 
+  mutate(
+    pct_uc = round(tot_uc/sum(tot_uc), 4)*100
+  )
+
+# Municipality
+tbl.3_muni <- nonstd_wo.mu_wo.ltz |> 
+  group_by(muni_name) |> 
+  summarise(
+    tot_uc = n()
+  ) |> 
+  ungroup() |> 
+  mutate(
+    pct_uc = round(tot_uc/sum(tot_uc), 4)*100
+  ) 
+
+# RPA
+tbl.3_rpa <- nonstd_wo.mu_wo.ltz |> 
+  group_by(rpa_acr) |> 
+  summarise(
+    tot_uc = n()
+  ) |> 
+  ungroup() |> 
+  mutate(
+    pct_uc = round(tot_uc/sum(tot_uc), 4)*100
+  )
+
+# Community Type
+tbl.3_cmtyp08 <- nonstd_wo.mu_wo.ltz|> 
+  group_by(cmtyp08) |> 
+  summarise(
+    tot_uc = n()
+  ) |> 
+  ungroup() |> 
+  mutate(
+    pct_uc = round(tot_uc/sum(tot_uc), 4)*100
+  )
+
+# CAMA System
+tbl.3_cama <- nonstd_wo.mu_wo.ltz |> 
+  group_by(CAMA_SYS) |> 
+  summarise(
+    tot_uc = n()
+  ) |> 
+  ungroup() |> 
+  mutate(
+    pct_uc = round(tot_uc/sum(tot_uc), 4)*100
+  )
+
+# Maintainer
+tbl.3_maint <- nonstd_wo.mu_wo.ltz |> 
+  group_by(PAR_MAINT_BY) |> 
+  summarise(
+    tot_uc = n()
+  ) |> 
+  ungroup() |> 
+  mutate(
+    pct_uc = round(tot_uc/sum(tot_uc), 4)*100
+  )
+
+# Contextualizing Non-numerics
+tbl.3_letters <- nonstd_wo.mu_wo.ltz |> 
+  group_by(letters) |> 
+  summarise(
+    tot_uc = n()
+  ) |> 
+  ungroup() |> 
+  mutate(
+    pct_uc = round(tot_uc/sum(tot_uc), 4)*100
+  )
 
 # No filter for leading and trailing zeros
+nonstd_wo.mu_w.ltz <- non_std |> 
+  filter(mu.flag == FALSE)
 
+# Number of digits
+tbl.4_digits <- nonstd_wo.mu_w.ltz |> 
+  group_by(digits) |> 
+  summarise(
+    tot_uc = n()
+  ) |> 
+  ungroup() |> 
+  mutate(
+    pct_uc = round(tot_uc/sum(tot_uc), 4)*100
+  )
+
+# Municipality
+tbl.4_muni <- nonstd_wo.mu_w.ltz |> 
+  group_by(muni_name) |> 
+  summarise(
+    tot_uc = n()
+  ) |> 
+  ungroup() |> 
+  mutate(
+    pct_uc = round(tot_uc/sum(tot_uc), 4)*100
+  ) 
+
+# RPA
+tbl.4_rpa <- nonstd_wo.mu_w.ltz |> 
+  group_by(rpa_acr) |> 
+  summarise(
+    tot_uc = n()
+  ) |> 
+  ungroup() |> 
+  mutate(
+    pct_uc = round(tot_uc/sum(tot_uc), 4)*100
+  )
+
+# Community Type
+tbl.4_cmtyp08 <- nonstd_wo.mu_w.ltz|> 
+  group_by(cmtyp08) |> 
+  summarise(
+    tot_uc = n()
+  ) |> 
+  ungroup() |> 
+  mutate(
+    pct_uc = round(tot_uc/sum(tot_uc), 4)*100
+  )
+
+# CAMA System
+tbl.4_cama <- nonstd_wo.mu_w.ltz |> 
+  group_by(CAMA_SYS) |> 
+  summarise(
+    tot_uc = n()
+  ) |> 
+  ungroup() |> 
+  mutate(
+    pct_uc = round(tot_uc/sum(tot_uc), 4)*100
+  )
+
+# Maintainer
+tbl.4_maint <- nonstd_wo.mu_w.ltz |> 
+  group_by(PAR_MAINT_BY) |> 
+  summarise(
+    tot_uc = n()
+  ) |> 
+  ungroup() |> 
+  mutate(
+    pct_uc = round(tot_uc/sum(tot_uc), 4)*100
+  )
+
+# Contextualizing Non-numerics
+tbl.4_letters <- nonstd_wo.mu_w.ltz |> 
+  group_by(letters) |> 
+  summarise(
+    tot_uc = n()
+  ) |> 
+  ungroup() |> 
+  mutate(
+    pct_uc = round(tot_uc/sum(tot_uc), 4)*100
+  )
 ```
 
 # 3.1 Sidebar - Analysis of Non-Standard Land Use Codes for LUZI Task One
 
 ```{r}
-
-
-# Create a list of standard use codes MassGIS details in the LUT file with a Town ID of "0"
-test <- std_uc |> select(STD.USE_CODE) |> pull()
-
 # Create a df of all non-standard use codes defined as all use codes NOT a standard use code as included in the MassGIS LUT file with a Town ID of "0"
 # Join mapcdatakeys for community type and RPA variables. 
 # Join MassGIS CAMA Systems dataframe for CAMA System and parcel maintainer information.
