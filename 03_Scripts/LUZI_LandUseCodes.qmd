@@ -61,6 +61,13 @@ print(sapply(X = use_codes, FUN =  function(x) sum(is.na(x))))
 print(summary(use_codes))
 
 print(str(use_codes))
+
+z <- assessors |> 
+  group_by(USE_CODE, ZONING) |> 
+  summarise(
+    n = n()
+  ) |> 
+  ungroup()
 ```
 
 # 1.2 Load Complementary Datasets
@@ -455,6 +462,9 @@ tbl.3_letters <- nonstd_wo.mu_wo.ltz |>
   mutate(
     pct_uc = round(tot_uc/sum(tot_uc), 4)*100
   )
+
+nonstd_wo.mu_wo.ltz_CONTAINS.STD <- nonstd_wo.mu_wo.ltz |> filter(!xwalk_uc %in% std_uc_list)
+print(nrow(nonstd_wo.mu_wo.ltz_CONTAINS.STD)/nrow(nonstd_wo.mu_wo.ltz))
 
 # No filter for leading and trailing zeros
 nonstd_wo.mu_w.ltz <- non_std |> 
