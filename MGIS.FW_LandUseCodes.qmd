@@ -1313,26 +1313,86 @@ for (i in od_uc.list) {
 write.csv(flag.QA_tbl, here(paste0("02_Data/Logs/Unmatched.Diagnostics_SU_.",q,"_",yr,".csv")), row.names = FALSE)
 
 # Write the full matched table.
-write.csv(flag.QA_tbl, here(paste0("02_Data/Processed/Matched_tbl_SU_.",q,"_",yr,".csv")), row.names = FALSE)
+write.csv(matched_tbl, here(paste0("02_Data/Processed/Matched_tbl_SU_.",q,"_",yr,".csv")), row.names = FALSE)
 
 # Write the full flagged unmatched table.
-write.csv(flag.QA_tbl, here(paste0("02_Data/Processed/Unmatched_tbl_SU_.",q,"_",yr,".csv")), row.names = FALSE)
+write.csv(unmatched.amend_tbl, here(paste0("02_Data/Processed/Unmatched_tbl_SU_.",q,"_",yr,".csv")), row.names = FALSE)
 
 # Write the full unknown table.
-write.csv(flag.QA_tbl, here(paste0("02_Data/Processed/Unknown_tbl_SU_.",q,"_",yr,".csv")), row.names = FALSE)
+write.csv(unmatched.uk_tbl, here(paste0("02_Data/Processed/Unknown_tbl_SU_.",q,"_",yr,".csv")), row.names = FALSE)
 
 # Write the full DLS Duplicates table.
-write.csv(flag.QA_tbl, here(paste0("02_Data/Processed/DLS.Duplicates_tbl_SU_.",q,"_",yr,".csv")), row.names = FALSE)
+write.csv(dls.dupes_tbl, here(paste0("02_Data/Processed/DLS.Duplicates_tbl_SU_.",q,"_",yr,".csv")), row.names = FALSE)
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Standard Use Code Assignment Process
 # Create a list of numTRUE values
 numTRUE_list <- unmatched.amend_tbl |> distinct(numTRUE) |> pull()
+#test_tbl <- unmatched.amend_tbl |> ungroup() |>  mutate(UCID = row_number())
+test_tbl <- numTRUE_8 |> ungroup() |>  mutate(UCID = row_number())
+test_tbl$amend.code <- NULL
+amend_tbl <- NULL
+
+# =
+indc <- test_tbl |> filter(UCID == 1)
+
+test <- indc |> ungroup() |> select(starts_with("flag.")) |>  select_if(~any(. == TRUE)) |> names() |> str_remove("flag.")
+
+test2 <- str_sub(test, start = 1, end = 1)
+
+indc <- indc |> 
+  mutate(
+    amend.code = case_when(
+      od_uc == test2[1] ~ test[1],
+      
+    )
+  )
+
+if(indc$od_uc == test2[1]){
+  
+  indc$amend.code <- test[1]
+  
+} else if(indc$od_uc == test2[2]){
+   indc$amend.code <- test[2]
+} else if(indc$od_uc == test2[3]){
+  indc$amend.code <- test[3]
+} else if(indc$od_uc == test2[4]){
+  indc$amend.code <- test[4]
+} else if(indc$od_uc == test2[5]){
+  indc$amend.code <- test[5]
+}else if(indc$od_uc == test2[6]){
+  indc$amend.code <- test[6]
+}else if(indc$od_uc == test2[7]){
+  indc$amend.code <- test[7]
+}else if(indc$od_uc == test2[8]){
+  indc$amend.code <- test[8]
+}else if(indc$od_uc == test2[9]){
+  indc$amend.code <- test[9]
+}else if(indc$od_uc == test2[10]){
+  indc$amend.code <- test[10]
+}else if(indc$od_uc == test2[11]){
+  indc$amend.code <- test[11]
+}
+
+test <- list(test)
+test2 <- list(test2)
+
+indc$amend.code <- test
+indc$od_uc.check <- test2
+
+indc <- indc |> unnest(amend.code)
+
+
+
+
+
+#
+
+
+# Create unique ID, for loop over unique ID, add to a column, extract first digit of each code, compare to od_uc_list (match)
 
 # Separate by Single and Mixed Use
 unmatched.amend_su <- unmatched.amend_tbl |> filter(mxu.amend.flag == FALSE)
-
-test <- unmatched.amend_tbl |> select_if(~any(. == TRUE)) |> names() |> str_remove("flag.")
 
 unmatched.amend_mxu <- unmatched.amend_tbl |> filter(mxu.amend.flag == TRUE)
 
