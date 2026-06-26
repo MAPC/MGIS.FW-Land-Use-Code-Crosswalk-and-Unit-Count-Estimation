@@ -1359,7 +1359,11 @@ if(indc$numTRUE == 1){
   
   if(indc$od_uc == test2[1]){
     
-  }else{
+    indc$STD.USE_CODE <- test[1]
+    
+  } else{
+    
+    indc$STD.USE_CODE <- test[2]
     
   }
   
@@ -1367,9 +1371,15 @@ if(indc$numTRUE == 1){
   
   if (indc$od_uc == test2[1]) {
     
+    indc$STD.USE_CODE <- test[1]
+    
   } else if(indc$od_uc == test2[2]){
     
+    indc$STD.USE_CODE <- test[2]
+    
   }else{
+    
+    indc$STD.USE_CODE <- test[3]
     
   }
   
@@ -1377,11 +1387,19 @@ if(indc$numTRUE == 1){
   
   if (indc$od_uc == test2[1]) {
     
+    indc$STD.USE_CODE <- test[1]
+    
   } else if(indc$od_uc == test2[2]){
+    
+    indc$STD.USE_CODE <- test[2]
     
   } else if(indc$od_uc == test2[3]){
     
+    indc$STD.USE_CODE <- test[3]
+    
   } else{
+    
+    indc$STD.USE_CODE <- test[4]
     
   }
   
@@ -1389,13 +1407,23 @@ if(indc$numTRUE == 1){
   
   if (indc$od_uc == test2[1]) {
     
+    indc$STD.USE_CODE <- test[1]
+    
   } else if(indc$od_uc == test2[2]){
+    
+    indc$STD.USE_CODE <- test[2]
     
   } else if(indc$od_uc == test2[3]){
     
+    indc$STD.USE_CODE <- test[3]
+    
   } else if(indc$od_uc == test2[4]){
     
+    indc$STD.USE_CODE <- test[4]
+    
   } else{
+    
+    indc$STD.USE_CODE <- test[5]
     
   }
   
@@ -1403,15 +1431,27 @@ if(indc$numTRUE == 1){
     
   if (indc$od_uc == test2[1]) {
     
+    indc$STD.USE_CODE <- test[1]
+    
   } else if(indc$od_uc == test2[2]){
+    
+    indc$STD.USE_CODE <- test[2]
     
   } else if(indc$od_uc == test2[3]){
     
+    indc$STD.USE_CODE <- test[3]
+    
   } else if(indc$od_uc == test2[4]){
+    
+    indc$STD.USE_CODE <- test[4]
     
   } else if(indc$od_uc == test2[5]){
     
+    indc$STD.USE_CODE <- test[5]
+    
   } else{
+    
+    indc$STD.USE_CODE <- test[6]
     
   }
   
@@ -1419,59 +1459,105 @@ if(indc$numTRUE == 1){
   
   if (indc$od_uc == test2[1]) {
     
+    indc$STD.USE_CODE <- test[1]
+    
   } else if(indc$od_uc == test2[2]){
+    
+    indc$STD.USE_CODE <- test[2]
     
   } else if(indc$od_uc == test2[3]){
     
+    indc$STD.USE_CODE <- test[3]
+    
   } else if(indc$od_uc == test2[4]){
+    
+    indc$STD.USE_CODE <- test[4]
     
   } else if(indc$od_uc == test2[5]){
     
+    indc$STD.USE_CODE <- test[5]
+    
   } else if(indc$od_uc == test2[6]){
+    
+    indc$STD.USE_CODE <- test[6]
     
   } else{
     
+    indc$STD.USE_CODE <- test[7]
   }
   
 }else if(indc$numTRUE==8){
   
   if (indc$od_uc == test2[1]) {
     
+    indc$STD.USE_CODE <- test[1]
+    
   } else if(indc$od_uc == test2[2]){
+    
+    indc$STD.USE_CODE <- test[2]
     
   } else if(indc$od_uc == test2[3]){
     
+    indc$STD.USE_CODE <- test[3]
+    
   } else if(indc$od_uc == test2[4]){
+    
+    indc$STD.USE_CODE <- test[4]
     
   } else if(indc$od_uc == test2[5]){
     
+    indc$STD.USE_CODE <- test[5]
+    
   } else if(indc$od_uc == test2[6]){
+    
+    indc$STD.USE_CODE <- test[6]
     
   } else if(indc$od_uc == test2[7]){
     
+    indc$STD.USE_CODE <- test[7]
+    
   } else{
     
+    indc$STD.USE_CODE <- test[8]
   }
   
 }else if(indc$numTRUE==9){
   
   if (indc$od_uc == test2[1]) {
     
+    indc$STD.USE_CODE <- test[1]
+    
   } else if(indc$od_uc == test2[2]){
+    
+    indc$STD.USE_CODE <- test[2]
     
   } else if(indc$od_uc == test2[3]){
     
+    indc$STD.USE_CODE <- test[3]
+    
   } else if(indc$od_uc == test2[4]){
+    
+    indc$STD.USE_CODE <- test[4]
     
   } else if(indc$od_uc == test2[5]){
     
+    indc$STD.USE_CODE <- test[5]
+    
   } else if(indc$od_uc == test2[6]){
+    
+    indc$STD.USE_CODE <- test[6]
     
   } else if(indc$od_uc == test2[7]){
     
+    indc$STD.USE_CODE <- test[7]
+    
   } else if(indc$od_uc == test2[8]){
     
+    indc$STD.USE_CODE <- test[8]
+    
   } else{
+    
+    indc$STD.USE_CODE <- test[9]
     
   }
   
@@ -1479,23 +1565,43 @@ if(indc$numTRUE == 1){
   
   if (indc$od_uc == test2[1]) {
     
+    indc$STD.USE_CODE <- test[1]
+    
   } else if(indc$od_uc == test2[2]){
+    
+    indc$STD.USE_CODE <- test[2]
     
   } else if(indc$od_uc == test2[3]){
     
+    indc$STD.USE_CODE <- test[3]
+    
   } else if(indc$od_uc == test2[4]){
+    
+    indc$STD.USE_CODE <- test[4]
     
   } else if(indc$od_uc == test2[5]){
     
+    indc$STD.USE_CODE <- test[5]
+    
   } else if(indc$od_uc == test2[6]){
+    
+    indc$STD.USE_CODE <- test[6]
     
   } else if(indc$od_uc == test2[7]){
     
+    indc$STD.USE_CODE <- test[7]
+    
   } else if(indc$od_uc == test2[8]){
+    
+    indc$STD.USE_CODE <- test[8]
     
   } else if(indc$od_uc == test2[9]){
     
+    indc$STD.USE_CODE <- test[9]
+    
   } else{
+    
+    indc$STD.USE_CODE <- test[10]
     
   }
   
@@ -1503,53 +1609,98 @@ if(indc$numTRUE == 1){
   
   if (indc$od_uc == test2[1]) {
     
+    indc$STD.USE_CODE <- test[1]
+    
   } else if(indc$od_uc == test2[2]){
+    
+    indc$STD.USE_CODE <- test[2]
     
   } else if(indc$od_uc == test2[3]){
     
+    indc$STD.USE_CODE <- test[3]
+    
   } else if(indc$od_uc == test2[4]){
+    
+    indc$STD.USE_CODE <- test[4]
     
   } else if(indc$od_uc == test2[5]){
     
+    indc$STD.USE_CODE <- test[5]
+    
   } else if(indc$od_uc == test2[6]){
+    
+    indc$STD.USE_CODE <- test[6]
     
   } else if(indc$od_uc == test2[7]){
     
+    indc$STD.USE_CODE <- test[7]
+    
   } else if(indc$od_uc == test2[8]){
+    
+    indc$STD.USE_CODE <- test[8]
     
   } else if(indc$od_uc == test2[9]){
     
+    indc$STD.USE_CODE <- test[9]
+    
   } else if(indc$od_uc == test2[10]){
+    
+    indc$STD.USE_CODE <- test[10]
     
   } else{
     
+    indc$STD.USE_CODE <- test[11]
   }
   
 }else if(indc$numTRUE==12){
   
   if (indc$od_uc == test2[1]) {
     
+    indc$STD.USE_CODE <- test[1]
+    
   } else if(indc$od_uc == test2[2]){
+    
+    indc$STD.USE_CODE <- test[2]
     
   } else if(indc$od_uc == test2[3]){
     
+    indc$STD.USE_CODE <- test[3]
+    
   } else if(indc$od_uc == test2[4]){
+    
+    indc$STD.USE_CODE <- test[4]
     
   } else if(indc$od_uc == test2[5]){
     
+    indc$STD.USE_CODE <- test[5]
+    
   } else if(indc$od_uc == test2[6]){
+    
+    indc$STD.USE_CODE <- test[6]
     
   } else if(indc$od_uc == test2[7]){
     
+    indc$STD.USE_CODE <- test[7]
+    
   } else if(indc$od_uc == test2[8]){
+    
+    indc$STD.USE_CODE <- test[8]
     
   } else if(indc$od_uc == test2[9]){
     
+    indc$STD.USE_CODE <- test[9]
+    
   } else if(indc$od_uc == test2[10]){
+    
+    indc$STD.USE_CODE <- test[10]
     
   } else if(indc$od_uc == test2[11]){
     
+    indc$STD.USE_CODE <- test[11]
+    
   } else{
+    
+    indc$STD.USE_CODE <- test[12]
     
   }
   
@@ -1557,29 +1708,55 @@ if(indc$numTRUE == 1){
   
   if (indc$od_uc == test2[1]) {
     
+    indc$STD.USE_CODE <- test[1]
+    
   } else if(indc$od_uc == test2[2]){
+    
+    indc$STD.USE_CODE <- test[2]
     
   } else if(indc$od_uc == test2[3]){
     
+    indc$STD.USE_CODE <- test[3]
+    
   } else if(indc$od_uc == test2[4]){
+    
+    indc$STD.USE_CODE <- test[4]
     
   } else if(indc$od_uc == test2[5]){
     
+    indc$STD.USE_CODE <- test[5]
+    
   } else if(indc$od_uc == test2[6]){
+    
+    indc$STD.USE_CODE <- test[6]
     
   } else if(indc$od_uc == test2[7]){
     
+    indc$STD.USE_CODE <- test[7]
+    
   } else if(indc$od_uc == test2[8]){
+    
+    indc$STD.USE_CODE <- test[8]
     
   } else if(indc$od_uc == test2[9]){
     
+    indc$STD.USE_CODE <- test[9]
+    
   } else if(indc$od_uc == test2[10]){
+    
+    indc$STD.USE_CODE <- test[10]
     
   } else if(indc$od_uc == test2[11]){
     
+    indc$STD.USE_CODE <- test[11]
+    
   } else if(indc$od_uc == test2[12]){
     
+    indc$STD.USE_CODE <- test[12]
+    
   } else{
+    
+    indc$STD.USE_CODE <- test[13]
     
   }
   
@@ -1587,31 +1764,59 @@ if(indc$numTRUE == 1){
   
   if (indc$od_uc == test2[1]) {
     
+    indc$STD.USE_CODE <- test[2]
+    
   } else if(indc$od_uc == test2[2]){
+    
+    indc$STD.USE_CODE <- test[2]
     
   } else if(indc$od_uc == test2[3]){
     
+    indc$STD.USE_CODE <- test[3]
+    
   } else if(indc$od_uc == test2[4]){
+    
+    indc$STD.USE_CODE <- test[4]
     
   } else if(indc$od_uc == test2[5]){
     
+    indc$STD.USE_CODE <- test[5]
+    
   } else if(indc$od_uc == test2[6]){
+    
+    indc$STD.USE_CODE <- test[6]
     
   } else if(indc$od_uc == test2[7]){
     
+    indc$STD.USE_CODE <- test[7]
+    
   } else if(indc$od_uc == test2[8]){
+    
+    indc$STD.USE_CODE <- test[8]
     
   } else if(indc$od_uc == test2[9]){
     
+    indc$STD.USE_CODE <- test[9]
+    
   } else if(indc$od_uc == test2[10]){
+    
+    indc$STD.USE_CODE <- test[10]
     
   } else if(indc$od_uc == test2[11]){
     
+    indc$STD.USE_CODE <- test[11]
+    
   } else if(indc$od_uc == test2[12]){
+    
+    indc$STD.USE_CODE <- test[12]
     
   } else if(indc$od_uc == test2[13]){
     
+    indc$STD.USE_CODE <- test[13]
+    
   } else{
+    
+    indc$STD.USE_CODE <- test[14]
     
   }
   
@@ -1619,37 +1824,68 @@ if(indc$numTRUE == 1){
   
   if (indc$od_uc == test2[1]) {
     
+    indc$STD.USE_CODE <- test[1]
+    
   } else if(indc$od_uc == test2[2]){
+    
+    indc$STD.USE_CODE <- test[2]
     
   } else if(indc$od_uc == test2[3]){
     
+    indc$STD.USE_CODE <- test[3]
+    
   } else if(indc$od_uc == test2[4]){
+    
+    indc$STD.USE_CODE <- test[4]
     
   } else if(indc$od_uc == test2[5]){
     
+    indc$STD.USE_CODE <- test[5]
+    
   } else if(indc$od_uc == test2[6]){
+    
+    indc$STD.USE_CODE <- test[6]
     
   } else if(indc$od_uc == test2[7]){
     
+    indc$STD.USE_CODE <- test[7]
+    
   } else if(indc$od_uc == test2[8]){
+    
+    indc$STD.USE_CODE <- test[8]
     
   } else if(indc$od_uc == test2[9]){
     
+    indc$STD.USE_CODE <- test[9]
+    
   } else if(indc$od_uc == test2[10]){
+    
+    indc$STD.USE_CODE <- test[10]
     
   } else if(indc$od_uc == test2[11]){
     
+    indc$STD.USE_CODE <- test[11]
+    
   } else if(indc$od_uc == test2[12]){
+    
+    indc$STD.USE_CODE <- test[12]
     
   } else if(indc$od_uc == test2[13]){
     
+    indc$STD.USE_CODE <- test[13]
+    
   } else if(indc$od_uc == test2[14]){
+    
+    indc$STD.USE_CODE <- test[14]
     
   } else{
     
+    indc$STD.USE_CODE <- test[15]
   }
 
 } else{
+  
+  indc$STD.USE_CODE <- "UNASSIGNED"
   
 }
 
