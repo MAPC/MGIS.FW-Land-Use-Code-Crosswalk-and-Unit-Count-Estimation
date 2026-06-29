@@ -1973,161 +1973,90 @@ amend_tbl_clean <- amend_tbl |>
     std_uc,
     by = c("STD.USE_CODE")
   ) |> 
+  relocate()
   # Move around the variables
 
 #
 
-# Mixed Use Amendment
-
-# Loop
-for (i in od_uc.list) {
-  if(mxu.amend.flag == FALSE){ # Single Use Assignment
-    
-  } else{ # Mixed-Use Assignment
-    
-  }
-  
-}
-
-#
-
-numTRUE_tbl <- unmatched.amend_tbl |> 
-  group_by(numTRUE, mxu.amend.flag) |> 
-  summarise(
-    n= n()
-  ) |> 
-  ungroup()
-
-numTRUE_0 <- unmatched.amend_tbl |> filter(numTRUE == 0)
-numTRUE_1 <- unmatched.amend_tbl |> filter(numTRUE == 1)
-numTRUE_2 <- unmatched.amend_tbl |> filter(numTRUE == 2 & mxu.amend.flag == FALSE)
-numTRUE_3 <- unmatched.amend_tbl |> filter(numTRUE == 3 & MUNI.USE_DESC == "Office" & muni_name == "Rockland")
-numTRUE_4 <- unmatched.amend_tbl |> filter(numTRUE == 4)
-numTRUE_5 <- unmatched.amend_tbl |> filter(numTRUE == 5)
-numTRUE_6 <- unmatched.amend_tbl |> filter(numTRUE == 6)
-numTRUE_7 <- unmatched.amend_tbl |> filter(numTRUE == 7)
-numTRUE_8 <- unmatched.amend_tbl |> filter(numTRUE == 8)
-numTRUE_14 <- unmatched.amend_tbl |> filter(numTRUE == 14)
-
-# Two axes - Mixed Use v Single Use
-# Mixed Use - 84 Codes
-# Single Use - 709 Codes
-
-# Mixed Use
-# mxu.amend.flag == TRUE
-# Clear Primary [text], some [text] construction
-# - Use this text to allocate the primary and seconodary uses. 
-# Unclear Primary [text], some [text] construction
-# - 
-
-# Single Use
-# numTRUE == 1 
-# - Use the three digit use code flagged.
-# numTRUE > 1
-# - if od_uc matches first digit of first flagged land use code group
-# - if oc_uc does not match first digit of first flagged land use code group
-
-#
-amended.uc <- unmatched |>
+# MIXED USE CODE ASSIGNMENT
+mxu.amend_tbl <- unmatched.amend_mxu |> ungroup() |>
   mutate(
+    UCID = row_number(),
+      # Creates a variable that represents what the municipality believes to be the primary use based on the 1-9 one-digit use code categories present in the L3 Stanardized Use Code codebook.
+    undef.primary = str_sub(MUNI.USE_CODE, start = 1, end = 1),
+      # Creates a variable that represents what the municipality believes to be the secondary use based on the 1-9 one-digit use code categories present in the L3 Stanardized Use Code codebook.
+    undef.secondary = str_sub(MUNI.USE_CODE, start = 2, end = 2),
     STD.USE_CODE = case_when(
-    # 101 - Single Family Residential
-    res.101.flag == TRUE & gen.flag == FALSE ~ "101",
-    # 102 - Condominium
-    res.102.flag == TRUE & gen.flag == FALSE ~ "102",
-    # 103 - Mobile Home Parks
-    res.103.flag == TRUE & gen.flag == FALSE ~ "103",
-    # Open Space
-    res.104.flag == TRUE & gen.flag == FALSE ~ "104",
-    # Private Property
-    res.105.flag == TRUE & gen.flag == FALSE ~ "105",
-    # Forest
-    res.106.flag == TRUE & gen.flag == FALSE ~ "106",
-    # Agriculture
-    res.109.flag == TRUE & gen.flag == FALSE ~ "109",
-    # Recreation
-    res.111.flag == TRUE & gen.flag == FALSE ~ "111",
-    # Exempt
-    res.112.flag == TRUE & gen.flag == FALSE ~ "112",
-    # Flag for unknown use.
-    res.114.flag == TRUE & gen.flag == FALSE ~ "114",
-    #
-    res.121.flag == TRUE & gen.flag == FALSE ~ "121",
-    # Commercial
-    res.122.flag == TRUE & gen.flag == FALSE ~ "122",
-    # Industrial
-    res.123.flag == TRUE & gen.flag == FALSE ~ "123",
-    # Open Space
-    res.124.flag == TRUE & gen.flag == FALSE ~ "124",
-    # Private Property
-    res.125.flag == TRUE & gen.flag == FALSE ~ "125",
-    # Forest
-    res.130.flag == TRUE & gen.flag == FALSE ~ "130",
-    # Agriculture
-    res.131.flag == TRUE & gen.flag == FALSE ~ "131",
-    # Recreation
-    res.132.flag == TRUE & gen.flag == FALSE ~ "132",
-    # Exempt
-    res.140.flag == TRUE & gen.flag == FALSE ~ "140",
-    .default = STD.USE_CODE
-    )
-  ) |> 
-  mutate(
-    STD.USE_DESC = case_when(
-    # 101 - Single Family Residential
-    res.101.flag == TRUE & gen.flag == FALSE ~ td.std.desc$`101`,
-    # 102 - Condominium
-    res.102.flag == TRUE & gen.flag == FALSE ~ td.std.desc$`102`,
-    # 103 - Mobile Home Parks
-    res.103.flag == TRUE & gen.flag == FALSE ~ td.std.desc$`103`,
-    # Open Space
-    res.104.flag == TRUE & gen.flag == FALSE ~ td.std.desc$`104`,
-    # Private Property
-    res.105.flag == TRUE & gen.flag == FALSE ~ td.std.desc$`105`,
-    # Forest
-    res.106.flag == TRUE & gen.flag == FALSE ~ td.std.desc$`106`,
-    # Agriculture
-    res.109.flag == TRUE & gen.flag == FALSE ~ td.std.desc$`109`,
-    # Recreation
-    res.111.flag == TRUE & gen.flag == FALSE ~ td.std.desc$`111`,
-    # Exempt
-    res.112.flag == TRUE & gen.flag == FALSE ~ td.std.desc$`112`,
-    # Flag for unknown use.
-    res.114.flag == TRUE & gen.flag == FALSE ~ td.std.desc$`114`,
-    #
-    res.121.flag == TRUE & gen.flag == FALSE ~ td.std.desc$`121`,
-    # Commercial
-    res.122.flag == TRUE & gen.flag == FALSE ~ td.std.desc$`122`,
-    # Industrial
-    res.123.flag == TRUE & gen.flag == FALSE ~ td.std.desc$`123`,
-    # Open Space
-    res.124.flag == TRUE & gen.flag == FALSE ~ td.std.desc$`124`,
-    # Private Property
-    res.125.flag == TRUE & gen.flag == FALSE ~ td.std.desc$`125`,
-    # Forest
-    res.130.flag == TRUE & gen.flag == FALSE ~ td.std.desc$`130`,
-    # Agriculture
-    res.131.flag == TRUE & gen.flag == FALSE ~ td.std.desc$`131`,
-    # Recreation
-    res.132.flag == TRUE & gen.flag == FALSE ~ td.std.desc$`132`,
-    # Exempt
-    res.140.flag == TRUE & gen.flag == FALSE ~ td.std.desc$`140`,
-    .default = STD.USE_DESC
-    )
-  )
-
-# 
-res_xwalk <- bind_rows(comp, amended.uc) |> left_join(keys, by = c("muni_name"))
-
-# Comparison to MHP Codes
-mhp_comp <- res_xwalk |> full_join(mhp.res.xwalk, by = c("muni_id" = "TOWN_ID", "MUNI.USE_CODE" = "USE_CODE")) |> relocate(muni_id, MUNI.USE_CODE, STD.USE_CODE, standardized_LUC)
-  
-  
-# Comparison to UMDI codes
-umdi.res.xwalk <- umdi.res.xwalk |> left_join(muni_uc, by = c("USE_CODE" = "MUNI.USE_CODE", "USE_DESC" = "MUNI.USE_DESC"))
-
-umdi_comp <- res_xwalk |> full_join(umdi.res.xwalk, by = c("muni_name", "MUNI.USE_CODE" = "USE_CODE")) |> relocate(muni_id, MUNI.USE_CODE, STD.USE_CODE, STD_LUC)
-  
+      # Residential Mixed Use
+      undef.primary == 1 & undef.secondary %in% c(2,3,4,5,6,7,8,9) ~ paste0("0",undef.primary,undef.secondary),
+      undef.primary == 1 & undef.secondary %in% c(1,0,NA) ~ "010",
+      # Open Space Mixed Use
+      undef.primary == 2 & undef.secondary %in% c(1,3,4,5,6,7,8,9) ~ paste0("0",undef.primary,undef.secondary),
+      undef.primary == 2 & undef.secondary %in% c(2,0,NA) ~ "020",
+      # Commercial Mixed Use
+      undef.primary == 3 & undef.secondary %in% c(1,2,4,5,6,7,8,9) ~ paste0("0",undef.primary,undef.secondary),
+      undef.primary == 3 & undef.secondary %in% c(3,0,NA) ~ "030",
+      # Industrial Mixed Use
+      undef.primary == 4 & undef.secondary %in% c(1,2,3,5,6,7,8,9) ~ paste0("0",undef.primary,undef.secondary),
+      undef.primary == 4 & undef.secondary %in% c(4,0,NA) ~ "040",
+      # Private Property Mixed Use
+      undef.primary == 5 & undef.secondary %in% c(1,2,3,4,6,7,8,9) ~ paste0("0",undef.primary,undef.secondary),
+      undef.primary == 5 & undef.secondary %in% c(5,0,NA) ~ "050",
+      # Forest Mixed Use
+      undef.primary == 6 & undef.secondary %in% c(1,2,3,4,5,7,8,9) ~ paste0("0",undef.primary,undef.secondary),
+      undef.primary == 6 & undef.secondary %in% c(6,0,NA) ~ "060",
+      # Agriculture Mixed Use
+      undef.primary == 7 & undef.secondary %in% c(1,2,3,4,5,6,8,9) ~ paste0("0",undef.primary,undef.secondary),
+      undef.primary == 7 & undef.secondary %in% c(7,0,NA) ~ "070",
+      # Recreation Mixed Use
+      undef.primary == 8 & undef.secondary %in% c(1,2,3,4,5,6,7,9) ~ paste0("0",undef.primary,undef.secondary),
+      undef.primary == 8 & undef.secondary %in% c(8,0,NA) ~ "080",
+      # Exempt Mixed Use
+      undef.primary == 9 & undef.secondary %in% c(1,2,3,4,5,6,7,8) ~ paste0("0",undef.primary,undef.secondary),
+      undef.primary == 9 & undef.secondary %in% c(9,0,NA) ~ "090",
+      # uh....
+      .default = "what the hell is going on here?"
+    ),
+     STD.USE_DESC = case_when(
+      STD.USE_CODE == "000" ~ "Use code not known or nor provided.",
+      STD.USE_CODE == "010" ~ "Mixed Use (Primarily Residential, Some Other)",
+      STD.USE_CODE == "012" ~ "Mixed Use (Primarily Residential, Some Open Space)",
+      STD.USE_CODE == "013" ~ "Mixed Use (Primarily Residential, Some Commercial)",
+      STD.USE_CODE == "014" ~ "Mixed Use (Primarily Residential, Some Industrial)",
+      STD.USE_CODE == "015" ~ "Mixed Use (Primarily Residential, Some Private Property)",
+      STD.USE_CODE == "016" ~ "Mixed Use (Primarily Residential, Some Forest)",
+      STD.USE_CODE == "017" ~ "Mixed Use (Primarily Residential, Some Agriculture)",
+      STD.USE_CODE == "018" ~ "Mixed Use (Primarily Residential, Some Recreation)",
+      STD.USE_CODE == "019" ~ "Mixed Use (Primarily Residential, Some Exempt)",
+      STD.USE_CODE == "020" ~ "Mixed Use (Primarily Open Space, Some Other)",
+      STD.USE_CODE == "023" ~ "Mixed Use (Primarily Open Space, Commercial)",
+      STD.USE_CODE == "030" ~ "Mixed Use (Primarily Commercial, Some Other)",
+      STD.USE_CODE == "032" ~ "Mixed Use (Primarily Commercial, Some Open Space)",
+      STD.USE_CODE == "035" ~ "Mixed Use (Primarily Commercial, Some Private Property)",
+      STD.USE_CODE == "039" ~ "Mixed Use (Primarily Commercial, Some Exempt)",
+      STD.USE_CODE == "040" ~ "Mixed Use (Primarily Industrial, Some Other)",
+      STD.USE_CODE == "042" ~ "Mixed Use (Primarily Industrial, Some Open Space)",
+      STD.USE_CODE == "045" ~ "Mixed Use (Primarily Industrial, Some Private Property)",
+      STD.USE_CODE == "049" ~ "Mixed Use (Primarily Industrial, Some Exempt)",
+      STD.USE_CODE == "050" ~ "Mixed Use (Primarily Private Property, Some Other)",
+      STD.USE_CODE == "060" ~ "Mixed Use (Primarily Forest, Some Other)",
+      STD.USE_CODE == "070" ~ "Mixed Use (Primarily Agriculture, Some Other)",
+      STD.USE_CODE == "072" ~ "Mixed Use (Primarily Agriculture, Some Open Space)",
+      STD.USE_CODE == "080" ~ "Mixed Use (Primarily Recreation, Some Other)",
+      STD.USE_CODE == "089" ~ "Mixed Use (Primarily Recreation, Some Exempt)",
+      STD.USE_CODE == "090" ~ "Mixed Use (Primarily Exempt, Some Other)",
+      STD.USE_CODE == "091" ~ "Mixed Use (Primarily Exempt, Some Residential)",
+      STD.USE_CODE == "092" ~ "Mixed Use (Primarily Exempt, Some Open Space)",
+      STD.USE_CODE == "093" ~ "Mixed Use (Primarily Exempt, Some Commercial)",
+      STD.USE_CODE == "094" ~ "Mixed Use (Primarily Exempt, Some Industrial)",
+      STD.USE_CODE == "095" ~ "Mixed Use (Primarily Exempt, Some Private Property)",
+      STD.USE_CODE == "096" ~ "Mixed Use (Primarily Exempt, Some Forest)",
+      STD.USE_CODE == "097" ~ "Mixed Use (Primarily Exempt, Some Agriculture)",
+      STD.USE_CODE == "098" ~ "Mixed Use (Primarily Exempt, Some Recreation)",
+      .default = STD.USE_DESC
+     )
+  ) #|> 
+  #  select(c(xwalk_uc, MUNI.USE_CODE, MUNI.USE_CODE_fix, MUNI.USE_DESC, mu.flag, td.mu.flag, muni_name))
 
 ```
 
@@ -2136,15 +2065,23 @@ umdi_comp <- res_xwalk |> full_join(umdi.res.xwalk, by = c("muni_name", "MUNI.US
 # 5.1 Load Mixed and Single Use Crosswalks Created in Section 4.1 and 4.2
 ```{r}
 # Load Single Use Amended Land Use Codes
+su.luc_xwalk <- readRDS(here(".RDS"))
 
 # Load Mixed Use Amended Land use Codes
+mxu.luc_xwalk <- readRDS(here(".RDS"))
 
 ```
 
 # 5.2 Combine Land Use Code Crosswalks
 ```{r}
+# Combine single and mixed use crosswalks
+luc_xwalk <- bind_rows(su.luc_xwalk, mxu.luc_xwalk)
 ```
 
 # 5.3 Save Single, Amended Land Use Code Crosswalk
 ```{r}
+# Save finished land use code crosswalk as .csv, .xlsx, and .RDS file
+write.csv()
+write_xlsx()
+write_rds()
 ```
