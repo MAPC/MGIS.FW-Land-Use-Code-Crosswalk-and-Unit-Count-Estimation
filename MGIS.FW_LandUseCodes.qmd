@@ -68,17 +68,17 @@ writexl::write_xlsx(use_codes, here(paste0("02_Data/Logs/L3_UC_LUT.",q,"_",yr,".
 ```{r}
 # Load MHP Residensity product Land Use Codes
 # File download from
-mhp.luc.xwalk <- read_xlsx(here("02_Data/Raw/Land Use Codes/MHP/LUTstandards_Residensity.xlsx"), sheet = 1) |> 
-  mutate(od_uc = str_sub(USE_CODE, start = 1, end = 1)) 
-
-mhp.res.xwalk <- mhp.luc.xwalk |> filter(od_uc == "1" & TOWN_ID != 0)
-  
-# Load UMDI Land Use Code Crosswalk
-# File download from 
-umdi.luc.xwalk <- read_xlsx(here("02_Data/Raw/Land Use Codes/UMDI/Standardized LUC Matching Guide_ForDistribution20260428.xlsx"), sheet = 1) |> 
-  mutate(od_uc = str_sub(USE_CODE, start = 1, end = 1)) 
-
-umdi.res.xwalk <- umdi.luc.xwalk |> filter(od_uc == "1")
+# mhp.luc.xwalk <- read_xlsx(here("02_Data/Raw/Land Use Codes/MHP/LUTstandards_Residensity.xlsx"), sheet = 1) |> 
+#   mutate(od_uc = str_sub(USE_CODE, start = 1, end = 1)) 
+# 
+# mhp.res.xwalk <- mhp.luc.xwalk |> filter(od_uc == "1" & TOWN_ID != 0)
+#   
+# # Load UMDI Land Use Code Crosswalk
+# # File download from 
+# umdi.luc.xwalk <- read_xlsx(here("02_Data/Raw/Land Use Codes/UMDI/Standardized LUC Matching Guide_ForDistribution20260428.xlsx"), sheet = 1) |> 
+#   mutate(od_uc = str_sub(USE_CODE, start = 1, end = 1)) 
+# 
+# umdi.res.xwalk <- umdi.luc.xwalk |> filter(od_uc == "1")
 
 ```
 
@@ -1173,6 +1173,11 @@ write_rds(
   paste0(here(paste0("04_Output/Internal/muni_mixed.use_manual.review.",q,"_",yr,".rds")))
 )
 
+# Removed Mixed-Use dataframes
+rm(amended.comp, amended.uc, hand.edit.matched, hand.edit.unmatched, matched, matched_text, mu_hand.edit, mu_xwalk, subset.matched.1, subset.matched.2, subset.unmatched.1, subset.unmatched.2,
+   unmatched, unmatched_text, x, y)
+
+# Clean up the environment
 gc()
 
 #TODO:
@@ -1350,6 +1355,17 @@ write.csv(unmatched.uk_tbl, here(paste0("02_Data/Processed/Unknown_tbl_SU_.",q,"
 
 # Write the full DLS Duplicates table.
 write.csv(dls.dupes_tbl, here(paste0("02_Data/Processed/DLS.Duplicates_tbl_SU_.",q,"_",yr,".csv")), row.names = FALSE)
+
+# Write the Matched Table to Internal Outputs as well since we'll want to bring that back for the full crosswalk
+# Write the full matched table.
+write.csv(matched_tbl, here(paste0("04_Output/Internal/Matched_tbl_SU_.",q,"_",yr,".csv")), row.names = FALSE)
+
+write_rds(matched_tbl, here(paste0("04_Output/Internal/Matched_tbl_SU_.",q,"_",yr,".rds")))
+
+# Write the unknown table
+write.csv(unmatched.uk_tbl, here(paste0("04_Output/Internal/Unknown_tbl_SU_.",q,"_",yr,".csv")), row.names = FALSE)
+
+write_rds(unmatched.uk_tbl, here(paste0("04_Output/Internal/Unknown_tbl_SU_.",q,"_",yr,".csv")))
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Standard Use Code Assignment Process
@@ -1986,9 +2002,6 @@ if(indc$numTRUE == 1){
   
 }
 
-# Clean up the code.
-gc()
-
 # Remove various helper variables from the amend_tbl dataframe.
 amend_tbl_clean <- amend_tbl |> 
   # Remove Helper Variables
@@ -2000,15 +2013,28 @@ amend_tbl_clean <- amend_tbl |>
     std_uc,
     by = c("STD.USE_CODE")
   ) |> 
-  relocate()
+  select(-c(xwalk_uc.x, xwalk_uc.y, od_uc, td_uc)) |> 
+  # Create placeholder for MUNI.USE_CODE_underlying for single use codes.
+  mutate(
+    MUNI.USE_CODE_underlying = "single use"
+  ) |>  
   # Move around the variables
+  relocate(
+    STD.USE_CODE,
+    STD.USE_DESC,
+    MUNI.USE_CODE,
+    MUNI.USE_DESC,
+    MUNI.USE_CODE_underlying,
+    muni_name
+  )
 
-#
+# Clean up the environment.
+gc()
 
+# ~~~~~~~~~~~~~~~~~~~~~
 # MIXED USE CODE ASSIGNMENT
 mxu.amend_tbl <- unmatched.amend_mxu |> ungroup() |>
   mutate(
-    UCID = row_number(),
       # Creates a variable that represents what the municipality believes to be the primary use based on the 1-9 one-digit use code categories present in the L3 Stanardized Use Code codebook.
     undef.primary = str_sub(MUNI.USE_CODE, start = 1, end = 1),
       # Creates a variable that represents what the municipality believes to be the secondary use based on the 1-9 one-digit use code categories present in the L3 Stanardized Use Code codebook.
@@ -2081,9 +2107,25 @@ mxu.amend_tbl <- unmatched.amend_mxu |> ungroup() |>
       STD.USE_CODE == "097" ~ "Mixed Use (Primarily Exempt, Some Agriculture)",
       STD.USE_CODE == "098" ~ "Mixed Use (Primarily Exempt, Some Recreation)",
       .default = STD.USE_DESC
-     )
-  ) #|> 
-  #  select(c(xwalk_uc, MUNI.USE_CODE, MUNI.USE_CODE_fix, MUNI.USE_DESC, mu.flag, td.mu.flag, muni_name))
+     ),
+    # Create a stand in for the MUNI.USE_CODE_underlying variable. No useful information is stored in the three digit code municipalities assigned to these mixed use codes.
+    MUNI.USE_CODE_underlying = "single use"
+  ) |> 
+  select(c(STD.USE_CODE, STD.USE_DESC, MUNI.USE_CODE, MUNI.USE_DESC, muni_name))
+
+# Create a single dataframe for the single use amended land use code crosswalk
+su.luc_xwalk <- bind_rows(amend_tbl, mxu.amend_tbl)
+
+# Save the single use amended land use code crosswalk
+# As csv
+write.csv(
+  su.luc_xwalk,
+  here(paste0("04_Output/Internal/su.amended_xwalk_.",q,"_",yr,".csv")),
+  row.names = FALSE
+)
+
+# As RDS
+write_rds(su.luc_xwalk, here(paste0("04_Output/Internal/su.amended_xwalk_.",q,"_",yr,".rds")))
 
 ```
 
@@ -2092,23 +2134,30 @@ mxu.amend_tbl <- unmatched.amend_mxu |> ungroup() |>
 # 5.1 Load Mixed and Single Use Crosswalks Created in Section 4.1 and 4.2
 ```{r}
 # Load Single Use Amended Land Use Codes
-su.luc_xwalk <- readRDS(here(".RDS"))
+su.matched.luc_xwalk <- readRDS(here(paste0("04_Output/Internal/Matched_tbl_SU_.",q,"_",yr,".rds")))
 
-# Load Mixed Use Amended Land use Codes
-mxu.luc_xwalk <- readRDS(here(".RDS"))
+# Load Single Use amended Land Use Codes
+su.amend.luc_xwalk <- readRDS(here(paste0("04_Output/Internal/su.amended_xwalk_.",q,"_",yr,".rds")))
+
+# Load Mixed Use Amended and Matched Land use Codes
+mxu.luc_xwalk <- readRDS(here(paste0("04_Output/Internal/muni_mixed.use_xwalk.",q,"_",yr,".rds")))
 
 ```
 
 # 5.2 Combine Land Use Code Crosswalks
 ```{r}
 # Combine single and mixed use crosswalks
-luc_xwalk <- bind_rows(su.luc_xwalk, mxu.luc_xwalk)
+luc_xwalk <- bind_rows(su.matched.luc_xwalk, su.amend.luc_xwalk, mxu.luc_xwalk)
 ```
 
 # 5.3 Save Single, Amended Land Use Code Crosswalk
 ```{r}
 # Save finished land use code crosswalk as .csv, .xlsx, and .RDS file
-write.csv()
-write_xlsx()
-write_rds()
+write.csv(
+  luc_xwalk,
+  here(paste0("04_Output/Internal/MAPC.LUC_xwalk_.",q,"_",yr,".rds")),
+  row.names = FALSE
+)
+
+write_rds(luc_xwalk, here(paste0("04_Output/Internal/MAPC.LUC_xwalk_.",q,"_",yr,".rds")))
 ```
