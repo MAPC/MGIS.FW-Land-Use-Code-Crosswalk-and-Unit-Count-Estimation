@@ -806,11 +806,11 @@ unmatched_text <- comp |>
 # Some of these are just single uses mischaracterized as mixed use with a leading zero in the code
 
 # List of strings common to undefined Mixed Use use codes which indicate whether or not they are ACTUALLY Mixed Use, as opposed to misclassified single use.
-mu.strings <- c("Mixed", "mixed", "MIXED", "mixedj", "mix", "Mix", "MIX", "MXD", "mxd", "MU ", "Mu ", "mu ", "primary", "Primary", "primarily", "Primarily", "PRI ", "pri ", "Pri ", "PRI- ", "pri- ", "Pri- ", "-use", "-Use", "-USE", " use", " USE", " Use")
+mu.strings <- c("Mixed", "mixed", "MIXED", "mixedj", "mix", "Mix", "MIX", "MXD", "mxd", "MU ", "Mu ", "mu ", "primary", "Primary", "primarily", "Primarily","PR ", "Pr ", "pr ",  "PRI ", "pri ", "Pri ", "PRI- ", "pri- ", "Pri- ", "-use", "-Use", "-USE", " use", " USE", " Use", "predom", "Predom", "PREDOM")
 # 
 td.mu.strings <- c("//,", "///", " and", " AND", " And", " with", " With", " WITH", " on", " On", " ON")
 # 
-td.mu.other.strings <- c("other", "Other", "OTHER", "unknown", "Unknown", "UNKNOWN")
+td.mu.other.strings <- c("other", "Other", "OTHER", "unknown", "Unknown", "UNKNOWN", "known", "blank", "intentionally", "left", "not known")
 
 # Filter for unmatched use codes and create diagnostic variables.
 unmatched <- comp |> 
@@ -835,11 +835,11 @@ print(nrow(unmatched)/nrow(comp))
 
 # Percent of the UNDEFINED Mixed Use Codes that are, in fact, Mixed Use Codes.
 print(nrow(unmatched[unmatched$mu.flag == TRUE,])/nrow(unmatched))
-# 34% of unmatched mixed use codes are actually mixed use codes
+# 36% of unmatched mixed use codes are actually mixed use codes
 
 # Percent of the UNDEFINED Mixed Use Codes that are, in fact, NOT Mixed Use Codes. Need to be re-categorized.
 print(1-nrow(unmatched[unmatched$mu.flag == TRUE,])/nrow(unmatched))
-# 66% of unmatched mixed use codes are single use use codes that have been mischaracterized.
+# 64% of unmatched mixed use codes are single use use codes that have been mischaracterized.
 
 # Logic for amending Mixed Use Land Use Code Descriptions to match Standard Land Use Codes.
 amended.uc <- unmatched |> 
@@ -1004,15 +1004,15 @@ matched <- comp |>
 # Print the percentage of matched mixed use codes.
 print(nrow(matched))
 print(nrow(matched)/nrow(comp))
-# 48% of Mixed Use Codes cannot be matched to a standard land use code
+# 50% of Mixed Use Codes can be matched to a standard land use code
 
 # Percent of the Mixed Use Codes that are, in fact, Mixed Use Codes.
 print(nrow(matched[matched$mu.flag == TRUE,])/nrow(matched))
-# 50% of unmatched mixed use codes are actually mixed use codes
+# 55% of matched mixed use codes are actually mixed use codes
 
 # Percent of the Mixed Use Codes that are, in fact, NOT Mixed Use Codes. Need to be re-categorized.
 print(1-nrow(matched[matched$mu.flag == TRUE,])/nrow(matched))
-# 50% of unmatched mixed use codes are single use use codes that have been mischaracterized.
+# 45% of unmatched mixed use codes are single use use codes that have been mischaracterized.
 
 # Logic for amending Mixed Use Land Use Code Descriptions to match Standard Land Use Codes.
 amended.uc <- matched |> 
@@ -1124,29 +1124,56 @@ if (nrow(amended.comp)/nrow(amended.uc) > 0.75){
 mu_xwalk <- bind_rows(subset.matched.1, subset.matched.2, subset.unmatched.1, subset.unmatched.2) |> 
   select(c(STD.USE_CODE, STD.USE_DESC, MUNI.USE_CODE, MUNI.USE_DESC, MUNI.USE_CODE_underlying, muni_name))
 
-# 92% of municipal Mixed Use Codes are edited/confirmed and crosswalked to a standard mixed use code.
+# Land Use Codes to pursue manual editing for.
+mu_hand.edit <- bind_rows(hand.edit.matched, hand.edit.unmatched)
+
+# 90% of municipal Mixed Use Codes are edited/confirmed and crosswalked to a standard mixed use code.
 print(nrow(mu_xwalk)/nrow(x))
 
-# Fix the USE_CODE_XWALK
-new_UC_xwalk <- USE_CODE_XWALK |> 
-  filter(STD.USE_CODE != "0xx") |> 
-  bind_rows(mu_xwalk) |> 
-  #Replace all N/A Variables with "Unknown"
-  mutate(
-    across(everything(), ~replace_na(.x, "Unknown"))
-  )
+# # Fix the USE_CODE_XWALK
+# new_UC_xwalk <- USE_CODE_XWALK |> 
+#   filter(STD.USE_CODE != "0xx") |> 
+#   bind_rows(mu_xwalk) |> 
+#   #Replace all N/A Variables with "Unknown"
+#   mutate(
+#     across(everything(), ~replace_na(.x, "Unknown"))
+#   )
 
-write.csv(
-  new_UC_xwalk,
-  paste0(local_root, "muni.use_code_xwalk.2025.07.csv"),
-  row.names = FALSE
-)
+# write.csv(
+#   new_UC_xwalk,
+#   paste0(local_root, "muni.use_code_xwalk.2025.07.csv"),
+#   row.names = FALSE
+# )
 
+# Mixed Use Crosswalk
+# Write csv
 write.csv(
   mu_xwalk,
-  paste0(local_root,"muni_mixed.use_xwalk.2025.07.csv"),
+  paste0(here(paste0("04_Output/Internal/muni_mixed.use_xwalk.",q,"_",yr,".csv"))),
   row.names = FALSE
 )
+
+# Write RDS
+write_rds(
+  mu_xwalk,
+  paste0(here(paste0("04_Output/Internal/muni_mixed.use_xwalk.",q,"_",yr,".rds")))
+)
+
+# Mixed Use Unknowns
+# Write csv
+write.csv(
+  mu_hand.edit,
+  paste0(here(paste0("04_Output/Internal/muni_mixed.use_manual.review.",q,"_",yr,".csv"))),
+  row.names = FALSE
+)
+
+# write .RDS
+write_rds(
+  mu_hand.edit,
+  paste0(here(paste0("04_Output/Internal/muni_mixed.use_manual.review.",q,"_",yr,".rds")))
+)
+
+gc()
 
 #TODO:
 # 1. Determine how to handle the hand.edit/matched and unmatched use codes.
