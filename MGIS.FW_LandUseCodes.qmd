@@ -1959,7 +1959,21 @@ if(indc$numTRUE == 1){
   
 }
 
+# Clean up the code.
 gc()
+
+# Remove various helper variables from the amend_tbl dataframe.
+amend_tbl_clean <- amend_tbl |> 
+  # Remove Helper Variables
+  select(!starts_with("flag.")) |> 
+  select(-c(od_uc, numTRUE, mxu.flag, mxu.td.flag, uk, dls.dupes, su.amend.flag, mxu.amend.flag, UCID)) |> 
+  select(-c(STD.USE_DESC)) |> 
+  # Join standard land use code descriptions back into the data.
+  left_join(
+    std_uc,
+    by = c("STD.USE_CODE")
+  ) |> 
+  # Move around the variables
 
 #
 
@@ -2119,21 +2133,18 @@ umdi_comp <- res_xwalk |> full_join(umdi.res.xwalk, by = c("muni_name", "MUNI.US
 
 
 # 5.0 Create Harmonized Use Code Crosswalk
-# 5.1
+# 5.1 Load Mixed and Single Use Crosswalks Created in Section 4.1 and 4.2
 ```{r}
-# harmonized_uc <- left_join(std_uc, muni_uc, by = c("xwalk_uc")) |> 
-#   relocate(
-#     TOWN_ID,
-#     muni_name,
-#     STD.USE_CODE,
-#     MUNI.USE_CODE,
-#     STD.USE_DESC,
-#     MUNI.USE_DESC
-#   )
-# 
-# func_use.code.count <- function(df){
-#   test <- df |> 
-#     mutate()
-# }
+# Load Single Use Amended Land Use Codes
 
+# Load Mixed Use Amended Land use Codes
+
+```
+
+# 5.2 Combine Land Use Code Crosswalks
+```{r}
+```
+
+# 5.3 Save Single, Amended Land Use Code Crosswalk
+```{r}
 ```
