@@ -1217,7 +1217,10 @@ for (i in od_uc.list) {
   
   # Filter for matched use codes.
   matched <- comp |> filter(STD.USE_CODE != "UNDEFINED") |> mutate(od_uc = i)
-  matched_tbl <- bind_rows(matched_tbl, matched)
+  matched_tbl <- bind_rows(matched_tbl, matched) |> select(-c(xwalk_uc, od_uc)) |> 
+    mutate(
+      MUNI.USE_CODE_underlying = "single use"
+    )
   
   # Filter for unmatched use codes and create diagnostic variables.
   unmatched <- comp |> filter(STD.USE_CODE == "UNDEFINED") |> mutate(od_uc = i)
@@ -2114,7 +2117,7 @@ mxu.amend_tbl <- unmatched.amend_mxu |> ungroup() |>
   select(c(STD.USE_CODE, STD.USE_DESC, MUNI.USE_CODE, MUNI.USE_DESC, muni_name))
 
 # Create a single dataframe for the single use amended land use code crosswalk
-su.luc_xwalk <- bind_rows(amend_tbl, mxu.amend_tbl)
+su.luc_xwalk <- bind_rows(amend_tbl_clean, mxu.amend_tbl)
 
 # Save the single use amended land use code crosswalk
 # As csv
