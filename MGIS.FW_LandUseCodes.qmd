@@ -2158,7 +2158,7 @@ luc_xwalk <- bind_rows(su.matched.luc_xwalk, su.amend.luc_xwalk, mxu.luc_xwalk)
 # Save finished land use code crosswalk as .csv, .xlsx, and .RDS file
 write.csv(
   luc_xwalk,
-  here(paste0("04_Output/Internal/MAPC.LUC_xwalk_.",q,"_",yr,".rds")),
+  here(paste0("04_Output/Internal/MAPC.LUC_xwalk_.",q,"_",yr,".csv")),
   row.names = FALSE
 )
 
