@@ -2181,19 +2181,3 @@ write.csv(
 write_rds(luc_xwalk, here(paste0("04_Output/External/MAPC.LUC_xwalk_.",q,"_",yr,".rds")))
 
 ```
-
-# 6.0 MAPC Land Use Code Crosswalk Validation + QA/QC
-# 6.1 
-
-# 6.2 UMDI and MHP Land Use Code Crosswalk Comparison
-```{r}
-# MHP
-# MHP Data Cleaning
-
-# MHP Comparison
-mhp.comp <- full_join(
-  luc_xwalk,
-  mhp.luc.xwalk,
-  by = c("muni_name", "MUNI.USE_CODE" = "USE_CODE")
-)
-```
