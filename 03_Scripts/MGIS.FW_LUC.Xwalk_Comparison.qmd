@@ -53,8 +53,50 @@ umdi.luc.xwalk <- read_xlsx(here("02_Data/Raw/Land Use Codes/UMDI/Standardized L
 # 2.1 UMDI Land Use Code Crosswalk Comparison
 ```{r}
 # UMDI Individual Analysis
+# Number of Unique Land Use Codes
+tbl.1.umdi <- umdi.luc.xwalk |> 
+  group_by(STD_LUC) |> 
+  summarise(
+    n = n()
+  ) |> 
+  ungroup()
+# 98 standard Land use codes contained in the 
+
+# What "Broad use" categories are defined?
+tbl.2.umdi <- umdi.luc.xwalk |> 
+  group_by(CATEGORY) |> 
+  summarise(
+    n = n()
+  ) |> 
+  ungroup()
+# 7 broad use categories definiting the standard land use codes contained in the crosswalk.
 
 # UMDI Comparison Analysis
+umdi.comp <-
+  left_join(
+    mapc.luc.xwalk,
+    umdi.luc.xwalk,
+    by = c("MUNI.USE_CODE" = "USE_CODE", "MUNI.USE_DESC" = "USE_DESC")
+  ) |> 
+  mutate(
+     std.luc_compare = if_else(STD.USE_CODE == STD_LUC, TRUE, FALSE)
+  )
+
+# Compare the number of crosswalked three digit land use codes which match each other and those that do not.
+umdi_std.comp_tbl <- umdi.comp |>
+  group_by(std.luc_compare) |> 
+  summarise(
+    n = n()
+  ) |> 
+  ungroup()
+
+umdi.f_std.luc_compare <- umdi.comp |> filter(std.luc_compare == FALSE)
+umdi.t_std.luc_compare <- umdi.comp |> filter(std.luc_compare == TRUE)
+
+# Observations
+# UMDI does not include a TOWN_ID or municipal name variable making it difficult to crosswalk MAPC's Land Use Code Crosswalk specifically to each Use Code.
+# Retains a mix of three and four digit standard codes.
+# 
 ```
 
 # 2.2 MHP Land Use Code Crosswalk Comparison
@@ -99,7 +141,7 @@ print(nrow(mhp.no.std))
 # - Unclear how consistent the mixed use assignment is/the processes. Instances where 013 is assigned to a parcel that explicitly states its a 037 (comm + ag) (code 137 in town 189)
 
 # MHP Comparison Analysis
-mhp.comp <- full_join(
+mhp.comp <- left_join(
   mapc.luc.xwalk,
   mhp.luc.xwalk,
   by = c("muni_name", "MUNI.USE_CODE" = "USE_CODE")
@@ -114,18 +156,26 @@ not.present.mhp <- mhp.comp |> filter(is.na(TOWN_ID))
 print(nrow(not.present.mhp))
 # 1,611 land use codes present in the Q1 2026 MassGIS Property Tax Parcel file are not present in the MHP crosswalk.
 
-#
-not.present.mapc <- mhp.comp |> 
+#Dataframe of land use codes no present in the MAPC Crosswalk
+not.present.mapc <- mhp.comp |> filter(is.na(MUNI.USE_DESC))
+# land use codes present in the MHP Land Use Code crosswalk file are not present in the MAPC Land Use Code Crosswalk.
 
-# 
-std.comp_tbl <- mhp.comp |> 
+# Compare the number of crosswalked three digit land use codes which match each other and those that do not.
+mhp.std.comp_tbl <- mhp.comp |> 
+  filter(!is.na(TOWN_ID)) |>
+  filter(!is.na(MUNI.USE_CODE)) |> 
   group_by(std.luc_compare) |> 
   summarise(
     n = n()
   ) |> 
   ungroup()
 
-f_std.luc_compare <- mhp.comp |> filter(std.luc_compare == FALSE)
-t_std.luc_compare <- mhp.comp |> filter(std.luc_compare == TRUE)
+mhp.f_std.luc_compare <- mhp.comp |> filter(std.luc_compare == FALSE)
+mhp.t_std.luc_compare <- mhp.comp |> filter(std.luc_compare == TRUE)
+
+# Takeaways
+# MAPC Land Use Code crosswalk has false positives in the three digit standard use code crosswalk. Use codes from municipalities have three digit prefixes which match to DLS standards, but to incorrent codes.
+
+# 
 
 ```
