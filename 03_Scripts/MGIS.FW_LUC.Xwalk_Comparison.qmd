@@ -103,7 +103,7 @@ umdi.t_std.luc_compare <- umdi.comp |> filter(std.luc_compare == TRUE)
 ```{r}
 # MHP Individual Analysis
 # What are the standardized land use descriptions assigned in the crosswalk?
-tbl.1 <- mhp.luc.xwalk |> 
+tbl.1.mhp <- mhp.luc.xwalk |> 
   group_by(standardized_LU_Description) |> 
   summarise(
     n = n()
@@ -114,7 +114,7 @@ tbl.1 <- mhp.luc.xwalk |>
 # 11 distinct mixed use descriptions (compared to 35 different combinations from DLS)
 
 # What are the "BroadUse Categories assigned to each municipal code?
-tbl.2 <- mhp.luc.xwalk |> 
+tbl.2.mhp <- mhp.luc.xwalk |> 
   group_by(BroadUse) |> 
   summarise(
     n= n()
