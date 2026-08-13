@@ -1163,10 +1163,8 @@ unmatched.uk_tbl <- NULL
 dls.dupes_tbl <- NULL
 # Create full flagging QA table dataframe.
 flag.QA_um_tbl <- NULL
-# Create full flagging QA table dataframe.
-flag.QA_m_tbl <- NULL
 # Create QA Table column names
-flag.QA.cols <- c("Unmatched.Rows","Matched.Rows_pct","Unmatched.Rows.Fixed","Unmatched.Rows.Fixed_pct","Matched_pct")
+flag.QA.cols_um <- c("Unmatched.Codes","Unmatched.Codes_pct","Unmatched.Codes.Flagged","Unmatched.Codes.Flagged_pct","Matched_pct")
 
 # 
 for (i in od_uc.list) {
@@ -1242,7 +1240,7 @@ for (i in od_uc.list) {
   # 3. Unmatched use codes belonging to a DLS non-specific standard code.
   dls.dupes_tmp <- comp.amend |> filter(dls.dupes == TRUE)
   # 4. Matched use codes.
-  matched.amend_tmp <- comp.amend |> filter(matched == 1) |>filter(numTRUE > 0 & dls.dupes == FALSE | (numTRUE == 0 & mxu.amend.flag == TRUE))
+  matched.amend_tmp <- comp.amend |> filter(matched == 1) |> filter(numTRUE > 0 & dls.dupes == FALSE | (numTRUE == 0 & mxu.amend.flag == TRUE))
 
   
   # Appending each set of unmatched code data to categorized table
@@ -1259,18 +1257,19 @@ for (i in od_uc.list) {
   # Create null QA table
   flag.QA_um <- NULL
   
-  # Print the percentage of UNMATCHED single use codes.
+  # Print the number of UNMATCHED three-digit municipal specific single use codes.
   print(nrow(unmatched))
   a_um <- nrow(unmatched)
+  # Print the percentage of UNMATCHED three-digit municipal specific single use codes compared to the total number of three-digit municipal specific single use codes.
   print(paste(
     1 - (nrow(unmatched) / nrow(comp)),
-    "of unique ",
+    "of UNMATCHED three-digit municipal specific single use codes ",
     i,
-    " can be matched to a standard land use codes."
+    " can be matched to a standard land use code."
   ))
   b_um <- 1 - (nrow(unmatched) / nrow(comp))
   
-  # Filter for codes that have been flagged via the text analysis script.
+  # Number of UNMATCHED three-digit municipal specific single use codes flagged via the text analysis script.
   print(
     paste(
       nrow(unmatched.amend_tmp),
@@ -1280,23 +1279,25 @@ for (i in od_uc.list) {
     )
   )
   c_um <- nrow(unmatched.amend_tmp)
+  # UNMATCHED three-digit municipal specific single use codes flagged via the text analysis script as a percentage of all UNMATCHED three-digit municipal specific single use codes.
   print(nrow(unmatched.amend_tmp) / nrow(unmatched))
   d_um <- nrow(unmatched.amend_tmp) / nrow(unmatched)
   
+  # UNMATCHED three-digit municipal specific single use codes
   print(
     paste(
-      1 - (nrow(unmatched) - nrow(unmatched.amend_tmp)) / nrow(comp),
+      1 - ((nrow(unmatched) - nrow(unmatched.amend_tmp)) / nrow(comp)),
       "of unique municipal use codes from one digit category ",
       i,
       " can be matched to a standard land use code after text matching is administered."
     )
   )
-  e_um <- 1 - (nrow(unmatched) - nrow(unmatched.amend_tmp)) / nrow(comp)
+  e_um <- 1 - ((nrow(unmatched) - nrow(unmatched.amend_tmp)) / nrow(comp))
   
   # Fill in QA Table
   flag.QA_um <- bind_cols(a_um, b_um, c_um, d_um, e_um)
   # Assign column names
-  colnames(flag.QA_um) <- flag.QA.cols
+  colnames(flag.QA_um) <- flag.QA.cols_um
   # Calculate percentage point improvement in standard code matching after text analysis flagging.
   flag.QA_um <- flag.QA_um |>
     mutate(
@@ -1307,60 +1308,8 @@ for (i in od_uc.list) {
   # Add flagging diagnostic table for one digit use code i to full diagnostic table.
   flag.QA_um_tbl <- bind_rows(flag.QA_um_tbl, flag.QA_um)
   
-  # QA Analysis of MATCHED land use codes
-  # Create null QA table
-  flag.QA_m <- NULL
-  
-  # Print the percentage of unmatched mixed use codes.
-  print(nrow(matched))
-  a_m <- nrow(matched)
-  print(paste(
-    1 - (nrow(matched) / nrow(comp)),
-    "of unique ",
-    i,
-    " can be matched to a standard land use codes."
-  ))
-  b_m <- 1 - (nrow(matched) / nrow(comp))
-  
-  # Filter for codes that have been flagged via the text analysis script.
-  print(
-    paste(
-      nrow(matched.amend_tmp),
-      "out of",
-      nrow(matched),
-      "unmatched land use codes were flagged to be amended to a standard land use code."
-    )
-  )
-  c_m <- nrow(matched.amend_tmp)
-  print(nrow(matched.amend_tmp) / nrow(matched))
-  d_m <- nrow(matched.amend_tmp) / nrow(matched)
-  
-  print(
-    paste(
-      1 - (nrow(matched) - nrow(matched.amend_tmp)) / nrow(comp),
-      "of unique municipal use codes from one digit category ",
-      i,
-      " can be matched to a standard land use code after text matching is administered."
-    )
-  )
-  e_m <- 1 - (nrow(matched) - nrow(matched.amend_tmp)) / nrow(comp)
-  
-  # Fill in QA Table
-  flag.QA_m <- bind_cols(a_m, b_m, c_m, d_m, e_m)
-  # Assign column names
-  colnames(flag.QA_m) <- flag.QA.cols
-  # Calculate percentage point improvement in standard code matching after text analysis flagging.
-  flag.QA_m <- flag.QA_m |>
-    mutate(
-      improvement = Matched_pct - Matched.Rows_pct,
-      od_uc = i
-    )
-  
-  # Add flagging diagnostic table for one digit use code i to full diagnostic table.
-  flag.QA_m_tbl <- bind_rows(flag.QA_m_tbl, flag.QA_m)
-  
   # Remove various dataframes and lists used in each loop iteration.
-  rm(x,y, comp,matched,unmatched, flag.df,unmatched.amend,unmatched.amend_tmp,uk_tmp,dls.dupes_tmp,flag.QA,a,b,c,d,e)
+  rm(x,y,comp,matched,unmatched,flag.df, comp.amend, unmatched.amend,unmatched.amend_tmp,uk_tmp,dls.dupes_tmp, matched.amend_tmp,flag.QA_um,a_um,b_um,c_um,d_um,e_um)
   
 }
 
