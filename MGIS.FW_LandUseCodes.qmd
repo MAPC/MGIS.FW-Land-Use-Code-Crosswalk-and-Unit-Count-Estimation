@@ -1307,7 +1307,7 @@ for (i in od_uc.list) {
   # Calculate percentage point improvement in standard code matching after text analysis flagging of unmatched codes.
   flag.QA_um <- flag.QA_um |>
     mutate(
-      improvement = Unmatched.Codes_pct - Matched_pct,
+      improvement = Unmatched.Codes_pct - Remaining.Unmatched_pct,
       od_uc = i
     )
   
@@ -1315,7 +1315,7 @@ for (i in od_uc.list) {
   flag.QA_um_tbl <- bind_rows(flag.QA_um_tbl, flag.QA_um)
   
   # Remove various dataframes and lists used in each loop iteration.
-  rm(x,y,comp,matched,unmatched,flag.df, comp.amend, unmatched.amend,unmatched.amend_tmp,uk_tmp,dls.dupes_tmp, matched.amend_tmp,flag.QA_um,a_um,b_um,c_um,d_um,e_um)
+  rm(x,y,comp,matched,unmatched,flag.df, comp.amend,unmatched.amend_tmp,unmatched_uk_tmp,dls.dupes_tmp, matched_uk_tmp, matched.amend_tmp,flag.QA_um,a_um,b_um,c_um,d_um,e_um)
   
 }
 
@@ -1325,11 +1325,14 @@ write.csv(flag.QA_tbl, here(paste0("02_Data/Logs/Unmatched.Diagnostics_SU_.",q,"
 # Write the full matched table.
 write.csv(matched_tbl, here(paste0("02_Data/Processed/Matched_tbl_SU_.",q,"_",yr,".csv")), row.names = FALSE)
 
+# Write the full unknown table.
+write.csv(matched.uk_tbl, here(paste0("02_Data/Processed/Matched.Unknown_tbl_SU_.",q,"_",yr,".csv")), row.names = FALSE)
+
 # Write the full flagged unmatched table.
 write.csv(unmatched.amend_tbl, here(paste0("02_Data/Processed/Unmatched_tbl_SU_.",q,"_",yr,".csv")), row.names = FALSE)
 
 # Write the full unknown table.
-write.csv(unmatched.uk_tbl, here(paste0("02_Data/Processed/Unknown_tbl_SU_.",q,"_",yr,".csv")), row.names = FALSE)
+write.csv(unmatched.uk_tbl, here(paste0("02_Data/Processed/Unmatched.Unknown_tbl_SU_.",q,"_",yr,".csv")), row.names = FALSE)
 
 # Write the full DLS Duplicates table.
 write.csv(dls.dupes_tbl, here(paste0("02_Data/Processed/DLS.Duplicates_tbl_SU_.",q,"_",yr,".csv")), row.names = FALSE)
@@ -1340,10 +1343,15 @@ write.csv(matched_tbl, here(paste0("04_Output/Internal/Matched_tbl_SU_.",q,"_",y
 
 write_rds(matched_tbl, here(paste0("04_Output/Internal/Matched_tbl_SU_.",q,"_",yr,".rds")))
 
-# Write the unknown table
-write.csv(unmatched.uk_tbl, here(paste0("04_Output/Internal/Unknown_tbl_SU_.",q,"_",yr,".csv")), row.names = FALSE)
+# Write the matched unknown table
+write.csv(matched.uk_tbl, here(paste0("04_Output/Internal/Matched.Unknown_tbl_SU_.",q,"_",yr,".csv")), row.names = FALSE)
 
-write_rds(unmatched.uk_tbl, here(paste0("04_Output/Internal/Unknown_tbl_SU_.",q,"_",yr,".csv")))
+write_rds(matched.uk_tbl, here(paste0("04_Output/Internal/Matched.Unknown_tbl_SU_.",q,"_",yr,".csv")))
+
+# Write the unknown table
+write.csv(unmatched.uk_tbl, here(paste0("04_Output/Internal/Unmatched.Unknown_tbl_SU_.",q,"_",yr,".csv")), row.names = FALSE)
+
+write_rds(unmatched.uk_tbl, here(paste0("04_Output/Internal/Unmatched.Unknown_tbl_SU_.",q,"_",yr,".csv")))
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Standard Use Code Assignment Process
