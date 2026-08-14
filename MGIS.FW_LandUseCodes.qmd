@@ -1159,6 +1159,8 @@ matched_tbl <- NULL
 unmatched.amend_tbl <- NULL
 # Create a table of "known" unknown land use codes for hardcoding/human review.
 unmatched.uk_tbl <- NULL
+# Create a table of "known" unknown land use codes for hardcoding/human review.
+matched.uk_tbl <- NULL
 # Create a table of codes flagged for duplicative, non-specific DLS land use descriptions.
 dls.dupes_tbl <- NULL
 # Create full flagging QA table dataframe.
@@ -1236,22 +1238,26 @@ for (i in od_uc.list) {
   # 1. Unmatched codes flagged to be allocated to a standard land use code.
   unmatched.amend_tmp <- comp.amend |> filter(matched == 0) |>  filter(numTRUE > 0 & dls.dupes == FALSE | (numTRUE == 0 & mxu.amend.flag == TRUE))
   # 2. Unmatched codes with an unknown standard use code allocation.
-  uk_tmp <- comp.amend |> filter(numTRUE == 0 & mxu.amend.flag == FALSE & dls.dupes == FALSE)
+  unmatched_uk_tmp <- comp.amend |> filter(matched == 0) |> filter(numTRUE == 0 & mxu.amend.flag == FALSE & dls.dupes == FALSE)
   # 3. Unmatched use codes belonging to a DLS non-specific standard code.
   dls.dupes_tmp <- comp.amend |> filter(dls.dupes == TRUE)
   # 4. Matched use codes.
   matched.amend_tmp <- comp.amend |> filter(matched == 1) |> filter(numTRUE > 0 & dls.dupes == FALSE | (numTRUE == 0 & mxu.amend.flag == TRUE))
+  # 5. Matched codes with an unknown standard use code allocation.
+  matched_uk_tmp <- comp.amend |> filter(matched == 1) |> filter(numTRUE == 0 & mxu.amend.flag == FALSE & dls.dupes == FALSE)
 
   
   # Appending each set of unmatched code data to categorized table
   # Add table of flagged municipal specific use codes to
   unmatched.amend_tbl <- bind_rows(unmatched.amend_tbl, unmatched.amend_tmp)
   # Add to full table of unknown municipal specific use codes.
-  unmatched.uk_tbl <- bind_rows(unmatched.uk_tbl, uk_tmp)
+  unmatched.uk_tbl <- bind_rows(unmatched.uk_tbl, unmatched_uk_tmp)
   # Add to full table of DLS duplicate municipal specific use codes.
   dls.dupes_tbl <- bind_rows(dls.dupes_tbl, dls.dupes_tmp)
   # Add to full table to matched municipal specific codes
   matched_tbl <- bind_rows(matched_tbl, matched.amend_tmp)
+  # Add to full table of unknown municipal specific use codes.
+  matched.uk_tbl <- bind_rows(matched.uk_tbl, matched_uk_tmp)
   
   # QA Analysis of unmatched land use codes
   # Create null QA table
