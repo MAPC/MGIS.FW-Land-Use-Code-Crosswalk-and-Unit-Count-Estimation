@@ -1320,7 +1320,7 @@ for (i in od_uc.list) {
 }
 
 # Write fill flagging diagnostic table to 
-write.csv(flag.QA_tbl, here(paste0("02_Data/Logs/Unmatched.Diagnostics_SU_.",q,"_",yr,".csv")), row.names = FALSE)
+write.csv(flag.QA_um_tbl, here(paste0("02_Data/Logs/Unmatched.Diagnostics_SU_.",q,"_",yr,".csv")), row.names = FALSE)
 
 # Write the full matched table.
 write.csv(matched_tbl, here(paste0("02_Data/Processed/Matched_tbl_SU_.",q,"_",yr,".csv")), row.names = FALSE)
