@@ -1228,6 +1228,9 @@ for (i in od_uc.list) {
       uk = str_detect(MUNI.USE_DESC, regex(
         paste(td.mu.other.strings, collapse = "|"), ignore_case = T
       )),
+      other = str_detect(MUNI.USE_DESC, regex(
+        paste(other.string, collapse = "|"), ignore_case = T
+      )),
       #
       dls.dupes = str_detect(MUNI.USE_DESC, regex(
         paste(dls.duplicative.terms, collapse = "|"), ignore_case = T
