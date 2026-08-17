@@ -466,16 +466,19 @@ for (i in od_uc.list){
 # Add strings to unique standard terms list
 #
 dls.duplicative.terms <- c("woodland", "cranberry", "garage", "day care")
+#
+in.need.of.use_code <- c("airport")
 # Mixed Use
 # List of strings common to undefined Mixed Use use codes which indicate whether or not they are ACTUALLY Mixed Use, as opposed to misclassified single use.
 mu.strings <- c("Mixed", "mixed", "MIXED", "mixedj", "mix", "Mix", "MIX", "MXD", "mxd", "MU ", "Mu ", "mu ", "primary", "Primary", "primarily", "Primarily","PR ", "Pr ", "pr ",  "PRI ", "pri ", "Pri ", "PRI- ", "pri- ", "Pri- ", "-use", "-Use", "-USE", " use", " USE", " Use", "predom", "Predom", "PREDOM")
 
-# 
+# Create a secondary list of terms and symbols to indicate whether municipal specific land use codes could be mixed-use.
 td.mu.strings <- c("//,", "///", " and", " AND", " And", " with", " With", " WITH", " on", " On", " ON")
-# 
+# Create a list of terms to flag municipal specific land use codes with an unknown or unspecific use description.
 td.mu.other.strings <- c("other", "Other", "OTHER", "unknown", "Unknown", "UNKNOWN", "known", "blank", "intentionally", "left", "not known")
-#
-numerics.strings <- c("[:digit:]")
+# Create a list of terms to indicate the presence of an unspecific use description. To be used later with "char_count" variable to determine "known unknowns" and "unknown unknowns".
+other.string <- c("other", "Other", "OTHER")
+
 # Residential (19)
 td.std.desc_lexicon_unique$`101` <- c(td.std.desc_lexicon_unique$`101`, "sing")
 td.std.desc_lexicon_unique$`102` <- c(td.std.desc_lexicon_unique$`102`, "condo")
@@ -1181,6 +1184,7 @@ for (i in od_uc.list) {
       STD.USE_CODE = replace_na(STD.USE_CODE, "UNDEFINED"),
       STD.USE_DESC = replace_na(STD.USE_DESC, "UNDEFINED"),
       matched = if_else(STD.USE_CODE != "UNDEFINED", 1, 0),
+      char_count = length(MUNI.USE_CODE),
       od_uc = i
     ) |> distinct(MUNI.USE_CODE, muni_name, .keep_all = TRUE)
   
@@ -1357,6 +1361,56 @@ write_rds(unmatched.uk_tbl, here(paste0("04_Output/Internal/Unmatched.Unknown_tb
 # Standard Use Code Assignment Process
 
 # Matched Records
+matched_tbl <- matched_tbl |> 
+  mutate(
+    # Fix for depricated use codes.
+    STD.USE_CODE = case_when(
+      STD.USE_CODE == "901" ~ "919",
+      STD.USE_CODE == "9010" ~ "919",
+      STD.USE_CODE == "902" ~ "994",
+      STD.USE_CODE == "9020" ~ "994",
+      STD.USE_CODE == "903" ~ "931",
+      STD.USE_CODE == "9030" ~ "931",
+      STD.USE_CODE == "904" ~ "942",
+      STD.USE_CODE == "9040" ~ "942",
+      STD.USE_CODE == "905" ~ "951",
+      STD.USE_CODE == "9050" ~ "951",
+      STD.USE_CODE == "906" ~ "962",
+      STD.USE_CODE == "9060" ~ "962",
+      STD.USE_CODE == "907" ~ "990",
+      STD.USE_CODE == "9070" ~ "990",
+      STD.USE_CODE == "908" ~ "970",
+      STD.USE_CODE == "9080" ~ "970",
+    ),
+   STD.USE_DESC = case_when(
+      STD.USE_CODE == "901" ~ "Comm. Of Mass. (Other)",
+      STD.USE_CODE == "9010" ~ "Comm. Of Mass. (Other)",
+      STD.USE_CODE == "902" ~ "Improved County or Regional Association Commission",
+      STD.USE_CODE == "9020" ~ "Improved County or Regional Association Commission",
+      STD.USE_CODE == "903" ~ "Improved, Selectmen or City Council (Municipal)",
+      STD.USE_CODE == "9030" ~ "Improved, Selectmen or City Council (Municipal)",
+      STD.USE_CODE == "904" ~ "College or University (Educational Private)",
+      STD.USE_CODE == "9040" ~ "College or University (Educational Private)",
+      STD.USE_CODE == "905" ~ "Other (Charitable Org.)",
+      STD.USE_CODE == "9050" ~ "Other (Charitable Org.)",
+      STD.USE_CODE == "906" ~ "Other (Religious Org.)",
+      STD.USE_CODE == "9060" ~ "Other (Religious Org.)",
+      STD.USE_CODE == "907" ~ "121A Corporations",
+      STD.USE_CODE == "9070" ~ "121A Corporations",
+      STD.USE_CODE == "908" ~ "Housing Authority",
+      STD.USE_CODE == "9080" ~ "Housing Authority"
+    ),
+    # Fix for in-law flag.
+    STD.USE_CODE = case_when(
+      flag.109 == TRUE ~ "109",
+      .default = STD.USE_CODE
+    ),
+    STD.USE_DESC = case_when(
+      flag.109 == TRUE ~ "Multiple Houses on one parcel",
+      .default = STD.USE_DESC
+    )
+  )
+
 # Split the to-be-amended matched use code dataframe into two segments: 1) single use 2) mixed use.
 # Single Use
 matched.amend_su <- matched_tbl |> filter(mxu.amend.flag == FALSE)
@@ -2111,7 +2165,11 @@ mxu.amend_tbl <- unmatched.amend_mxu |> ungroup() |>
   select(c(STD.USE_CODE, STD.USE_DESC, MUNI.USE_CODE, MUNI.USE_DESC, muni_name))
 
 # Create a single dataframe for the single use amended land use code crosswalk
-su.luc_xwalk <- bind_rows(amend_tbl_clean, mxu.amend_tbl)
+su.luc_xwalk <- bind_rows(amend_tbl_clean, mxu.amend_tbl) |> 
+  mutate(
+    STD.USE_CODE = if_else(MUNI.USE_DESC %in% in.need.of.use_code, "001", STD.USE_CODE),
+    STD.USE_DESC = if_else(MUNI.USE_DESC %in% in.need.of.use_code, "Flag for DLS/BLA Code Update.")
+  )
 
 # Save the single use amended land use code crosswalk
 # As csv
