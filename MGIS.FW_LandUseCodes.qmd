@@ -776,7 +776,11 @@ y <- od_std.uc$`0` |> select(xwalk_uc, STD.USE_CODE, STD.USE_DESC)
 comp <- full_join(x, y, by = c("xwalk_uc")) |> 
   mutate(
     STD.USE_CODE = replace_na(STD.USE_CODE, "UNDEFINED"),
-    STD.USE_DESC = replace_na(STD.USE_DESC, "UNDEFINED")
+    STD.USE_DESC = replace_na(STD.USE_DESC, "UNDEFINED"),
+    matched = if_else(STD.USE_CODE != "UNDEFINED", 1, 0),
+    initial.use_type = "mixed",
+    char_count = nchar(MUNI.USE_DESC),
+    od_uc = "0"
   ) |> distinct(MUNI.USE_CODE, muni_name, .keep_all = TRUE) 
 
 # Unmatched
@@ -809,6 +813,10 @@ unmatched <- comp |>
     td.mu.flag = str_detect(MUNI.USE_DESC, paste(td.mu.strings, collapse = "|")),
     # Flag for unknown use.
     uk.flag = str_detect(MUNI.USE_DESC, paste(td.mu.other.strings, collapse = "|")),
+    #
+    other = str_detect(MUNI.USE_DESC, regex(paste(other.string, collapse = "|"), ignore_case = T)),
+    #
+    dls.dupes = str_detect(MUNI.USE_DESC, regex(paste(dls.duplicative.terms, collapse = "|"), ignore_case = T)),
   )
 
 # Print the percentage of unmatched mixed use codes.
@@ -880,11 +888,11 @@ amended.uc <- unmatched |>
     #
     xwalk_uc = str_sub(MUNI.USE_CODE_fix, start = 1, end = 3)
   ) |> 
-   select(c(xwalk_uc, MUNI.USE_CODE, MUNI.USE_CODE_fix, MUNI.USE_CODE_underlying, MUNI.USE_DESC, mu.flag, td.mu.flag, muni_name))
+   select(c(xwalk_uc, MUNI.USE_CODE, MUNI.USE_CODE_fix, MUNI.USE_CODE_underlying, MUNI.USE_DESC, mu.flag, td.mu.flag, muni_name, uk.flag, other, char_count, dls.dupes, matched, initial.use_type))
 
 # Amend the original crosswalk with fixes made to by the use code category
 # First pass - join the amended data which should now match Standard Use Code typologies
-amended.comp <- full_join(std_uc, amended.uc, by = c("xwalk_uc")) |> 
+amended.comp <- left_join(amended.uc, std_uc, by = c("xwalk_uc")) |> 
   # Removes unmatched Standard Use Codes
   drop_na(MUNI.USE_CODE) |> 
   mutate(
@@ -1020,8 +1028,7 @@ amended.uc <- matched |>
     ),
     #
     xwalk_uc = str_sub(MUNI.USE_CODE_fix, start = 1, end = 3)
-  )|> 
-   select(c(xwalk_uc, MUNI.USE_CODE, MUNI.USE_CODE_fix, MUNI.USE_CODE_underlying, MUNI.USE_DESC, mu.flag, td.mu.flag, muni_name))
+  )
 
 # Amend the original crosswalk with fixes made to by the use code category
 # First pass - join the amended data which should now match Standard Use Code typologies
@@ -1105,7 +1112,7 @@ if (nrow(amended.comp)/nrow(amended.uc) > 0.75){
 
 # Mixed-Use Code Crosswalk
 mu_xwalk <- bind_rows(subset.matched.1, subset.matched.2, subset.unmatched.1, subset.unmatched.2) |> 
-  select(c(STD.USE_CODE, STD.USE_DESC, MUNI.USE_CODE, MUNI.USE_DESC, MUNI.USE_CODE_underlying, muni_name))
+  select(c(STD.USE_CODE, STD.USE_DESC, MUNI.USE_CODE, MUNI.USE_DESC, MUNI.USE_CODE_underlying, muni_name, matched, od.uc, other, char_count, initial.use_type))
 
 # Land Use Codes to pursue manual editing for.
 mu_hand.edit <- bind_rows(hand.edit.matched, hand.edit.unmatched)
@@ -1184,6 +1191,7 @@ for (i in od_uc.list) {
       STD.USE_CODE = replace_na(STD.USE_CODE, "UNDEFINED"),
       STD.USE_DESC = replace_na(STD.USE_DESC, "UNDEFINED"),
       matched = if_else(STD.USE_CODE != "UNDEFINED", 1, 0),
+      initial.use_type = "single",
       char_count = nchar(MUNI.USE_DESC),
       od_uc = i
     ) |> distinct(MUNI.USE_CODE, muni_name, .keep_all = TRUE)
@@ -1374,7 +1382,7 @@ write_rds(unmatched.uk_tbl, here(paste0("04_Output/Internal/Unmatched.Unknown_tb
 # Standard Use Code Assignment Process
 # Split the to-be-amended matched use code dataframe into two segments: 1) single use 2) mixed use.
 # Single Use
-matched.amend_su <- matched_tbl |> filter(mxu.amend.flag == FALSE)
+matched.amend_su <- matched_tbl |> filter(mxu.amend.flag == FALSE) |> mutate(STD.USE_CODE_comp = NA)
 # Mixed-Use
 matched.amend_mxu <- matched_tbl |> filter(mxu.amend.flag == TRUE)
 
@@ -1407,21 +1415,21 @@ for (i in ucid_list) {
   # Greater than one use code flag - 
 if(indc$numTRUE == 1){
   
-  indc$STD.USE_CODE <- test[1]
+  indc$STD.USE_CODE_comp <- test[1]
   
 } else if(indc$numTRUE==2){
   
   if(indc$od_uc == test2[1]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[2]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else{
     
-    indc$STD.USE_CODE <- test[1]
+    indc$STD.USE_CODE_comp <- test[1]
     
   }
   
@@ -1429,19 +1437,19 @@ if(indc$numTRUE == 1){
   
   if (indc$od_uc == test2[1]) {
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[2]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[3]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   }else{
     
-    indc$STD.USE_CODE <- test[1]
+    indc$STD.USE_CODE_comp <- test[1]
     
   }
   
@@ -1449,23 +1457,23 @@ if(indc$numTRUE == 1){
   
   if (indc$od_uc == test2[1]) {
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[2]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[3]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[4]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else{
     
-    indc$STD.USE_CODE <- test[1]
+    indc$STD.USE_CODE_comp <- test[1]
     
   }
   
@@ -1473,27 +1481,27 @@ if(indc$numTRUE == 1){
   
   if (indc$od_uc == test2[1]) {
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[2]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[3]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[4]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[5]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else{
     
-    indc$STD.USE_CODE <- test[1]
+    indc$STD.USE_CODE_comp <- test[1]
     
   }
   
@@ -1501,31 +1509,31 @@ if(indc$numTRUE == 1){
     
   if (indc$od_uc == test2[1]) {
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[2]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[3]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[4]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[5]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[6]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else{
     
-    indc$STD.USE_CODE <- test[1]
+    indc$STD.USE_CODE_comp <- test[1]
     
   }
   
@@ -1533,117 +1541,117 @@ if(indc$numTRUE == 1){
   
   if (indc$od_uc == test2[1]) {
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[2]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[3]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[4]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[5]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[6]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[7]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else{
     
-    indc$STD.USE_CODE <- test[1]
+    indc$STD.USE_CODE_comp <- test[1]
   }
   
 }else if(indc$numTRUE==8){
   
   if (indc$od_uc == test2[1]) {
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[2]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[3]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[4]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[5]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[6]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[7]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[8]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else{
     
-    indc$STD.USE_CODE <- test[1]
+    indc$STD.USE_CODE_comp <- test[1]
   }
   
 }else if(indc$numTRUE==9){
   
   if (indc$od_uc == test2[1]) {
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[2]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[3]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[4]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[5]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[6]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[7]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[8]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[9]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else{
     
-    indc$STD.USE_CODE <- test[1]
+    indc$STD.USE_CODE_comp <- test[1]
     
   }
   
@@ -1651,47 +1659,47 @@ if(indc$numTRUE == 1){
   
   if (indc$od_uc == test2[1]) {
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[2]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[3]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[4]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[5]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[6]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[7]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[8]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[9]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[10]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else{
     
-    indc$STD.USE_CODE <- test[1]
+    indc$STD.USE_CODE_comp <- test[1]
     
   }
   
@@ -1699,106 +1707,106 @@ if(indc$numTRUE == 1){
   
   if (indc$od_uc == test2[1]) {
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[2]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[3]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[4]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[5]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[6]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[7]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[8]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[9]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[10]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[11]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else{
     
-    indc$STD.USE_CODE <- test[1]
+    indc$STD.USE_CODE_comp <- test[1]
   }
   
 }else if(indc$numTRUE==12){
   
   if (indc$od_uc == test2[1]) {
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[2]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[3]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[4]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[5]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[6]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[7]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[8]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[9]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[10]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[11]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[12]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else{
     
-    indc$STD.USE_CODE <- test[1]
+    indc$STD.USE_CODE_comp <- test[1]
     
   }
   
@@ -1806,59 +1814,59 @@ if(indc$numTRUE == 1){
   
   if (indc$od_uc == test2[1]) {
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[2]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[3]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[4]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[5]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[6]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[7]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[8]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[9]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[10]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[11]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[12]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[13]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else{
     
-    indc$STD.USE_CODE <- test[1]
+    indc$STD.USE_CODE_comp <- test[1]
     
   }
   
@@ -1866,63 +1874,63 @@ if(indc$numTRUE == 1){
   
   if (indc$od_uc == test2[1]) {
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[2]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[3]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[4]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[5]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[6]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[7]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[8]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[9]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[10]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[11]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[12]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[13]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[14]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else{
     
-    indc$STD.USE_CODE <- test[1]
+    indc$STD.USE_CODE_comp <- test[1]
     
   }
   
@@ -1930,76 +1938,76 @@ if(indc$numTRUE == 1){
   
   if (indc$od_uc == test2[1]) {
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[2]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[3]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[4]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[5]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[6]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[7]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[8]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[9]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[10]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[11]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[12]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[13]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[14]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else if(indc$od_uc == test2[15]){
     
-    indc$STD.USE_CODE <- test[match(indc$od_uc, test2)]
+    indc$STD.USE_CODE_comp <- test[match(indc$od_uc, test2)]
     
   } else{
     
-    indc$STD.USE_CODE <- test[1]
+    indc$STD.USE_CODE_comp <- test[1]
   }
 
 } else{
   
-  indc$STD.USE_CODE <- test[1]
+  indc$STD.USE_CODE_comp <- test[1]
   
 }
   
-  matched_amend_tbl <- bind_rows(amend_tbl, indc)
+  matched_amend_tbl <- bind_rows(matched_amend_tbl, indc)
   
   rm(indc, test, test2)
   
@@ -2009,7 +2017,7 @@ if(indc$numTRUE == 1){
 matched_amend_tbl_clean <- matched_amend_tbl |> 
   # Remove Helper Variables
   select(!starts_with("flag.")) |> 
-  select(-c(od_uc, numTRUE, mxu.flag, mxu.td.flag, uk, dls.dupes, su.amend.flag, mxu.amend.flag, UCID)) |> 
+  select(-c(od_uc, numTRUE, mxu.flag, mxu.td.flag, uk, dls.dupes, su.amend.flag, UCID)) |> 
   select(-c(STD.USE_DESC)) |> 
   # Join standard land use code descriptions back into the data.
   left_join(
@@ -2019,7 +2027,8 @@ matched_amend_tbl_clean <- matched_amend_tbl |>
   select(-c(xwalk_uc.x, xwalk_uc.y, od_uc, td_uc)) |> 
   # Create placeholder for MUNI.USE_CODE_underlying for single use codes.
   mutate(
-    MUNI.USE_CODE_underlying = "single use"
+    MUNI.USE_CODE_underlying = "single use",
+    comparison = if_else(STD.USE_CODE == STD.USE_CODE_comp, 1, 0)
   ) |>  
   # Move around the variables
   relocate(
@@ -2040,7 +2049,7 @@ mxu.matched_amend_tbl <- matched.amend_mxu |> ungroup() |>
     undef.primary = str_sub(MUNI.USE_CODE, start = 1, end = 1),
       # Creates a variable that represents what the municipality believes to be the secondary use based on the 1-9 one-digit use code categories present in the L3 Stanardized Use Code codebook.
     undef.secondary = str_sub(MUNI.USE_CODE, start = 2, end = 2),
-    STD.USE_CODE = case_when(
+    STD.USE_CODE_comp = case_when(
       # Residential Mixed Use
       undef.primary == 1 & undef.secondary %in% c(2,3,4,5,6,7,8,9) ~ paste0("0",undef.primary,undef.secondary),
       undef.primary == 1 & undef.secondary %in% c(1,0,NA) ~ "010",
@@ -2071,7 +2080,7 @@ mxu.matched_amend_tbl <- matched.amend_mxu |> ungroup() |>
       # uh....
       .default = "what the hell is going on here?"
     ),
-     STD.USE_DESC = case_when(
+     STD.USE_DESC_comp = case_when(
       STD.USE_CODE == "000" ~ "Use code not known or nor provided.",
       STD.USE_CODE == "010" ~ "Mixed Use (Primarily Residential, Some Other)",
       STD.USE_CODE == "012" ~ "Mixed Use (Primarily Residential, Some Open Space)",
@@ -2110,18 +2119,26 @@ mxu.matched_amend_tbl <- matched.amend_mxu |> ungroup() |>
       .default = STD.USE_DESC
      ),
     # Create a stand in for the MUNI.USE_CODE_underlying variable. No useful information is stored in the three digit code municipalities assigned to these mixed use codes.
-    MUNI.USE_CODE_underlying = "single use"
+    MUNI.USE_CODE_underlying = "single use",
+    comparison = if_else(STD.USE_CODE == STD.USE_CODE_comp, 1, 0)
   ) |> 
-  select(c(STD.USE_CODE, STD.USE_DESC, MUNI.USE_CODE, MUNI.USE_DESC, muni_name))
+  select(c(STD.USE_CODE, STD.USE_DESC, STD.USE_CODE_comp, MUNI.USE_CODE, MUNI.USE_DESC, muni_name, mxu.amend.flag, comparison))
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Create a single dataframe for the single use amended land use code crosswalk
-matched_su.luc_xwalk <- bind_rows(matched_amend_tbl_clean, matched_mxu.amend_tbl) |> 
+matched_su.luc_xwalk <- bind_rows(matched_amend_tbl_clean, mxu.matched_amend_tbl) |> 
   mutate(
     STD.USE_CODE = if_else(MUNI.USE_DESC %in% in.need.of.use_code, "001", STD.USE_CODE),
-    STD.USE_DESC = if_else(MUNI.USE_DESC %in% in.need.of.use_code, "Flag for DLS/BLA Code Update.")
+    STD.USE_DESC = if_else(MUNI.USE_DESC %in% in.need.of.use_code, "Flag for DLS/BLA Code Update.", STD.USE_DESC)
   )
+
+ta_comp_tbl <- matched_su.luc_xwalk |> 
+  group_by(mxu.amend.flag, comparison) |> 
+  summarize(
+    n_codes = n()
+  ) |> 
+  ungroup()
 
 # Save the single use amended land use code crosswalk
 # As csv
@@ -2766,7 +2783,7 @@ if(indc$numTRUE == 1){
   
 }
   
-  unmatched_amend_tbl <- bind_rows(amend_tbl, indc)
+  unmatched_amend_tbl <- bind_rows(unmatched_amend_tbl, indc)
   
   rm(indc, test, test2)
   
@@ -2886,10 +2903,10 @@ mxu.unmatched_amend_tbl <- unmatched.amend_mxu |> ungroup() |>
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Create a single dataframe for the single use amended land use code crosswalk
-unmatched_su.luc_xwalk <- bind_rows(unmatched_amend_tbl_clean, unmatched_mxu.amend_tbl) |> 
+unmatched_su.luc_xwalk <- bind_rows(unmatched_amend_tbl_clean, mxu.unmatched_amend_tbl) |> 
   mutate(
     STD.USE_CODE = if_else(MUNI.USE_DESC %in% in.need.of.use_code, "001", STD.USE_CODE),
-    STD.USE_DESC = if_else(MUNI.USE_DESC %in% in.need.of.use_code, "Flag for DLS/BLA Code Update.")
+    STD.USE_DESC = if_else(MUNI.USE_DESC %in% in.need.of.use_code, "Flag for DLS/BLA Code Update.", STD.USE_DESC)
   )
 
 # Save the single use amended land use code crosswalk
