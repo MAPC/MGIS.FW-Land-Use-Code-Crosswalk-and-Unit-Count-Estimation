@@ -990,6 +990,10 @@ matched <- comp |>
     td.mu.flag = str_detect(MUNI.USE_DESC, paste(td.mu.strings, collapse = "|")),
     # Flag for unknown use.
     uk.flag = str_detect(MUNI.USE_DESC, paste(td.mu.other.strings, collapse = "|")),
+    #
+    other = str_detect(MUNI.USE_DESC, regex(paste(other.string, collapse = "|"), ignore_case = T)),
+    #
+    dls.dupes = str_detect(MUNI.USE_DESC, regex(paste(dls.duplicative.terms, collapse = "|"), ignore_case = T))
   )
 
 # Print the percentage of matched mixed use codes.
@@ -1028,11 +1032,12 @@ amended.uc <- matched |>
     ),
     #
     xwalk_uc = str_sub(MUNI.USE_CODE_fix, start = 1, end = 3)
-  )
+  )|> 
+   select(c(xwalk_uc, MUNI.USE_CODE, MUNI.USE_CODE_fix, MUNI.USE_CODE_underlying, MUNI.USE_DESC, mu.flag, td.mu.flag, muni_name, uk.flag, other, char_count, dls.dupes, matched, initial.use_type))
 
 # Amend the original crosswalk with fixes made to by the use code category
 # First pass - join the amended data which should now match Standard Use Code typologies
-amended.comp <- full_join(std_uc, amended.uc, by = c("xwalk_uc")) |> 
+amended.comp <- left_join(amended.uc, std_uc, by = c("xwalk_uc")) |> 
   # Removes unmatched Standard Use Codes
   drop_na(MUNI.USE_CODE) |> 
   mutate(
@@ -1112,7 +1117,7 @@ if (nrow(amended.comp)/nrow(amended.uc) > 0.75){
 
 # Mixed-Use Code Crosswalk
 mu_xwalk <- bind_rows(subset.matched.1, subset.matched.2, subset.unmatched.1, subset.unmatched.2) |> 
-  select(c(STD.USE_CODE, STD.USE_DESC, MUNI.USE_CODE, MUNI.USE_DESC, MUNI.USE_CODE_underlying, muni_name, matched, od.uc, other, char_count, initial.use_type))
+  select(c(STD.USE_CODE, STD.USE_DESC, MUNI.USE_CODE, MUNI.USE_DESC, MUNI.USE_CODE_underlying, muni_name, matched, other, char_count, initial.use_type))
 
 # Land Use Codes to pursue manual editing for.
 mu_hand.edit <- bind_rows(hand.edit.matched, hand.edit.unmatched)
@@ -1156,8 +1161,7 @@ rm(amended.comp, amended.uc, hand.edit.matched, hand.edit.unmatched, matched, ma
 gc()
 
 #TODO:
-# 1. Determine how to handle the hand.edit/matched and unmatched use codes.
-# 2. Determine how to identify incorrectly edited observations.
+# 1. Determine how to identify incorrectly edited observations.
 
 ```
 
