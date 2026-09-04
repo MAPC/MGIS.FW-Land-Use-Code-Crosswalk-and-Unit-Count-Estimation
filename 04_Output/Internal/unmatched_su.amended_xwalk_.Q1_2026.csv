@@ -1,0 +1,796 @@
+"STD.USE_CODE","STD.USE_DESC","MUNI.USE_CODE","MUNI.USE_DESC","MUNI.USE_CODE_underlying","muni_name","matched","initial.use_type","char_count","other"
+"109","Multiple Houses on one parcel","1070","SFR/IN LAW","single use","Marion",0,"single",10,FALSE
+"103","Mobile Home (includes mobile home park land)","110","Mobile Home Park","single use","Orange",0,"single",16,FALSE
+"103","Mobile Home (includes mobile home park land)","110","Trailer Park","single use","Dalton",0,"single",12,FALSE
+"103","Mobile Home (includes mobile home park land)","110","Trailer Park","single use","Fitchburg",0,"single",12,FALSE
+"106","Accessory Land with Improvement","1070","SFRACCAPT R","single use","Middleborough",0,"single",11,FALSE
+"302","Inns, Resorts, or Tourist Homes","1200","INN/B&B","single use","Middleborough",0,"single",7,FALSE
+"302","Inns, Resorts, or Tourist Homes","120C","INN/B&B","single use","Middleborough",0,"single",7,FALSE
+"302","Inns, Resorts, or Tourist Homes","120V","INN/B&B","single use","Middleborough",0,"single",7,FALSE
+"103","Mobile Home (includes mobile home park land)","1500","MOBILE HOME PARK","single use","Middleborough",0,"single",16,FALSE
+"103","Mobile Home (includes mobile home park land)","1501","MBL HM PK MDL-94","single use","Middleborough",0,"single",16,FALSE
+"103","Mobile Home (includes mobile home park land)","1502","MBL HM PK MDL-96","single use","Middleborough",0,"single",16,FALSE
+"103","Mobile Home (includes mobile home park land)","1503","MBL HM PK MDL-01","single use","Middleborough",0,"single",16,FALSE
+"103","Mobile Home (includes mobile home park land)","1504","MBL HM PK MDL 00","single use","Middleborough",0,"single",16,FALSE
+"101","Single Family Residential","107","SINGLE FAM RETREAT","single use","Middleborough",0,"single",18,FALSE
+"103","Mobile Home (includes mobile home park land)","1100","TRLR PK","single use","Carver",0,"single",7,FALSE
+"106","Accessory Land with Improvement","1070","Outbuilding Code same as 1060","single use","Ashburnham",0,"single",29,FALSE
+"103","Mobile Home (includes mobile home park land)","110","Trailer Park","single use","Brimfield",0,"single",12,FALSE
+"109","Multiple Houses on one parcel","1070","SFR/INLAW","single use","North Attleborough",0,"single",9,FALSE
+"101","Single Family Residential","160","61-SING FAM","single use","Gloucester",0,"single",11,FALSE
+"101","Single Family Residential","170","61A-SING FAM","single use","Gloucester",0,"single",12,FALSE
+"101","Single Family Residential","180","61B-SING FAM","single use","Gloucester",0,"single",12,FALSE
+"104","Two-Family Residential","181","61B-TWO FAM","single use","Gloucester",0,"single",11,FALSE
+"106","Accessory Land with Improvement","182","61B-RES ACLNUD","single use","Gloucester",0,"single",14,FALSE
+"103","Mobile Home (includes mobile home park land)","110","Trailer Park","single use","Greenfield",0,"single",12,FALSE
+"210","Non-Productive Agricultural Land (non-Chap61(A) part of operating farm or forest)","137","Residential/Commercial/Agricultural","single use","Andover",0,"single",35,FALSE
+"125","Other Congregate Housing (includes non-transient shared living arrangements)","113","ASSISTED-LIV","single use","Cambridge",0,"single",12,FALSE
+"102","Residential Condominium","199","CONDO-BLDG","single use","Cambridge",0,"single",10,FALSE
+"103","Mobile Home (includes mobile home park land)","110","Trailer Park","single use","Pepperell",0,"single",12,FALSE
+"103","Mobile Home (includes mobile home park land)","110","Trailer park","single use","Dunstable",0,"single",12,FALSE
+"102","Residential Condominium","1131","CONDO IN APT BUILDING","single use","Newton",0,"single",21,FALSE
+"103","Mobile Home (includes mobile home park land)","107V","Parking","single use","Newton",0,"single",7,FALSE
+"125","Other Congregate Housing (includes non-transient shared living arrangements)","126C","Assisted Living","single use","Newton",0,"single",15,FALSE
+"125","Other Congregate Housing (includes non-transient shared living arrangements)","126R","Assisted Living","single use","Newton",0,"single",15,FALSE
+"123","Residence Halls or Dormitories","110","Residence, multiunit","single use","Lanesborough",0,"single",20,FALSE
+"106","Accessory Land with Improvement","1070","Apartment/Outbuildings","single use","Randolph",0,"single",22,FALSE
+"106","Accessory Land with Improvement","1070","SFRACCAPT R","single use","Chelmsford",0,"single",11,FALSE
+"302","Inns, Resorts, or Tourist Homes","1200","INN/B&B","single use","Chelmsford",0,"single",7,FALSE
+"302","Inns, Resorts, or Tourist Homes","120C","INN/B&B","single use","Chelmsford",0,"single",7,FALSE
+"302","Inns, Resorts, or Tourist Homes","120V","INN/B&B","single use","Chelmsford",0,"single",7,FALSE
+"302","Inns, Resorts, or Tourist Homes","1260","Bed & Brkf","single use","Barnstable",0,"single",10,FALSE
+"261","All Land designated under Chapter 61 (classified as Open Space)","1070","Res CH61A","single use","Rutland",0,"single",9,FALSE
+"103","Mobile Home (includes mobile home park land)","110","Trailer park. (state code)","single use","Warren",0,"single",26,FALSE
+"101","Single Family Residential","160","Single Fam MDL-01","single use","Rochester",0,"single",17,FALSE
+"101","Single Family Residential","170","Single Fam MDL-01","single use","Rochester",0,"single",17,FALSE
+"261","All Land designated under Chapter 61 (classified as Open Space)","180","RES CH 61B REC MX","single use","Rochester",0,"single",17,FALSE
+"310","Tanks Holding Fuel and Oil Products for Retail Distribution, either Above Ground or Underground","107","Campground","single use","Fall River",0,"single",10,FALSE
+"505","Machinery, Poles, Wires, and Underground Conduits, Wires and Pipes of all Telephone and Telegraph Cos., per Comm. Of Rev","108","Previously Exempt Propery","single use","Fall River",0,"single",25,FALSE
+"953","Cemeteries (Charitable Org.)","1900","CEMETERIES","single use","Dennis",0,"single",10,FALSE
+"109","Multiple Houses on one parcel","1070","IN-LAW APT","single use","Holden",0,"single",10,FALSE
+"302","Inns, Resorts, or Tourist Homes","120C","Inn - Com","single use","Amherst",0,"single",9,FALSE
+"302","Inns, Resorts, or Tourist Homes","1200","Inn - Res","single use","Amherst",0,"single",9,FALSE
+"103","Mobile Home (includes mobile home park land)","110","Trailer Park","single use","Malden",0,"single",12,FALSE
+"125","Other Congregate Housing (includes non-transient shared living arrangements)","107","Residential; non-conforming to normal market values throughout Northampton","single use","Northampton",0,"single",74,FALSE
+"101","Single Family Residential","108","Residential; co-housing complex","single use","Northampton",0,"single",31,FALSE
+"102","Residential Condominium","172","Condominium","single use","Brookline",0,"single",11,FALSE
+"102","Residential Condominium","108","CONDO","single use","Brookline",0,"single",5,FALSE
+"103","Mobile Home (includes mobile home park land)","137","RES-PARKING","single use","Brookline",0,"single",11,FALSE
+"103","Mobile Home (includes mobile home park land)","110","trailer park","single use","Ware",0,"single",12,FALSE
+"261","All Land designated under Chapter 61 (classified as Open Space)","160","IMPUTED - RES 61","single use","Hamilton",0,"single",16,FALSE
+"261","All Land designated under Chapter 61 (classified as Open Space)","170","IMPUTED - RES 61A","single use","Hamilton",0,"single",17,FALSE
+"261","All Land designated under Chapter 61 (classified as Open Space)","108","IMPUTED - RESIDENTIAL 61B","single use","Hamilton",0,"single",25,FALSE
+"123","Residence Halls or Dormitories","137","Residence","single use","Cummington",0,"single",9,FALSE
+"102","Residential Condominium","108","CONDO PARKING (RES)","single use","Boston",0,"single",19,FALSE
+"102","Residential Condominium","110","CONDO STORAGE (RES)","single use","Boston",0,"single",19,FALSE
+"361","Art Galleries","115","CO-OP APARTMENT","single use","Boston",0,"single",15,FALSE
+"103","Mobile Home (includes mobile home park land)","118","ELDERLY HOME","single use","Boston",0,"single",12,FALSE
+"103","Mobile Home (includes mobile home park land)","119","RES PARKING LOT","single use","Boston",0,"single",15,FALSE
+"361","Art Galleries","120","LUXURY APARTMENT","single use","Boston",0,"single",16,FALSE
+"101","Single Family Residential","126","SUBSD HOUSING S-231D","single use","Boston",0,"single",20,FALSE
+"101","Single Family Residential","127","SUBSD HOUSING S-202","single use","Boston",0,"single",19,FALSE
+"102","Residential Condominium","128","CONDO APARTMENT","single use","Boston",0,"single",15,FALSE
+"961","Rectory or Parsonage","129","RECTORY/CONVENT","single use","Boston",0,"single",15,FALSE
+"103","Mobile Home (includes mobile home park land)","110","Old trailer park code, should now be 103","single use","Marshfield",0,"single",40,FALSE
+"302","Inns, Resorts, or Tourist Homes","107","Inn Res 3 Rm","single use","Salem",0,"single",12,FALSE
+"404","Research and Development facilities","1001","Planned Development","single use","Nantucket",0,"single",19,FALSE
+"125","Other Congregate Housing (includes non-transient shared living arrangements)","1070","Cooperative M01","single use","Nantucket",0,"single",15,FALSE
+"125","Other Congregate Housing (includes non-transient shared living arrangements)","1073","Cooperative Waterfront M01","single use","Nantucket",0,"single",26,FALSE
+"125","Other Congregate Housing (includes non-transient shared living arrangements)","107V","Coopertive Waterfront M00","single use","Nantucket",0,"single",25,FALSE
+"132","Undevelopable Residential Land","1333","Unbuildable Waterfront PF Wet","single use","Nantucket",0,"single",29,FALSE
+"103","Mobile Home (includes mobile home park land)","110","Trailer Park","single use","Holbrook",0,"single",12,FALSE
+"361","Art Galleries","110","Apartment","single use","Stoughton",0,"single",9,FALSE
+"103","Mobile Home (includes mobile home park land)","110","Trailer Park","single use","Erving",0,"single",12,FALSE
+"290","Wet land, scrub land, rock land (classified as Open Space)","2920","WET LAND, SCRUB LAND","single use","Carver",0,"single",20,FALSE
+"290","Wet land, scrub land, rock land (classified as Open Space)","2920","WET LAND, SCRUB LAND","single use","Westport",0,"single",20,FALSE
+"261","All Land designated under Chapter 61 (classified as Open Space)","292","Chapter 61A Lands","single use","Sturbridge",0,"single",17,FALSE
+"261","All Land designated under Chapter 61 (classified as Open Space)","2920","CH61A NON PRODUCTIVE WETLAND","single use","Sturbridge",0,"single",28,FALSE
+"290","Wet land, scrub land, rock land (classified as Open Space)","2920","WET LAND, SCRUB LAND","single use","Dennis",0,"single",20,FALSE
+"210","Non-Productive Agricultural Land (non-Chap61(A) part of operating farm or forest)","292","Chap 61A (agricultural) chaptered waste land","single use","Whately",0,"single",44,FALSE
+"106","Accessory Land with Improvement","200","Open Space","single use","Wellesley",0,"single",10,FALSE
+"109","Multiple Houses on one parcel","3030","COTTAGE COLONY","single use","Chatham",0,"single",14,FALSE
+"102","Residential Condominium","3430","COMMERCIAL CONDO","single use","Chatham",0,"single",16,FALSE
+"102","Residential Condominium","3440","INDUSTRIAL CONDO","single use","Chatham",0,"single",16,FALSE
+"106","Accessory Land with Improvement","3030","ACC LD COM","single use","Swansea",0,"single",10,FALSE
+"813","Public Non-Commercial Flying - areas for gliding or hand-gliding (Ch. 61B, not classified as Open Space)","303","Commercial Misc","single use","Bellingham",0,"single",15,FALSE
+"371","Ice Skating Rinks/Facilities","343","Commercial Office Condo","single use","Bellingham",0,"single",23,FALSE
+"102","Residential Condominium","327","Retail Condo","single use","Bellingham",0,"single",12,FALSE
+"371","Ice Skating Rinks/Facilities","3430","Office Condo","single use","Harwich",0,"single",12,FALSE
+"106","Accessory Land with Improvement","3030","Accessory Commercial Land","single use","Marion",0,"single",25,FALSE
+"813","Public Non-Commercial Flying - areas for gliding or hand-gliding (Ch. 61B, not classified as Open Space)","319","Commercial","single use","Orange",0,"single",10,FALSE
+"813","Public Non-Commercial Flying - areas for gliding or hand-gliding (Ch. 61B, not classified as Open Space)","344","Commercial","single use","Orange",0,"single",10,FALSE
+"103","Mobile Home (includes mobile home park land)","3030","MOBILE HOME PARK","single use","Orange",0,"single",16,FALSE
+"102","Residential Condominium","3440","Commercial Condo","single use","Orange",0,"single",16,FALSE
+"102","Residential Condominium","343","Commercial Condominium","single use","Arlington",0,"single",22,FALSE
+"102","Residential Condominium","345","Retail Condominium","single use","Arlington",0,"single",18,FALSE
+"102","Residential Condominium","343","commercial condo","single use","Northborough",0,"single",16,FALSE
+"102","Residential Condominium","327","Condo-Retail","single use","Danvers",0,"single",12,FALSE
+"371","Ice Skating Rinks/Facilities","343","Condo-Office","single use","Danvers",0,"single",12,FALSE
+"371","Ice Skating Rinks/Facilities","344","Condo-Office","single use","Danvers",0,"single",12,FALSE
+"102","Residential Condominium","303","Commercial Condominium","single use","Natick",0,"single",22,FALSE
+"371","Ice Skating Rinks/Facilities","343","Office Space","single use","Holliston",0,"single",12,FALSE
+"371","Ice Skating Rinks/Facilities","343","Commercial, Office","single use","Westborough",0,"single",18,FALSE
+"371","Ice Skating Rinks/Facilities","343","Office Condominium","single use","Reading",0,"single",18,FALSE
+"102","Residential Condominium","344","Commercial Condominium","single use","Reading",0,"single",22,FALSE
+"102","Residential Condominium","343","Commercial Condo","single use","Duxbury",0,"single",16,FALSE
+"102","Residential Condominium","343U","Comm Condo","single use","Duxbury",0,"single",10,FALSE
+"102","Residential Condominium","3430","Commercial Condo","single use","Halifax",0,"single",16,FALSE
+"102","Residential Condominium","343","Commercial Condos","single use","Bedford",0,"single",17,FALSE
+"102","Residential Condominium","327","Retail Condominium","single use","Fitchburg",0,"single",18,FALSE
+"371","Ice Skating Rinks/Facilities","343","Office Condominium","single use","Fitchburg",0,"single",18,FALSE
+"317","Farm Buildings - barns, silo, utility shed, etc","394","Commercial Utilty Building/Shed","single use","Fitchburg",0,"single",31,FALSE
+"102","Residential Condominium","343","Comm Condo","single use","East Bridgewater",0,"single",10,FALSE
+"102","Residential Condominium","398","Comm Condo","single use","East Bridgewater",0,"single",10,FALSE
+"102","Residential Condominium","343","Commercial Condominium","single use","Tyngsborough",0,"single",22,FALSE
+"102","Residential Condominium","344","Retail Condominium","single use","Tyngsborough",0,"single",18,FALSE
+"102","Residential Condominium","3290","Comm Condo","single use","Hingham",0,"single",10,FALSE
+"102","Residential Condominium","343U","Comm Condo","single use","Hingham",0,"single",10,FALSE
+"106","Accessory Land with Improvement","3030","Acc Ld Com","single use","Hingham",0,"single",10,FALSE
+"813","Public Non-Commercial Flying - areas for gliding or hand-gliding (Ch. 61B, not classified as Open Space)","3430","Commercial","single use","Hingham",0,"single",10,FALSE
+"102","Residential Condominium","327C","Condo - Retail - Comm","single use","Shrewsbury",0,"single",21,FALSE
+"371","Ice Skating Rinks/Facilities","3440","Condo - Office","single use","Shrewsbury",0,"single",14,FALSE
+"102","Residential Condominium","3270","Condo - Ret","single use","Shrewsbury",0,"single",11,FALSE
+"102","Residential Condominium","327","Retail Condo","single use","Lynn",0,"single",12,FALSE
+"371","Ice Skating Rinks/Facilities","343","Office Condo","single use","Lynn",0,"single",12,FALSE
+"316","Other Storage, Warehouse, and Distribution facilities (see also usecode 401)","319","Warehouse Condominium","single use","Lynn",0,"single",21,FALSE
+"102","Residential Condominium","327","Retail condominium","single use","Milton",0,"single",18,FALSE
+"371","Ice Skating Rinks/Facilities","343","Office condominium","single use","Milton",0,"single",18,FALSE
+"335","Car Wash Facilities","3070","ASSIT CARE","single use","Middleborough",0,"single",10,FALSE
+"335","Car Wash Facilities","307V","ASSIT CARE","single use","Middleborough",0,"single",10,FALSE
+"371","Ice Skating Rinks/Facilities","343","OFFICE BLD MDL-01","single use","Middleborough",0,"single",17,FALSE
+"324","Supermarkets (in excess of 10,000 sq. ft.)","394","BOG RES EXCESS","single use","Middleborough",0,"single",14,FALSE
+"102","Residential Condominium","3270","RETAIL CONDO","single use","Carver",0,"single",12,FALSE
+"102","Residential Condominium","3430","COMMERCIAL CONDO","single use","Carver",0,"single",16,FALSE
+"813","Public Non-Commercial Flying - areas for gliding or hand-gliding (Ch. 61B, not classified as Open Space)","3990","COMMERCIAL","single use","Carver",0,"single",10,FALSE
+"371","Ice Skating Rinks/Facilities","343","IMPUTED - Condo Office","single use","East Longmeadow",0,"single",22,FALSE
+"340","General Office Buildings","343","General Office","single use","Ashland",0,"single",14,FALSE
+"102","Residential Condominium","347","Commercial condo","single use","Ashland",0,"single",16,FALSE
+"371","Ice Skating Rinks/Facilities","3430","OFFICE CONDO","single use","Worcester",0,"single",12,FALSE
+"106","Accessory Land with Improvement","3030","Acc Com Lnd","single use","Mattapoisett",0,"single",11,FALSE
+"102","Residential Condominium","3430","Commercial Condo","single use","Lowell",0,"single",16,FALSE
+"306","Care and Treatment Facilities - designed and used on a transient basis, including half-way houses and similar facilities","303","Commercial, Transient Group Quarters","single use","North Adams",0,"single",36,FALSE
+"813","Public Non-Commercial Flying - areas for gliding or hand-gliding (Ch. 61B, not classified as Open Space)","345","Commercial","single use","Montague",0,"single",10,FALSE
+"102","Residential Condominium","343","Condominium, Residential/Commercial","single use","Beverly",0,"single",35,FALSE
+"371","Ice Skating Rinks/Facilities","344","Office Building, Other","single use","Montague",0,"single",22,TRUE
+"371","Ice Skating Rinks/Facilities","3430","Office Building","single use","Brewster",0,"single",15,FALSE
+"102","Residential Condominium","343U","Comm Condo","single use","Plympton",0,"single",10,FALSE
+"102","Residential Condominium","3290","Commercial Condo","single use","Plympton",0,"single",16,FALSE
+"102","Residential Condominium","3430","Commercial Condo (no land value)","single use","Plympton",0,"single",32,FALSE
+"813","Public Non-Commercial Flying - areas for gliding or hand-gliding (Ch. 61B, not classified as Open Space)","329","commercial/conventional","single use","Littleton",0,"single",23,FALSE
+"102","Residential Condominium","344","Commercial Condo's","single use","Littleton",0,"single",18,FALSE
+"371","Ice Skating Rinks/Facilities","3430","Office Condominium","single use","Wrentham",0,"single",18,FALSE
+"102","Residential Condominium","3440","Industrial Condo","single use","Wrentham",0,"single",16,FALSE
+"106","Accessory Land with Improvement","3030","ACC LND COM","single use","Wrentham",0,"single",11,FALSE
+"813","Public Non-Commercial Flying - areas for gliding or hand-gliding (Ch. 61B, not classified as Open Space)","3030","Assessory land commercial","single use","Northbridge",0,"single",25,FALSE
+"400","Buildings for manufacturing operations","3395","COM JOB SHP/GAR","single use","Northbridge",0,"single",15,FALSE
+"371","Ice Skating Rinks/Facilities","343","Office Buildings","single use","Cohasset",0,"single",16,FALSE
+"371","Ice Skating Rinks/Facilities","344","Office Buildings","single use","Cohasset",0,"single",16,FALSE
+"102","Residential Condominium","339","Commercial condominium","single use","Ayer",0,"single",22,FALSE
+"106","Accessory Land with Improvement","3030","ACC COM LND","single use","Blackstone",0,"single",11,FALSE
+"102","Residential Condominium","3430","CI CONDO","single use","Mashpee",0,"single",8,FALSE
+"102","Residential Condominium","3430","CONDO-OFC","single use","Canton",0,"single",9,FALSE
+"102","Residential Condominium","3190","Condo Industrial","single use","Norwood",0,"single",16,FALSE
+"102","Residential Condominium","3270","Condo Retail","single use","Norwood",0,"single",12,FALSE
+"371","Ice Skating Rinks/Facilities","3430","Condo Office","single use","Norwood",0,"single",12,FALSE
+"102","Residential Condominium","3440","Condo Medical","single use","Norwood",0,"single",13,FALSE
+"371","Ice Skating Rinks/Facilities","3450","Class A Office","single use","Norwood",0,"single",14,FALSE
+"102","Residential Condominium","327","Commercial Condominium","single use","Waltham",0,"single",22,FALSE
+"102","Residential Condominium","343","Commercial Condominium","single use","Waltham",0,"single",22,FALSE
+"371","Ice Skating Rinks/Facilities","349","Medical Office Condominium","single use","Waltham",0,"single",26,FALSE
+"371","Ice Skating Rinks/Facilities","343","Office Condominium","single use","Brockton",0,"single",18,FALSE
+"102","Residential Condominium","345","Commercial Condominim Units","single use","Brockton",0,"single",27,FALSE
+"371","Ice Skating Rinks/Facilities","344","Office Condo","single use","Brockton",0,"single",12,FALSE
+"106","Accessory Land with Improvement","3030","Accompany Commercial Land","single use","Norwood",0,"single",25,FALSE
+"106","Accessory Land with Improvement","3030","Accessory Commercial Land","single use","Hanover",0,"single",25,FALSE
+"102","Residential Condominium","344","Commercial/Condo","single use","Andover",0,"single",16,FALSE
+"103","Mobile Home (includes mobile home park land)","3030","MOBILE HOME PARK","single use","Westport",0,"single",16,FALSE
+"502","Domestic Business Corporations or a Foreign Corporation, as defined in Ch. 63, Sec.30","3430","3430","single use","Westport",0,"single",4,FALSE
+"102","Residential Condominium","327","Condo","single use","Salisbury",0,"single",5,FALSE
+"102","Residential Condominium","344","Condo","single use","Salisbury",0,"single",5,FALSE
+"109","Multiple Houses on one parcel","3030","Cottage Colony","single use","Oak Bluffs",0,"single",14,FALSE
+"102","Residential Condominium","3430","Commercial CONDO","single use","Oak Bluffs",0,"single",16,FALSE
+"102","Residential Condominium","327","Retail Condo","single use","Falmouth",0,"single",12,FALSE
+"102","Residential Condominium","328","Restaurant Condo","single use","Falmouth",0,"single",16,FALSE
+"371","Ice Skating Rinks/Facilities","343","Office Condo","single use","Falmouth",0,"single",12,FALSE
+"102","Residential Condominium","349","Medical Condo","single use","Falmouth",0,"single",13,FALSE
+"316","Other Storage, Warehouse, and Distribution facilities (see also usecode 401)","319","Condo Conversion Warehouse","single use","Falmouth",0,"single",26,FALSE
+"102","Residential Condominium","320","Retail condominiums","single use","Hopkinton",0,"single",19,FALSE
+"371","Ice Skating Rinks/Facilities","343","IMPUTED - Office Condo","single use","Hopkinton",0,"single",22,FALSE
+"813","Public Non-Commercial Flying - areas for gliding or hand-gliding (Ch. 61B, not classified as Open Space)","343","IMPUTED - Commercial","single use","Lancaster",0,"single",20,FALSE
+"106","Accessory Land with Improvement","3030","ACC COM LND","single use","Millbury",0,"single",11,FALSE
+"400","Buildings for manufacturing operations","3395","Job Shop(s)","single use","Millbury",0,"single",11,FALSE
+"371","Ice Skating Rinks/Facilities","3430","Office Building","single use","Bridgewater",0,"single",15,FALSE
+"813","Public Non-Commercial Flying - areas for gliding or hand-gliding (Ch. 61B, not classified as Open Space)","3990","Other Commercial","single use","Bridgewater",0,"single",16,TRUE
+"106","Accessory Land with Improvement","3030","ACC COM LD","single use","Easton",0,"single",10,FALSE
+"371","Ice Skating Rinks/Facilities","343","Com. Condo Office","single use","Belmont",0,"single",17,FALSE
+"102","Residential Condominium","345","Com. Condo Retail","single use","Belmont",0,"single",17,FALSE
+"102","Residential Condominium","327","Retail Condominium","single use","Methuen",0,"single",18,FALSE
+"371","Ice Skating Rinks/Facilities","343","Office Condominium","single use","Methuen",0,"single",18,FALSE
+"371","Ice Skating Rinks/Facilities","344","Office Condominium","single use","Methuen",0,"single",18,FALSE
+"102","Residential Condominium","343","Commercial Condos","single use","North Reading",0,"single",17,FALSE
+"102","Residential Condominium","343","Prof Condo","single use","New Bedford",0,"single",10,FALSE
+"106","Accessory Land with Improvement","303","IMPUTED - Vacant Commercial","single use","New Bedford",0,"single",27,FALSE
+"102","Residential Condominium","327","RETAIL-CONDO","single use","Cambridge",0,"single",12,FALSE
+"918","Dept. of Environmental Protection (DEP) - Low-level Radioactive Waste Management Board","329","BILLBOARD","single use","Cambridge",0,"single",9,FALSE
+"102","Residential Condominium","339","CONDO-PKG-SP","single use","Cambridge",0,"single",12,FALSE
+"371","Ice Skating Rinks/Facilities","343","OFFICE-CONDO","single use","Cambridge",0,"single",12,FALSE
+"371","Ice Skating Rinks/Facilities","346","INV-OFFICE","single use","Cambridge",0,"single",10,FALSE
+"103","Mobile Home (includes mobile home park land)","3030","Mobile Home Park","single use","Ludlow",0,"single",16,FALSE
+"102","Residential Condominium","3430","Commercial Condominium","single use","Ludlow",0,"single",22,FALSE
+"813","Public Non-Commercial Flying - areas for gliding or hand-gliding (Ch. 61B, not classified as Open Space)","319","Commercial","single use","Otis",0,"single",10,FALSE
+"371","Ice Skating Rinks/Facilities","343","Office Condominium","single use","Pepperell",0,"single",18,FALSE
+"102","Residential Condominium","344","Commercial condo","single use","Dunstable",0,"single",16,FALSE
+"102","Residential Condominium","3430","Commercial Condo","single use","Orleans",0,"single",16,FALSE
+"102","Residential Condominium","3440","Industrial Condo","single use","Orleans",0,"single",16,FALSE
+"102","Residential Condominium","3450","Motel Condo","single use","Orleans",0,"single",11,FALSE
+"102","Residential Condominium","327","Condo Retail","single use","Plymouth",0,"single",12,FALSE
+"102","Residential Condominium","343","Condo Med","single use","Plymouth",0,"single",9,FALSE
+"102","Residential Condominium","344","Condo OFC","single use","Plymouth",0,"single",9,FALSE
+"371","Ice Skating Rinks/Facilities","344","CONDO OFFICE","single use","Carlisle",0,"single",12,FALSE
+"106","Accessory Land with Improvement","3030","Accessory Land Commercial","single use","East Brookfield",0,"single",25,FALSE
+"352","Day Care Centers, Adult (see also Code 140)","303","IMPUTED - Commercial Day Spa","single use","Lanesborough",0,"single",28,FALSE
+"102","Residential Condominium","327","CONDO","single use","Stoneham",0,"single",5,FALSE
+"102","Residential Condominium","343","CONDO-OFC","single use","Stoneham",0,"single",9,FALSE
+"102","Residential Condominium","344","CONDO-WHSE","single use","Stoneham",0,"single",10,FALSE
+"102","Residential Condominium","344","Commercial condo","single use","Dover",0,"single",16,FALSE
+"102","Residential Condominium","343","Commercial condo - Medical","single use","Peabody",0,"single",26,FALSE
+"371","Ice Skating Rinks/Facilities","344","Commercial condo - Office","single use","Peabody",0,"single",25,FALSE
+"102","Residential Condominium","345","Commercial condo - Retail","single use","Peabody",0,"single",25,FALSE
+"106","Accessory Land with Improvement","303","Commercial Accessory Land","single use","Franklin",0,"single",25,FALSE
+"102","Residential Condominium","320","Retail Condominiums","single use","Franklin",0,"single",19,FALSE
+"371","Ice Skating Rinks/Facilities","343","Office Condominiums","single use","Franklin",0,"single",19,FALSE
+"371","Ice Skating Rinks/Facilities","343","Condo Office","single use","Tewksbury",0,"single",12,FALSE
+"102","Residential Condominium","345","Condo Retail","single use","Tewksbury",0,"single",12,FALSE
+"371","Ice Skating Rinks/Facilities","344","Office Condominium","single use","Pittsfield",0,"single",18,FALSE
+"371","Ice Skating Rinks/Facilities","343","Commercial Office Space","single use","Adams",0,"single",23,FALSE
+"371","Ice Skating Rinks/Facilities","343","Office Building, Condos","single use","Needham",0,"single",23,FALSE
+"102","Residential Condominium","327","Retail Condo","single use","Braintree",0,"single",12,FALSE
+"371","Ice Skating Rinks/Facilities","343","Office Condo","single use","Braintree",0,"single",12,FALSE
+"371","Ice Skating Rinks/Facilities","343","Office Condo","single use","Watertown",0,"single",12,FALSE
+"102","Residential Condominium","344","Commercial Condo","single use","Watertown",0,"single",16,FALSE
+"371","Ice Skating Rinks/Facilities","345","Lab/R&D/Office","single use","Watertown",0,"single",14,FALSE
+"335","Car Wash Facilities","3070","ASSIT CARE","single use","Chelmsford",0,"single",10,FALSE
+"335","Car Wash Facilities","307V","ASSIT CARE","single use","Chelmsford",0,"single",10,FALSE
+"102","Residential Condominium","343","Medical, Condo","single use","Stow",0,"single",14,FALSE
+"102","Residential Condominium","3430","Ci Condo","single use","Truro",0,"single",8,FALSE
+"371","Ice Skating Rinks/Facilities","3450","Gen Office Bldg","single use","Truro",0,"single",15,FALSE
+"102","Residential Condominium","345","Commercial, condo","single use","Stow",0,"single",17,FALSE
+"102","Residential Condominium","3430","Commercial, condo","single use","Stow",0,"single",17,FALSE
+"102","Residential Condominium","329","Commercial Condominium","single use","Stow",0,"single",22,FALSE
+"102","Residential Condominium","3290","Commercial Condominium","single use","Stow",0,"single",22,FALSE
+"106","Accessory Land with Improvement","3030","ACCLND COM","single use","Attleboro",0,"single",10,FALSE
+"102","Residential Condominium","327","CONDO RTL","single use","Wakefield",0,"single",9,FALSE
+"102","Residential Condominium","344","CONDO OFC","single use","Wakefield",0,"single",9,FALSE
+"106","Accessory Land with Improvement","3030","ACCLND Commercial","single use","Sharon",0,"single",17,FALSE
+"106","Accessory Land with Improvement","3030","ACC COM LD","single use","Avon",0,"single",10,FALSE
+"340","General Office Buildings","343","IMPUTED - Commercial General Office Buildings","single use","Topsfield",0,"single",45,FALSE
+"102","Residential Condominium","327","Commercial Building, Condominium Retail Stores","single use","Sandwich",0,"single",46,FALSE
+"371","Ice Skating Rinks/Facilities","343","Commercial Building, Office Condominium","single use","Sandwich",0,"single",39,FALSE
+"102","Residential Condominium","3270","Condominium (Retail Stores)","single use","Sandwich",0,"single",27,FALSE
+"371","Ice Skating Rinks/Facilities","3430","Commercial Office Condo","single use","Sandwich",0,"single",23,FALSE
+"102","Residential Condominium","343","Condo/Comm","single use","Burlington",0,"single",10,FALSE
+"371","Ice Skating Rinks/Facilities","343","Medical Office Buildings","single use","Randolph",0,"single",24,FALSE
+"371","Ice Skating Rinks/Facilities","3440","Office condo","single use","Randolph",0,"single",12,FALSE
+"371","Ice Skating Rinks/Facilities","3430","Office","single use","Rockland",0,"single",6,FALSE
+"102","Residential Condominium","3270","RET CONDO  MDL-06","single use","Barnstable",0,"single",17,FALSE
+"102","Residential Condominium","3190","WHSE CONDO  MDL-06","single use","Barnstable",0,"single",18,FALSE
+"102","Residential Condominium","3430","OFF CONDO  MDL-06","single use","Barnstable",0,"single",17,FALSE
+"371","Ice Skating Rinks/Facilities","3440","Office","single use","Rockland",0,"single",6,FALSE
+"371","Ice Skating Rinks/Facilities","3390","Service Shop (like tire & brake shop)","single use","Barnstable",0,"single",37,FALSE
+"371","Ice Skating Rinks/Facilities","3470","Medical office condominium","single use","Barnstable",0,"single",26,FALSE
+"371","Ice Skating Rinks/Facilities","343I","Office Condominium","single use","Barnstable",0,"single",18,FALSE
+"371","Ice Skating Rinks/Facilities","343O","Office Condominium","single use","Barnstable",0,"single",18,FALSE
+"102","Residential Condominium","307O","MOTEL CONDO M06","single use","Barnstable",0,"single",15,FALSE
+"106","Accessory Land with Improvement","3030","ACC COM LND","single use","Southbridge",0,"single",11,FALSE
+"102","Residential Condominium","343","Commercial Condo","single use","Sudbury",0,"single",16,FALSE
+"106","Accessory Land with Improvement","303A","ACC COM LND","single use","Quincy",0,"single",11,FALSE
+"311","Bottled Gas and Propane Gas Tanks","3390","GAS MART","single use","Quincy",0,"single",8,FALSE
+"813","Public Non-Commercial Flying - areas for gliding or hand-gliding (Ch. 61B, not classified as Open Space)","343","Commercial","single use","Edgartown",0,"single",10,FALSE
+"813","Public Non-Commercial Flying - areas for gliding or hand-gliding (Ch. 61B, not classified as Open Space)","3940","IMPUTED - Commercial","single use","Edgartown",0,"single",20,FALSE
+"371","Ice Skating Rinks/Facilities","3430","IMPUTED - Office Condo","single use","Edgartown",0,"single",22,FALSE
+"102","Residential Condominium","3430","CI Condo","single use","Eastham",0,"single",8,FALSE
+"102","Residential Condominium","343","CI Condo","single use","Eastham",0,"single",8,FALSE
+"371","Ice Skating Rinks/Facilities","343","Office bldg - commercial condo","single use","Belchertown",0,"single",30,FALSE
+"102","Residential Condominium","344","Commercial Condominium","single use","Haverhill",0,"single",22,FALSE
+"102","Residential Condominium","303","Com. Condo","single use","Fall River",0,"single",10,FALSE
+"102","Residential Condominium","3430","COMMERCIAL CONDO","single use","Dennis",0,"single",16,FALSE
+"102","Residential Condominium","3440","INDUSTRIAL CONDO","single use","Dennis",0,"single",16,FALSE
+"102","Residential Condominium","3450","MOTEL CONDO","single use","Dennis",0,"single",11,FALSE
+"102","Residential Condominium","3430","OFF CONDO MDL-06","single use","Somerville",0,"single",16,FALSE
+"813","Public Non-Commercial Flying - areas for gliding or hand-gliding (Ch. 61B, not classified as Open Space)","327","Commercial","single use","Westford",0,"single",10,FALSE
+"813","Public Non-Commercial Flying - areas for gliding or hand-gliding (Ch. 61B, not classified as Open Space)","344","Commercial","single use","Westford",0,"single",10,FALSE
+"813","Public Non-Commercial Flying - areas for gliding or hand-gliding (Ch. 61B, not classified as Open Space)","399","Commercial","single use","Westford",0,"single",10,FALSE
+"371","Ice Skating Rinks/Facilities","3430","Office Building","single use","Hanson",0,"single",15,FALSE
+"371","Ice Skating Rinks/Facilities","3450","OFFICE LAB  MDL-94","single use","Lexington",0,"single",18,FALSE
+"371","Ice Skating Rinks/Facilities","345I","OFFICE LAB  MDL-96","single use","Lexington",0,"single",18,FALSE
+"335","Car Wash Facilities","3070","Assit Care","single use","Amherst",0,"single",10,FALSE
+"813","Public Non-Commercial Flying - areas for gliding or hand-gliding (Ch. 61B, not classified as Open Space)","343","Commercial, Other","single use","North Andover",0,"single",17,TRUE
+"371","Ice Skating Rinks/Facilities","343","Office/Retail condo","single use","Manchester-By-The-Sea",0,"single",19,FALSE
+"371","Ice Skating Rinks/Facilities","343","Condo Office","single use","Milford",0,"single",12,FALSE
+"102","Residential Condominium","327","Retail Condo","single use","Malden",0,"single",12,FALSE
+"371","Ice Skating Rinks/Facilities","343","Office Condo","single use","Malden",0,"single",12,FALSE
+"102","Residential Condominium","343","Medical condominium","single use","Northampton",0,"single",19,FALSE
+"102","Residential Condominium","303","Commercial Condominium","single use","Northampton",0,"single",22,FALSE
+"371","Ice Skating Rinks/Facilities","344","Office Condominium","single use","Northampton",0,"single",18,FALSE
+"102","Residential Condominium","329","RTL-CONDO","single use","Brookline",0,"single",9,FALSE
+"102","Residential Condominium","339","CONDO","single use","Brookline",0,"single",5,FALSE
+"102","Residential Condominium","345","OFC-CONDO","single use","Brookline",0,"single",9,FALSE
+"813","Public Non-Commercial Flying - areas for gliding or hand-gliding (Ch. 61B, not classified as Open Space)","303","COMMERCIAL","single use","Brookline",0,"single",10,FALSE
+"102","Residential Condominium","343","Commercial Condo","single use","Deerfield",0,"single",16,FALSE
+"316","Other Storage, Warehouse, and Distribution facilities (see also usecode 401)","319","Condo Warehouse","single use","Marblehead",0,"single",15,FALSE
+"102","Residential Condominium","327","Condo Retail","single use","Marblehead",0,"single",12,FALSE
+"102","Residential Condominium","328","Condo-Rest","single use","Marblehead",0,"single",10,FALSE
+"102","Residential Condominium","343","Condo-Off","single use","Marblehead",0,"single",9,FALSE
+"102","Residential Condominium","344","Condo-Medic","single use","Marblehead",0,"single",11,FALSE
+"102","Residential Condominium","3430","Commercial Condo","single use","Lenox",0,"single",16,FALSE
+"813","Public Non-Commercial Flying - areas for gliding or hand-gliding (Ch. 61B, not classified as Open Space)","3030","Commercial Land","single use","Millis",0,"single",15,FALSE
+"102","Residential Condominium","3430","Commercial, pro condo","single use","Millis",0,"single",21,FALSE
+"952","Auxiliary use - Storage, Barns, etc... (Charitable Org.)","308","RETAIL STORAGE","single use","Boston",0,"single",14,FALSE
+"371","Ice Skating Rinks/Facilities","319","STRIP RETAIL/OFFICE","single use","Boston",0,"single",19,FALSE
+"371","Ice Skating Rinks/Facilities","320","RETAIL/WHLSALE/SERVICE","single use","Boston",0,"single",22,FALSE
+"326","Eating and Drinking Establishments - restaurants, diners, fast food establishments, bars, nightclubs","328","FAST FOOD RESTAURANT","single use","Boston",0,"single",20,FALSE
+"371","Ice Skating Rinks/Facilities","343","OFFICE 1-2 STORY","single use","Boston",0,"single",16,FALSE
+"371","Ice Skating Rinks/Facilities","344","OFFICE 3-9 STORY","single use","Boston",0,"single",16,FALSE
+"371","Ice Skating Rinks/Facilities","345","OFFICE: CLASS B","single use","Boston",0,"single",15,FALSE
+"371","Ice Skating Rinks/Facilities","346","OFFICE:  CLASS B+","single use","Boston",0,"single",17,FALSE
+"371","Ice Skating Rinks/Facilities","347","OFFICE: CLASS A-","single use","Boston",0,"single",16,FALSE
+"371","Ice Skating Rinks/Facilities","348","OFFICE: TOWER CLASS A","single use","Boston",0,"single",21,FALSE
+"102","Residential Condominium","357","RETAIL CONDO","single use","Boston",0,"single",12,FALSE
+"371","Ice Skating Rinks/Facilities","358","OFFICE CONDO","single use","Boston",0,"single",12,FALSE
+"102","Residential Condominium","359","CONDO PARKING (COM)","single use","Boston",0,"single",19,FALSE
+"960","Church, Mosque, Synagogue, Temple, etc...","379","CHURCH, SYNAGOGUE","single use","Boston",0,"single",17,FALSE
+"317","Farm Buildings - barns, silo, utility shed, etc","394","UTILITY BLDG/SHED/HVAC","single use","Boston",0,"single",22,FALSE
+"388","Other Outdoor facilities - e.g. driving ranges, miniature golf, baseball batting ranges, etc... (not Ch. 61B)","395","AIR FREIGHT TERMINAL","single use","Boston",0,"single",20,FALSE
+"952","Auxiliary use - Storage, Barns, etc... (Charitable Org.)","396","HANGAR: STORAGE, MAINT","single use","Boston",0,"single",22,FALSE
+"354","Bus Transportation Facilities and Related Properties","397","BUS/RAIL TERMINAL","single use","Boston",0,"single",17,FALSE
+"106","Accessory Land with Improvement","3030","Accessory Commercial Land","single use","Mansfield",0,"single",25,FALSE
+"106","Accessory Land with Improvement","303","ACC COM LND","single use","Marshfield",0,"single",11,FALSE
+"102","Residential Condominium","327","Retail condos","single use","Marshfield",0,"single",13,FALSE
+"371","Ice Skating Rinks/Facilities","343","Office condos","single use","Marshfield",0,"single",13,FALSE
+"102","Residential Condominium","344","Commercial condos","single use","Marshfield",0,"single",17,FALSE
+"106","Accessory Land with Improvement","3030","Accessory Commercial Land","single use","Kingston",0,"single",25,FALSE
+"960","Church, Mosque, Synagogue, Temple, etc...","394","IMPUTED - CHURCH/SYN","single use","Colrain",0,"single",20,FALSE
+"102","Residential Condominium","327","Condo Retail","single use","Salem",0,"single",12,FALSE
+"102","Residential Condominium","328","Condo Restaurant","single use","Salem",0,"single",16,FALSE
+"102","Residential Condominium","343","Condo Ofc","single use","Salem",0,"single",9,FALSE
+"102","Residential Condominium","344","Condo Med","single use","Salem",0,"single",9,FALSE
+"102","Residential Condominium","307","Condo Hotel","single use","Salem",0,"single",11,FALSE
+"315","Piers, Wharves, Docks, and related facilities that are used for storage and transit of goods","303","Property in Transition","single use","Wellesley",0,"single",22,FALSE
+"371","Ice Skating Rinks/Facilities","343","Office Condo","single use","Wellesley",0,"single",12,FALSE
+"102","Residential Condominium","344","Retail Condo","single use","Wellesley",0,"single",12,FALSE
+"305","Private Hospitals","3280","Private Club","single use","Nantucket",0,"single",12,FALSE
+"374","Health Spas","3290","Health Club","single use","Nantucket",0,"single",11,FALSE
+"813","Public Non-Commercial Flying - areas for gliding or hand-gliding (Ch. 61B, not classified as Open Space)","3030","IMPUTED - Commercial","single use","Tisbury",0,"single",20,FALSE
+"102","Residential Condominium","343","Commercial condo","single use","Middleton",0,"single",16,FALSE
+"371","Ice Skating Rinks/Facilities","343","IMPUTED - Office Condo Bldg","single use","Bourne",0,"single",27,FALSE
+"371","Ice Skating Rinks/Facilities","3430","IMPUTED - Office Condo Bldg","single use","Bourne",0,"single",27,FALSE
+"102","Residential Condominium","343","Commercial Condominiums","single use","Maynard",0,"single",23,FALSE
+"813","Public Non-Commercial Flying - areas for gliding or hand-gliding (Ch. 61B, not classified as Open Space)","3030","Commercial Land (""commercial rellnd"")","single use","Plainville",0,"single",37,FALSE
+"102","Residential Condominium","3430","Commercial Condo","single use","Wellfleet",0,"single",16,FALSE
+"371","Ice Skating Rinks/Facilities","344","Office Condo","single use","Holbrook",0,"single",12,FALSE
+"102","Residential Condominium","399","Commercial Condominium","single use","Raynham",0,"single",22,FALSE
+"102","Residential Condominium","327","Condo - Retail","single use","Hatfield",0,"single",14,FALSE
+"371","Ice Skating Rinks/Facilities","343","Condo - Office","single use","Hatfield",0,"single",14,FALSE
+"102","Residential Condominium","344","Retail Condo","single use","Groveland",0,"single",12,FALSE
+"102","Residential Condominium","343","Commercial Condo","single use","Southborough",0,"single",16,FALSE
+"371","Ice Skating Rinks/Facilities","343","Office Building","single use","West Tisbury",0,"single",15,FALSE
+"356","Miscellaneous Public Services - professional membership organizations, business associations, etc","357","Public Sevice Properties","single use","West Tisbury",0,"single",24,FALSE
+"371","Ice Skating Rinks/Facilities","3430","IMPUTED - Office Building","single use","West Tisbury",0,"single",25,FALSE
+"356","Miscellaneous Public Services - professional membership organizations, business associations, etc","3570","IMPUTED - Public Service Properties","single use","West Tisbury",0,"single",35,FALSE
+"316","Other Storage, Warehouse, and Distribution facilities (see also usecode 401)","319","Condominium-Warehouse","single use","Everett",0,"single",21,FALSE
+"102","Residential Condominium","327","Condominium-Retail","single use","Everett",0,"single",18,FALSE
+"371","Ice Skating Rinks/Facilities","343","Condominium-Office","single use","Everett",0,"single",18,FALSE
+"960","Church, Mosque, Synagogue, Temple, etc...","303","Church","single use","Everett",0,"single",6,FALSE
+"102","Residential Condominium","3271","Other Condominium Association","single use","Everett",0,"single",29,TRUE
+"102","Residential Condominium","3431","Other Condominium Association","single use","Everett",0,"single",29,TRUE
+"371","Ice Skating Rinks/Facilities","3430","Office Condo","single use","Holyoke",0,"single",12,FALSE
+"102","Residential Condominium","3440","Condo - Commercial","single use","Holyoke",0,"single",18,FALSE
+"325","Small Retail and Services stores (under 10,000 sq. ft.)","343","Commercial condo (smaller scale)","single use","Holyoke",0,"single",32,FALSE
+"102","Residential Condominium","344","Commercial condo (larger scale)","single use","Holyoke",0,"single",31,FALSE
+"371","Ice Skating Rinks/Facilities","343","Office condos","single use","Lincoln",0,"single",13,FALSE
+"813","Public Non-Commercial Flying - areas for gliding or hand-gliding (Ch. 61B, not classified as Open Space)","343","Commercial, Industrial","single use","Stoughton",0,"single",22,FALSE
+"813","Public Non-Commercial Flying - areas for gliding or hand-gliding (Ch. 61B, not classified as Open Space)","344","Commercial, Industrial","single use","Stoughton",0,"single",22,FALSE
+"371","Ice Skating Rinks/Facilities","344","Condominium - Office","single use","West Bridgewater",0,"single",20,FALSE
+"102","Residential Condominium","327","Retail Condominium","single use","Revere",0,"single",18,FALSE
+"371","Ice Skating Rinks/Facilities","343","Office Condominium","single use","Revere",0,"single",18,FALSE
+"102","Residential Condominium","344","Condominium Commercial","single use","Revere",0,"single",22,FALSE
+"102","Residential Condominium","344","CONDO-C","single use","Ipswich",0,"single",7,FALSE
+"102","Residential Condominium","3290","COMM CONDO","single use","Weymouth",0,"single",10,FALSE
+"102","Residential Condominium","3430","COMMERCIAL CONDO","single use","Weymouth",0,"single",16,FALSE
+"102","Residential Condominium","3440","INDUSTRIAL CONDO","single use","Weymouth",0,"single",16,FALSE
+"106","Accessory Land with Improvement","3030","ACCLND COM","single use","Taunton",0,"single",10,FALSE
+"316","Other Storage, Warehouse, and Distribution facilities (see also usecode 401)","319","Warehouse Condominium","single use","Framingham",0,"single",21,FALSE
+"102","Residential Condominium","327","Retail Condominium","single use","Framingham",0,"single",18,FALSE
+"102","Residential Condominium","328","Retail Condominium","single use","Framingham",0,"single",18,FALSE
+"102","Residential Condominium","343","Medical Condominium","single use","Framingham",0,"single",19,FALSE
+"102","Residential Condominium","344","Medical Condominium","single use","Framingham",0,"single",19,FALSE
+"371","Ice Skating Rinks/Facilities","343","Condo - Office","single use","Winchester",0,"single",14,FALSE
+"102","Residential Condominium","343","Commercial Condominium including Medical Condominium","single use","Melrose",0,"single",52,FALSE
+"102","Residential Condominium","344","Commercial Retail Condominium","single use","Melrose",0,"single",29,FALSE
+"102","Residential Condominium","444","Industrial Condominium","single use","Arlington",0,"single",22,FALSE
+"102","Residential Condominium","405","industrial condo","single use","Northborough",0,"single",16,FALSE
+"102","Residential Condominium","444","Condo-Industrial","single use","Danvers",0,"single",16,FALSE
+"505","Machinery, Poles, Wires, and Underground Conduits, Wires and Pipes of all Telephone and Telegraph Cos., per Comm. Of Rev","405","Industrial Property","single use","Holliston",0,"single",19,FALSE
+"102","Residential Condominium","444","Indutrial Condo","single use","Fitchburg",0,"single",15,FALSE
+"102","Residential Condominium","405","Industrial Condominium","single use","Tyngsborough",0,"single",22,FALSE
+"432","Cable TV Transmitting Facilities","435","Submarine Cable Terminus","single use","Lynn",0,"single",24,FALSE
+"371","Ice Skating Rinks/Facilities","436","Internet Service Provider","single use","Lynn",0,"single",25,FALSE
+"102","Residential Condominium","4430","IND CONDO","single use","Worcester",0,"single",9,FALSE
+"102","Residential Condominium","444","Condominuim, Industrial","single use","Beverly",0,"single",23,FALSE
+"102","Residential Condominium","444","Industrial Condo's","single use","Littleton",0,"single",18,FALSE
+"400","Buildings for manufacturing operations","4095","IND JOB SHOP","single use","Northbridge",0,"single",12,FALSE
+"102","Residential Condominium","4990","CI CONDO","single use","Canton",0,"single",8,FALSE
+"102","Residential Condominium","4050","Condo Industrial","single use","Norwood",0,"single",16,FALSE
+"102","Residential Condominium","445","Industrial Condominium","single use","Waltham",0,"single",22,FALSE
+"102","Residential Condominium","444","Industrial/Condo","single use","Andover",0,"single",16,FALSE
+"102","Residential Condominium","405","Industrial Condo","single use","Lee",0,"single",16,FALSE
+"114","Affordable Housing Units (Greater than 50% of the units qualify)","4050","4050","single use","Westport",0,"single",4,FALSE
+"102","Residential Condominium","405","Industrial Condo","single use","Falmouth",0,"single",16,FALSE
+"102","Residential Condominium","405","IMPUTED - CONDO Warehouse","single use","Hopkinton",0,"single",25,FALSE
+"400","Buildings for manufacturing operations","4095","Ind Job Shop(s)","single use","Millbury",0,"single",15,FALSE
+"102","Residential Condominium","444","Industrial Condominium","single use","Methuen",0,"single",22,FALSE
+"102","Residential Condominium","405","Industrial Condos","single use","North Reading",0,"single",17,FALSE
+"402","Office Building - part of manufacturing operation","444","Office Condo","single use","Hopkinton",0,"single",12,FALSE
+"102","Residential Condominium","405","Ind Condo","single use","New Bedford",0,"single",9,FALSE
+"102","Residential Condominium","409","INDUST-CONDO","single use","Cambridge",0,"single",12,FALSE
+"102","Residential Condominium","445","Industrial Condominium","single use","Pepperell",0,"single",22,FALSE
+"102","Residential Condominium","444","Industrial condo","single use","Dunstable",0,"single",16,FALSE
+"102","Residential Condominium","444","Ind Condo","single use","Plymouth",0,"single",9,FALSE
+"102","Residential Condominium","405","Industrial condo","single use","Peabody",0,"single",16,FALSE
+"102","Residential Condominium","405","Industrial Condominiums","single use","Franklin",0,"single",23,FALSE
+"102","Residential Condominium","444","Condo Warehouse","single use","Tewksbury",0,"single",15,FALSE
+"102","Residential Condominium","444","IND CONDO","single use","Wakefield",0,"single",9,FALSE
+"400","Buildings for manufacturing operations","4495","JOB SHOP(S)","single use","Barnstable",0,"single",11,FALSE
+"102","Residential Condominium","445","IND CONDO","single use","Billerica",0,"single",9,FALSE
+"102","Residential Condominium","444","Industrial Condominium","single use","Haverhill",0,"single",22,FALSE
+"102","Residential Condominium","405","Ind Condo","single use","Fall River",0,"single",9,FALSE
+"102","Residential Condominium","4050","IND CONDO MDL-06","single use","Somerville",0,"single",16,FALSE
+"402","Office Building - part of manufacturing operation","4060","LAB OFFICE","single use","Lexington",0,"single",10,FALSE
+"402","Office Building - part of manufacturing operation","4061","LABOFFICE CONDO","single use","Lexington",0,"single",15,FALSE
+"102","Residential Condominium","445","IND CONDO","single use","Milford",0,"single",9,FALSE
+"402","Office Building - part of manufacturing operation","444","Office condominium","single use","Boxborough",0,"single",18,FALSE
+"102","Residential Condominium","444","Condo Ind","single use","Marblehead",0,"single",9,FALSE
+"321","Facilities providing building materials, hardware and farm equip, heating, hardware, plumbing, lumber supplies and equip","406","COMPUTER EQUIP BLDG","single use","Boston",0,"single",19,FALSE
+"106","Accessory Land with Improvement","407","MACHINE SHOP (SMALL)","single use","Boston",0,"single",20,FALSE
+"422","Electrical Plant","408","NEWSPAPER PLANT","single use","Boston",0,"single",15,FALSE
+"400","Buildings for manufacturing operations","414","FOOD PROCESS PLANT","single use","Boston",0,"single",18,FALSE
+"422","Electrical Plant","415","BOTTLING PLANT","single use","Boston",0,"single",14,FALSE
+"400","Buildings for manufacturing operations","416","CANNERY","single use","Boston",0,"single",7,FALSE
+"317","Farm Buildings - barns, silo, utility shed, etc","417","DAIRY","single use","Boston",0,"single",5,FALSE
+"432","Cable TV Transmitting Facilities","435","RADIO/TV STUDIO","single use","Boston",0,"single",15,FALSE
+"431","Telephone Relay Towers; Cell Towers","437","CELL CARRIER","single use","Boston",0,"single",12,FALSE
+"109","Multiple Houses on one parcel","438","TELECOM EQUIP (MULTIPLE)","single use","Boston",0,"single",24,FALSE
+"341","Bank Buildings","439","BANK ATM","single use","Boston",0,"single",8,FALSE
+"952","Auxiliary use - Storage, Barns, etc... (Charitable Org.)","444","YARD STORAGE/RENTAL","single use","Boston",0,"single",19,FALSE
+"420","Utility Tanks","446","WATER/SEWER UTILITY","single use","Boston",0,"single",19,FALSE
+"918","Dept. of Environmental Protection (DEP) - Low-level Radioactive Waste Management Board","465","COM BILLBOARD","single use","Boston",0,"single",13,FALSE
+"102","Residential Condominium","444","Industrial condos","single use","Marshfield",0,"single",17,FALSE
+"422","Electrical Plant","475","Elec Gen Plant/ Chapter Land","single use","Kingston",0,"single",28,FALSE
+"102","Residential Condominium","444","Condo- nd","single use","Salem",0,"single",9,FALSE
+"102","Residential Condominium","405","Industrial condo","single use","Middleton",0,"single",16,FALSE
+"102","Residential Condominium","445","Industrial Condominiums","single use","Maynard",0,"single",23,FALSE
+"102","Residential Condominium","444","Industrial Condo","single use","Holbrook",0,"single",16,FALSE
+"102","Residential Condominium","499","Industrial Condominium","single use","Raynham",0,"single",22,FALSE
+"102","Residential Condominium","405","Industrial condos","single use","Raynham",0,"single",17,FALSE
+"102","Residential Condominium","444","Condominium-Industrial","single use","Everett",0,"single",22,FALSE
+"102","Residential Condominium","444","Condominium - Industrial","single use","West Bridgewater",0,"single",24,FALSE
+"102","Residential Condominium","444","CONDO-I","single use","Ipswich",0,"single",7,FALSE
+"102","Residential Condominium","444","Industrial Condominium","single use","Melrose",0,"single",22,FALSE
+"103","Mobile Home (includes mobile home park land)","5000","2ND HOME P/P","single use","Carver",0,"single",12,FALSE
+"114","Affordable Housing Units (Greater than 50% of the units qualify)","5000","5000","single use","Westport",0,"single",4,FALSE
+"114","Affordable Housing Units (Greater than 50% of the units qualify)","5070","5070","single use","Westport",0,"single",4,FALSE
+"114","Affordable Housing Units (Greater than 50% of the units qualify)","5090","5090","single use","Westport",0,"single",4,FALSE
+"505","Machinery, Poles, Wires, and Underground Conduits, Wires and Pipes of all Telephone and Telegraph Cos., per Comm. Of Rev","5000","PERSONAL PROPERTY","single use","Dennis",0,"single",17,FALSE
+"103","Mobile Home (includes mobile home park land)","5101","SECOND HOME","single use","Dennis",0,"single",11,FALSE
+"103","Mobile Home (includes mobile home park land)","5102","SECOND HOME","single use","Dennis",0,"single",11,FALSE
+"103","Mobile Home (includes mobile home park land)","5104","SECOND HOME","single use","Dennis",0,"single",11,FALSE
+"103","Mobile Home (includes mobile home park land)","5105","SECOND HOME","single use","Dennis",0,"single",11,FALSE
+"210","Non-Productive Agricultural Land (non-Chap61(A) part of operating farm or forest)","6100","FOREST C61","single use","Marion",0,"single",10,FALSE
+"210","Non-Productive Agricultural Land (non-Chap61(A) part of operating farm or forest)","6100","CH61 FORESTRY","single use","Swansea",0,"single",13,FALSE
+"210","Non-Productive Agricultural Land (non-Chap61(A) part of operating farm or forest)","610","Forest (Ch.61)","single use","Concord",0,"single",14,FALSE
+"210","Non-Productive Agricultural Land (non-Chap61(A) part of operating farm or forest)","6100","Forest C61","single use","Groton",0,"single",10,FALSE
+"210","Non-Productive Agricultural Land (non-Chap61(A) part of operating farm or forest)","6100","FOREST C61","single use","Palmer",0,"single",10,FALSE
+"210","Non-Productive Agricultural Land (non-Chap61(A) part of operating farm or forest)","6100","FOREST C61","single use","Pelham",0,"single",10,FALSE
+"210","Non-Productive Agricultural Land (non-Chap61(A) part of operating farm or forest)","6100","IMPUTED - Forest C61","single use","Hubbardston",0,"single",20,FALSE
+"106","Accessory Land with Improvement","610","IMPUTED - Vacant Forested Residential","single use","Duxbury",0,"single",37,FALSE
+"210","Non-Productive Agricultural Land (non-Chap61(A) part of operating farm or forest)","6100","FOREST C61","single use","Wareham",0,"single",10,FALSE
+"210","Non-Productive Agricultural Land (non-Chap61(A) part of operating farm or forest)","6100","Chapter 61A Forest Land","single use","Abington",0,"single",23,FALSE
+"210","Non-Productive Agricultural Land (non-Chap61(A) part of operating farm or forest)","6100","FOREST C61","single use","Middleborough",0,"single",10,FALSE
+"210","Non-Productive Agricultural Land (non-Chap61(A) part of operating farm or forest)","6100","CH61 FOREST","single use","Carver",0,"single",11,FALSE
+"210","Non-Productive Agricultural Land (non-Chap61(A) part of operating farm or forest)","6100","FOREST C61","single use","Newburyport",0,"single",10,FALSE
+"261","All Land designated under Chapter 61 (classified as Open Space)","6100","C61 Ten Yr","single use","Plympton",0,"single",10,FALSE
+"210","Non-Productive Agricultural Land (non-Chap61(A) part of operating farm or forest)","610","FOREST C61","single use","North Attleborough",0,"single",10,FALSE
+"210","Non-Productive Agricultural Land (non-Chap61(A) part of operating farm or forest)","6100","FOREST C61","single use","North Attleborough",0,"single",10,FALSE
+"210","Non-Productive Agricultural Land (non-Chap61(A) part of operating farm or forest)","6100","Forest Chapter Land","single use","Wales",0,"single",19,FALSE
+"261","All Land designated under Chapter 61 (classified as Open Space)","6100","Chapter 61 Land","single use","Shutesbury",0,"single",15,FALSE
+"261","All Land designated under Chapter 61 (classified as Open Space)","614","Ch 61","single use","Williamsburg",0,"single",5,FALSE
+"261","All Land designated under Chapter 61 (classified as Open Space)","617","Ch 61","single use","Williamsburg",0,"single",5,FALSE
+"261","All Land designated under Chapter 61 (classified as Open Space)","641","Ch 61","single use","Williamsburg",0,"single",5,FALSE
+"261","All Land designated under Chapter 61 (classified as Open Space)","671","Ch 61","single use","Williamsburg",0,"single",5,FALSE
+"210","Non-Productive Agricultural Land (non-Chap61(A) part of operating farm or forest)","6100","forest land","single use","Millbury",0,"single",11,FALSE
+"210","Non-Productive Agricultural Land (non-Chap61(A) part of operating farm or forest)","6100","Agricultural Chapter Land","single use","Ludlow",0,"single",25,FALSE
+"210","Non-Productive Agricultural Land (non-Chap61(A) part of operating farm or forest)","6100","FOREST C61","single use","Paxton",0,"single",10,FALSE
+"210","Non-Productive Agricultural Land (non-Chap61(A) part of operating farm or forest)","6000","Chapter 61 (Forestry)","single use","New Marlborough",0,"single",21,FALSE
+"210","Non-Productive Agricultural Land (non-Chap61(A) part of operating farm or forest)","6100","FOREST C61","single use","Leominster",0,"single",10,FALSE
+"210","Non-Productive Agricultural Land (non-Chap61(A) part of operating farm or forest)","6100","FOREST C61","single use","Chelmsford",0,"single",10,FALSE
+"210","Non-Productive Agricultural Land (non-Chap61(A) part of operating farm or forest)","6100","Forestry, Chapter 61","single use","Granby",0,"single",20,FALSE
+"210","Non-Productive Agricultural Land (non-Chap61(A) part of operating farm or forest)","610I","Forest C61 - Improved","single use","Granby",0,"single",21,FALSE
+"261","All Land designated under Chapter 61 (classified as Open Space)","670","C61 TEN YR","single use","Rochester",0,"single",10,FALSE
+"210","Non-Productive Agricultural Land (non-Chap61(A) part of operating farm or forest)","610V","Forestry plan","single use","Sterling",0,"single",13,FALSE
+"210","Non-Productive Agricultural Land (non-Chap61(A) part of operating farm or forest)","6100","Forest C61","single use","Amherst",0,"single",10,FALSE
+"210","Non-Productive Agricultural Land (non-Chap61(A) part of operating farm or forest)","6100","FOREST C61","single use","Dedham",0,"single",10,FALSE
+"210","Non-Productive Agricultural Land (non-Chap61(A) part of operating farm or forest)","6100","Forestry Ch. 61","single use","Lunenburg",0,"single",15,FALSE
+"210","Non-Productive Agricultural Land (non-Chap61(A) part of operating farm or forest)","6100","Forest C61","single use","Hamilton",0,"single",10,FALSE
+"210","Non-Productive Agricultural Land (non-Chap61(A) part of operating farm or forest)","6100","Forest C61","single use","Kingston",0,"single",10,FALSE
+"210","Non-Productive Agricultural Land (non-Chap61(A) part of operating farm or forest)","6100","CH 61 FOREST V","single use","Athol",0,"single",14,FALSE
+"210","Non-Productive Agricultural Land (non-Chap61(A) part of operating farm or forest)","6100","Forest Land (Chapter)","single use","Templeton",0,"single",21,FALSE
+"210","Non-Productive Agricultural Land (non-Chap61(A) part of operating farm or forest)","6100","Forest","single use","Plainville",0,"single",6,FALSE
+"210","Non-Productive Agricultural Land (non-Chap61(A) part of operating farm or forest)","6100","FOREST C61","single use","Spencer",0,"single",10,FALSE
+"261","All Land designated under Chapter 61 (classified as Open Space)","6100","C61 10yr","single use","Phillipston",0,"single",8,FALSE
+"210","Non-Productive Agricultural Land (non-Chap61(A) part of operating farm or forest)","6100","IMPUTED - Forest C61","single use","West Boylston",0,"single",20,FALSE
+"261","All Land designated under Chapter 61 (classified as Open Space)","7000","61A FF","single use","Marion",0,"single",6,FALSE
+"720","Wet land, scrub land, rock land (Ch. 61A, not classified as Open Space)","7220","NONPRWETLD","single use","Marion",0,"single",10,FALSE
+"261","All Land designated under Chapter 61 (classified as Open Space)","7999","61 A EF
+","single use","Swansea",0,"single",9,FALSE
+"717","Productive Woodland (Ch. 61A, not classified as Open Space, with a Forest Management Plan); woodlots ","722","Chapter 61-Non-productive Land","single use","Charlemont",0,"single",30,FALSE
+"720","Wet land, scrub land, rock land (Ch. 61A, not classified as Open Space)","7220","NONPRWETLND","single use","Groton",0,"single",11,FALSE
+"918","Dept. of Environmental Protection (DEP) - Low-level Radioactive Waste Management Board","722","Wasteland","single use","Great Barrington",0,"single",9,FALSE
+"717","Productive Woodland (Ch. 61A, not classified as Open Space, with a Forest Management Plan); woodlots ","722","Non-productive Agriculture (Ch. 61A)","single use","West Newbury",0,"single",36,FALSE
+"720","Wet land, scrub land, rock land (Ch. 61A, not classified as Open Space)","722","IMPUTED - Non-Protected Wetland","single use","Ashby",0,"single",31,FALSE
+"918","Dept. of Environmental Protection (DEP) - Low-level Radioactive Waste Management Board","722","Wasteland","single use","Duxbury",0,"single",9,FALSE
+"717","Productive Woodland (Ch. 61A, not classified as Open Space, with a Forest Management Plan); woodlots ","722","Non productive Chapterland","single use","Fitchburg",0,"single",26,FALSE
+"720","Wet land, scrub land, rock land (Ch. 61A, not classified as Open Space)","7220","NONPRWETLD","single use","Middleborough",0,"single",10,FALSE
+"261","All Land designated under Chapter 61 (classified as Open Space)","7000","CH61A AGR/HORT","single use","Carver",0,"single",14,FALSE
+"720","Wet land, scrub land, rock land (Ch. 61A, not classified as Open Space)","7220","WET/SCRUB/ROCK","single use","Carver",0,"single",14,FALSE
+"720","Wet land, scrub land, rock land (Ch. 61A, not classified as Open Space)","7220","Chapter Code - Wet Land","single use","Ashburnham",0,"single",23,FALSE
+"720","Wet land, scrub land, rock land (Ch. 61A, not classified as Open Space)","7220","NONPRWETLD","single use","Newburyport",0,"single",10,FALSE
+"720","Wet land, scrub land, rock land (Ch. 61A, not classified as Open Space)","7220","NONPRWETLD","single use","Rehoboth",0,"single",10,FALSE
+"720","Wet land, scrub land, rock land (Ch. 61A, not classified as Open Space)","7220","NONPRWETLD","single use","Easthampton",0,"single",10,FALSE
+"717","Productive Woodland (Ch. 61A, not classified as Open Space, with a Forest Management Plan); woodlots ","722","IMPUTED - Non-Productive Forest Land","single use","Savoy",0,"single",36,FALSE
+"720","Wet land, scrub land, rock land (Ch. 61A, not classified as Open Space)","722","NONPRWETLD","single use","North Attleborough",0,"single",10,FALSE
+"720","Wet land, scrub land, rock land (Ch. 61A, not classified as Open Space)","7220","NONPRWETLD","single use","North Attleborough",0,"single",10,FALSE
+"717","Productive Woodland (Ch. 61A, not classified as Open Space, with a Forest Management Plan); woodlots ","722","Non productive, chapter land","single use","Greenfield",0,"single",28,FALSE
+"717","Productive Woodland (Ch. 61A, not classified as Open Space, with a Forest Management Plan); woodlots ","7221","Ch61a non productive wetland","single use","Southampton",0,"single",28,FALSE
+"717","Productive Woodland (Ch. 61A, not classified as Open Space, with a Forest Management Plan); woodlots ","7222","Ch61a non productive wetland","single use","Southampton",0,"single",28,FALSE
+"717","Productive Woodland (Ch. 61A, not classified as Open Space, with a Forest Management Plan); woodlots ","7220","non-productive wet land","single use","Southampton",0,"single",23,FALSE
+"125","Other Congregate Housing (includes non-transient shared living arrangements)","722","NonProd","single use","Blandford",0,"single",7,FALSE
+"261","All Land designated under Chapter 61 (classified as Open Space)","7220","61A","single use","Norwell",0,"single",3,FALSE
+"210","Non-Productive Agricultural Land (non-Chap61(A) part of operating farm or forest)","722","Imputed - Other Agricultural","single use","Uxbridge",0,"single",28,TRUE
+"261","All Land designated under Chapter 61 (classified as Open Space)","741","Ch 61A","single use","Williamsburg",0,"single",6,FALSE
+"720","Wet land, scrub land, rock land (Ch. 61A, not classified as Open Space)","7220","IMPUTED - NONPRWETLD","single use","South Hadley",0,"single",20,FALSE
+"125","Other Congregate Housing (includes non-transient shared living arrangements)","7220","WASTELND / NONPROD","single use","Westport",0,"single",18,FALSE
+"720","Wet land, scrub land, rock land (Ch. 61A, not classified as Open Space)","7220","Wet land, scrub land, rock land (Ch. 61A, not classified as Open Space)","single use","Amesbury",0,"single",71,FALSE
+"720","Wet land, scrub land, rock land (Ch. 61A, not classified as Open Space)","7220","NONPRWETLD","single use","Easton",0,"single",10,FALSE
+"720","Wet land, scrub land, rock land (Ch. 61A, not classified as Open Space)","7220","Wet land, scrub land, rock land","single use","Boxford",0,"single",31,FALSE
+"716","Necessary related land-farm roads, ponds, land under farm buildings (Ch. 61A, not classified as Open Space)","7220","NEC RELATED LAND","single use","Ludlow",0,"single",16,FALSE
+"720","Wet land, scrub land, rock land (Ch. 61A, not classified as Open Space)","722","Non Profit Wetland","single use","Montgomery",0,"single",18,FALSE
+"106","Accessory Land with Improvement","722","No Active Code","single use","Lanesborough",0,"single",14,FALSE
+"720","Wet land, scrub land, rock land (Ch. 61A, not classified as Open Space)","7220","NONPRWETLD","single use","Acton",0,"single",10,FALSE
+"720","Wet land, scrub land, rock land (Ch. 61A, not classified as Open Space)","7220","IMPUTED - NONPRWETLD","single use","New Marlborough",0,"single",20,FALSE
+"717","Productive Woodland (Ch. 61A, not classified as Open Space, with a Forest Management Plan); woodlots ","7220","non-productive wetland","single use","Leominster",0,"single",22,FALSE
+"720","Wet land, scrub land, rock land (Ch. 61A, not classified as Open Space)","7220","NONPRWETLD","single use","Chelmsford",0,"single",10,FALSE
+"720","Wet land, scrub land, rock land (Ch. 61A, not classified as Open Space)","722","NONPRWETLD","single use","Chelmsford",0,"single",10,FALSE
+"717","Productive Woodland (Ch. 61A, not classified as Open Space, with a Forest Management Plan); woodlots ","722","Agricultural Non-Productive Wasteland","single use","Stow",0,"single",37,FALSE
+"717","Productive Woodland (Ch. 61A, not classified as Open Space, with a Forest Management Plan); woodlots ","7220","Non productive wetland","single use","Topsfield",0,"single",22,FALSE
+"261","All Land designated under Chapter 61 (classified as Open Space)","7000","61A ff (front feet)","single use","Rutland",0,"single",19,FALSE
+"717","Productive Woodland (Ch. 61A, not classified as Open Space, with a Forest Management Plan); woodlots ","722","Non-productive land","single use","Granville",0,"single",19,FALSE
+"125","Other Congregate Housing (includes non-transient shared living arrangements)","7220","Nonprnecld","single use","Lakeville",0,"single",10,FALSE
+"717","Productive Woodland (Ch. 61A, not classified as Open Space, with a Forest Management Plan); woodlots ","722","Chapter 61A. Non-productive wood.","single use","Warren",0,"single",33,FALSE
+"720","Wet land, scrub land, rock land (Ch. 61A, not classified as Open Space)","722","Wetland","single use","Dudley",0,"single",7,FALSE
+"717","Productive Woodland (Ch. 61A, not classified as Open Space, with a Forest Management Plan); woodlots ","7220","Non Productive Wetland","single use","Dudley",0,"single",22,FALSE
+"717","Productive Woodland (Ch. 61A, not classified as Open Space, with a Forest Management Plan); woodlots ","7220","NONPRODUCTIVE","single use","Rochester",0,"single",13,FALSE
+"261","All Land designated under Chapter 61 (classified as Open Space)","730","61A/COMM","single use","Rochester",0,"single",8,FALSE
+"717","Productive Woodland (Ch. 61A, not classified as Open Space, with a Forest Management Plan); woodlots ","7010","Productive Land","single use","Hanson",0,"single",15,FALSE
+"717","Productive Woodland (Ch. 61A, not classified as Open Space, with a Forest Management Plan); woodlots ","722V","Non Productive agricultural","single use","Sterling",0,"single",27,FALSE
+"720","Wet land, scrub land, rock land (Ch. 61A, not classified as Open Space)","722","Wet land, scrub land, rock land","single use","North Andover",0,"single",31,FALSE
+"717","Productive Woodland (Ch. 61A, not classified as Open Space, with a Forest Management Plan); woodlots ","7220","Non Productive Wetlands","single use","Millis",0,"single",23,FALSE
+"717","Productive Woodland (Ch. 61A, not classified as Open Space, with a Forest Management Plan); woodlots ","722","Chapter 61a Nonproductive Land","single use","Richmond",0,"single",30,FALSE
+"720","Wet land, scrub land, rock land (Ch. 61A, not classified as Open Space)","7220","NONPRWETLN","single use","Kingston",0,"single",10,FALSE
+"720","Wet land, scrub land, rock land (Ch. 61A, not classified as Open Space)","722","Non Product Wetland/Chpater Land","single use","Kingston",0,"single",32,FALSE
+"720","Wet land, scrub land, rock land (Ch. 61A, not classified as Open Space)","722","Wetlands, Rockland","single use","Wellesley",0,"single",18,FALSE
+"716","Necessary related land-farm roads, ponds, land under farm buildings (Ch. 61A, not classified as Open Space)","722","Non-productive farmland","single use","Middleton",0,"single",23,FALSE
+"714","Orchards - pears, apples, grape vineyards, etc... (Ch. 61A, not classified as Open Space)","709","maple products","single use","Worthington",0,"single",14,FALSE
+"720","Wet land, scrub land, rock land (Ch. 61A, not classified as Open Space)","7220","NONPRWETLD","single use","Westfield",0,"single",10,FALSE
+"717","Productive Woodland (Ch. 61A, not classified as Open Space, with a Forest Management Plan); woodlots ","7220","Non productive wetlands","single use","Spencer",0,"single",23,FALSE
+"210","Non-Productive Agricultural Land (non-Chap61(A) part of operating farm or forest)","7000","IMPUTED - Agricultural","single use","West Tisbury",0,"single",22,FALSE
+"717","Productive Woodland (Ch. 61A, not classified as Open Space, with a Forest Management Plan); woodlots ","722","Chapter 61A non-productive land","single use","Lincoln",0,"single",31,FALSE
+"918","Dept. of Environmental Protection (DEP) - Low-level Radioactive Waste Management Board","722","Wasteland","single use","Framingham",0,"single",9,FALSE
+"261","All Land designated under Chapter 61 (classified as Open Space)","800","Chapter 61B Recreation Land","single use","Barre",0,"single",27,FALSE
+"261","All Land designated under Chapter 61 (classified as Open Space)","8000","Chapter 61B Recreation Land","single use","Barre",0,"single",27,FALSE
+"106","Accessory Land with Improvement","8000","OPEN SPACE CHAPTER 61B
+","single use","Hadley",0,"single",24,FALSE
+"261","All Land designated under Chapter 61 (classified as Open Space)","8000","CH61B REC","single use","Carver",0,"single",9,FALSE
+"261","All Land designated under Chapter 61 (classified as Open Space)","8000","Chapter 61B Code","single use","Ashburnham",0,"single",16,FALSE
+"804","Boating - areas for recreational boating and supporting land facilities (Ch. 61B, not classified as Open Space)","8000","Recreational Land","single use","Gosnold",0,"single",17,FALSE
+"804","Boating - areas for recreational boating and supporting land facilities (Ch. 61B, not classified as Open Space)","8000","Recreational Chapter Land","single use","Wales",0,"single",25,FALSE
+"261","All Land designated under Chapter 61 (classified as Open Space)","8000","Chapter 61B","single use","Shutesbury",0,"single",11,FALSE
+"804","Boating - areas for recreational boating and supporting land facilities (Ch. 61B, not classified as Open Space)","8000","recreational (only)","single use","Southampton",0,"single",19,FALSE
+"261","All Land designated under Chapter 61 (classified as Open Space)","800","Ch 61B","single use","Williamsburg",0,"single",6,FALSE
+"804","Boating - areas for recreational boating and supporting land facilities (Ch. 61B, not classified as Open Space)","8000","Chapter 61B Recreational Land","single use","Holland",0,"single",29,FALSE
+"804","Boating - areas for recreational boating and supporting land facilities (Ch. 61B, not classified as Open Space)","8000","RECREATIONAL","single use","Westport",0,"single",12,FALSE
+"804","Boating - areas for recreational boating and supporting land facilities (Ch. 61B, not classified as Open Space)","8000","Recreational Land (Ch. 61B, not classified as Open Space)","single use","Amesbury",0,"single",57,FALSE
+"804","Boating - areas for recreational boating and supporting land facilities (Ch. 61B, not classified as Open Space)","800","Recreational Land (Ch. 61B, not classified as Open Space)","single use","Amesbury",0,"single",57,FALSE
+"340","General Office Buildings","8000","General Recreation - Other","single use","Boxford",0,"single",26,TRUE
+"804","Boating - areas for recreational boating and supporting land facilities (Ch. 61B, not classified as Open Space)","8000","Recreational Land","single use","Ludlow",0,"single",17,FALSE
+"804","Boating - areas for recreational boating and supporting land facilities (Ch. 61B, not classified as Open Space)","800","Chapter 61B recreational land","single use","Acushnet",0,"single",29,FALSE
+"106","Accessory Land with Improvement","8000","Vacant Land","single use","Paxton",0,"single",11,FALSE
+"804","Boating - areas for recreational boating and supporting land facilities (Ch. 61B, not classified as Open Space)","8000","Chapter 61B - Recreational land","single use","Southbridge",0,"single",31,FALSE
+"804","Boating - areas for recreational boating and supporting land facilities (Ch. 61B, not classified as Open Space)","8000","Recreational, Chapter 61B","single use","Granby",0,"single",25,FALSE
+"804","Boating - areas for recreational boating and supporting land facilities (Ch. 61B, not classified as Open Space)","800R","Recreational - Residential, Chapter 61B","single use","Granby",0,"single",39,FALSE
+"804","Boating - areas for recreational boating and supporting land facilities (Ch. 61B, not classified as Open Space)","800V","Recreational - Vacant, Chapter 61B","single use","Granby",0,"single",34,FALSE
+"106","Accessory Land with Improvement","8000","Recreaction, Other","single use","Edgartown",0,"single",18,TRUE
+"804","Boating - areas for recreational boating and supporting land facilities (Ch. 61B, not classified as Open Space)","8000","Recreational Land","single use","Dudley",0,"single",17,FALSE
+"261","All Land designated under Chapter 61 (classified as Open Space)","8000","Chapter 61B","single use","Rochester",0,"single",11,FALSE
+"804","Boating - areas for recreational boating and supporting land facilities (Ch. 61B, not classified as Open Space)","800","Recreational","single use","Westford",0,"single",12,FALSE
+"804","Boating - areas for recreational boating and supporting land facilities (Ch. 61B, not classified as Open Space)","8000","Chapter land Recreational","single use","Sterling",0,"single",25,FALSE
+"261","All Land designated under Chapter 61 (classified as Open Space)","8000","Ch61 B Recreation","single use","Lunenburg",0,"single",17,FALSE
+"804","Boating - areas for recreational boating and supporting land facilities (Ch. 61B, not classified as Open Space)","800","Chapter Land listed as Recreational","single use","Northampton",0,"single",35,FALSE
+"804","Boating - areas for recreational boating and supporting land facilities (Ch. 61B, not classified as Open Space)","8000","IMPUTED - Recreational","single use","Athol",0,"single",22,FALSE
+"804","Boating - areas for recreational boating and supporting land facilities (Ch. 61B, not classified as Open Space)","8000","Recreational Property - Chapter 61B","single use","Templeton",0,"single",35,FALSE
+"813","Public Non-Commercial Flying - areas for gliding or hand-gliding (Ch. 61B, not classified as Open Space)","831","Recreation, some Commercial","single use","Pembroke",0,"single",27,FALSE
+"261","All Land designated under Chapter 61 (classified as Open Space)","8000","recreation land (Chapter 61B Land)","single use","Longmeadow",0,"single",34,FALSE
+"962","Other (Religious Org.)","9090","RELIGIOUS","single use","Marion",0,"single",9,FALSE
+"102","Residential Condominium","999","EXEMPT CODE FOR CONDO UNITS NOT YET BUILT BUT SPLIT OUT FROM MOTHER PARCEL","single use","Upton",0,"single",74,TRUE
+"306","Care and Treatment Facilities - designed and used on a transient basis, including half-way houses and similar facilities","986","IMPUTED - RT/WAY","single use","Dalton",0,"single",16,FALSE
+"962","Other (Religious Org.)","909R","Religious - Res","single use","Shrewsbury",0,"single",15,FALSE
+"970","Housing Authority","976","Neighborhood Development Associates improved (non-profit subsidiary of housing authority)","single use","Lynn",0,"single",89,FALSE
+"970","Housing Authority","977","Neighborhood Development Associates vacant (non-profit subsidiary of housing authority)","single use","Lynn",0,"single",87,FALSE
+"962","Other (Religious Org.)","9090","RELIGIOUS","single use","Middleborough",0,"single",9,FALSE
+"102","Residential Condominium","9490","Condo Mapping","single use","Carver",0,"single",13,FALSE
+"996","Other, Non-Taxable Condominium Common Land","999","non-taxable split accounts","single use","Ashland",0,"single",26,FALSE
+"962","Other (Religious Org.)","9090","Religous Organization","single use","Ashburnham",0,"single",21,FALSE
+"962","Other (Religious Org.)","9090","RELIGIOUS  MDL-00","single use","Newburyport",0,"single",17,FALSE
+"962","Other (Religious Org.)","909C","RELIGIOUS  MDL-94","single use","Newburyport",0,"single",17,FALSE
+"962","Other (Religious Org.)","909I","RELIGIOUS  MDL-96","single use","Newburyport",0,"single",17,FALSE
+"962","Other (Religious Org.)","909R","RELIGIOUS  MDL-01","single use","Newburyport",0,"single",17,FALSE
+"106","Accessory Land with Improvement","976V","EXEMPT VACANT LAND","single use","Worcester",0,"single",18,FALSE
+"962","Other (Religious Org.)","909","IMPUTED - RELIGIOUS","single use","North Adams",0,"single",19,FALSE
+"962","Other (Religious Org.)","9090","RELIGIOUS  MDL-96","single use","Easthampton",0,"single",17,FALSE
+"962","Other (Religious Org.)","909V","RELIGIOUS  MDL-00","single use","Easthampton",0,"single",17,FALSE
+"961","Rectory or Parsonage","9090","Parsonage","single use","Gosnold",0,"single",9,FALSE
+"962","Other (Religious Org.)","909","RELIGIOUS","single use","North Attleborough",0,"single",9,FALSE
+"962","Other (Religious Org.)","9090","RELIGIOUS","single use","North Attleborough",0,"single",9,FALSE
+"958","Recreation, Active Use (Charitable Org.)","999","INACTIVE","single use","Waltham",0,"single",8,FALSE
+"962","Other (Religious Org.)","9090","exempt, religious","single use","Southampton",0,"single",17,FALSE
+"337","Parking Lots - a commercial open parking lot for motor vehicles","998","Next FY Lots","single use","Andover",0,"single",12,FALSE
+"102","Residential Condominium","999","Condo - NOT Built","single use","Andover",0,"single",17,FALSE
+"953","Cemeteries (Charitable Org.)","909C","IMPUTED - Church owned Cemetery","single use","South Hadley",0,"single",31,FALSE
+"337","Parking Lots - a commercial open parking lot for motor vehicles","948","Pilot Tax Agreement","single use","Charlton",0,"single",19,FALSE
+"388","Other Outdoor facilities - e.g. driving ranges, miniature golf, baseball batting ranges, etc... (not Ch. 61B)","909","IMPUTED - MA Clean Energy","single use","New Bedford",0,"single",25,FALSE
+"996","Other, Non-Taxable Condominium Common Land","999","Town Unaccepted, Nontaxable Right of Way Parcel","single use","Oxford",0,"single",47,FALSE
+"962","Other (Religious Org.)","9090","RELIGIOUS MDL","single use","Acton",0,"single",13,FALSE
+"962","Other (Religious Org.)","909V","RELIGIOUS MDL-","single use","Acton",0,"single",14,FALSE
+"962","Other (Religious Org.)","909C","RELIGIOUS MDL","single use","Acton",0,"single",13,FALSE
+"106","Accessory Land with Improvement","909","Municipal-owned vacant","single use","Peabody",0,"single",22,FALSE
+"962","Other (Religious Org.)","963","Religious - Vacant or Accessory Land","single use","Franklin",0,"single",36,FALSE
+"996","Other, Non-Taxable Condominium Common Land","998","Condominium Common Land - Class 4 Industrial, Exempt","single use","Franklin",0,"single",52,FALSE
+"996","Other, Non-Taxable Condominium Common Land","999","Condominium Common Land - Class 9 Exempt","single use","Franklin",0,"single",40,FALSE
+"962","Other (Religious Org.)","9090","RELIGIOUS","single use","Tewksbury",0,"single",9,FALSE
+"962","Other (Religious Org.)","9691","RELIG VACANT","single use","West Springfield",0,"single",12,FALSE
+"962","Other (Religious Org.)","9690","RELIG VACANT","single use","West Springfield",0,"single",12,FALSE
+"962","Other (Religious Org.)","9090","RELIGIOUS  MDL-00","single use","West Springfield",0,"single",17,FALSE
+"962","Other (Religious Org.)","9090","RELIGIOUS","single use","Chelmsford",0,"single",9,FALSE
+"962","Other (Religious Org.)","909C","RELIGIOUS","single use","Chelmsford",0,"single",9,FALSE
+"962","Other (Religious Org.)","9090","RELIGIOUS","single use","Attleboro",0,"single",9,FALSE
+"962","Other (Religious Org.)","9090","Religous","single use","Woburn",0,"single",8,FALSE
+"305","Private Hospitals","949","Educational, Private","single use","Sandwich",0,"single",20,FALSE
+"962","Other (Religious Org.)","969","Religious Group","single use","Sandwich",0,"single",15,FALSE
+"962","Other (Religious Org.)","909V","RELIGIOUS  MDL-00","single use","Agawam",0,"single",17,FALSE
+"962","Other (Religious Org.)","909","Religous","single use","Barnstable",0,"single",8,FALSE
+"962","Other (Religious Org.)","9090","Religious","single use","Granby",0,"single",9,FALSE
+"962","Other (Religious Org.)","9090","RELIGIOUS","single use","Wilbraham",0,"single",9,FALSE
+"962","Other (Religious Org.)","909I","RELIGIOUS","single use","Wilbraham",0,"single",9,FALSE
+"961","Rectory or Parsonage","909R","Religous - Rectory / Parsonage","single use","Wilbraham",0,"single",30,FALSE
+"956","Libraries, Museums (Charitable Org.)","976","Library","single use","Fall River",0,"single",7,FALSE
+"962","Other (Religious Org.)","9090","RELIGIOUS","single use","Lexington",0,"single",9,FALSE
+"106","Accessory Land with Improvement","948","LAUNDRY FACILITY","single use","Boston",0,"single",16,FALSE
+"952","Auxiliary use - Storage, Barns, etc... (Charitable Org.)","949","STORAGE AREA/SUPPLIES","single use","Boston",0,"single",21,FALSE
+"106","Accessory Land with Improvement","963","HVAC EQUIP/MFG BLDG","single use","Boston",0,"single",19,FALSE
+"928","Division of Capital Asset Management (DCAM) - Bureau of State Office Buildings (non-reimbursable)","965","GOVT OFFICE BLDG","single use","Boston",0,"single",16,FALSE
+"316","Other Storage, Warehouse, and Distribution facilities (see also usecode 401)","968","WAREHOUSE","single use","Boston",0,"single",9,FALSE
+"952","Auxiliary use - Storage, Barns, etc... (Charitable Org.)","969","BOAT REPAIR/STORAGE","single use","Boston",0,"single",19,FALSE
+"940","Elementary Level (Educational Private)","976","SCHOOL (ELEMENTARY & HIGH SCHOOL)","single use","Boston",0,"single",33,FALSE
+"942","College or University (Educational Private)","977","COLLEGE (ACADEMIC)","single use","Boston",0,"single",18,FALSE
+"956","Libraries, Museums (Charitable Org.)","978","LIBRARY","single use","Boston",0,"single",7,FALSE
+"953","Cemeteries (Charitable Org.)","983","CEMETERY","single use","Boston",0,"single",8,FALSE
+"106","Accessory Land with Improvement","984","PUBLIC BEACH","single use","Boston",0,"single",12,FALSE
+"356","Miscellaneous Public Services - professional membership organizations, business associations, etc","986","OTHER PUBLIC LAND","single use","Boston",0,"single",17,TRUE
+"125","Other Congregate Housing (includes non-transient shared living arrangements)","987","EXM NON-PUBLIC LAND","single use","Boston",0,"single",19,FALSE
+"962","Other (Religious Org.)","9090","RELIGIOUS","single use","Auburn",0,"single",9,FALSE
+"962","Other (Religious Org.)","909R","RELIGIOUS  MDL-01","single use","Auburn",0,"single",17,FALSE
+"962","Other (Religious Org.)","9090","RELIGIOUS","single use","Kingston",0,"single",9,FALSE
+"962","Other (Religious Org.)","909C","RELIGIOUS","single use","Kingston",0,"single",9,FALSE
+"962","Other (Religious Org.)","964","Religious-Education","single use","Wellesley",0,"single",19,FALSE
+"106","Accessory Land with Improvement","9771","Vacant,","single use","Gardner",0,"single",7,FALSE
+"962","Other (Religious Org.)","9090","EXEMPT - Religious","single use","Spencer",0,"single",18,FALSE
+"276","Necessary related land-farm roads, ponds, land under farm buildings (classified as Open Space)","9090","Railroads","single use","Holyoke",0,"single",9,FALSE
+"102","Residential Condominium","9990","Condo Land Exempt","single use","Holyoke",0,"single",17,FALSE
+"102","Residential Condominium","999","Condo land","single use","Holyoke",0,"single",10,FALSE
+"102","Residential Condominium","998","Condo parcel lots taxed to condo owners","single use","Lincoln",0,"single",39,FALSE
+"995","Other, Open Space","999","Open space taxed to owners of subdivision house lots","single use","Lincoln",0,"single",52,FALSE
+"962","Other (Religious Org.)","9090","RELIGIOUS M94","single use","Yarmouth",0,"single",13,FALSE
+"962","Other (Religious Org.)","909V","RELIGIOUS MOO","single use","Yarmouth",0,"single",13,FALSE
+"010","Mixed Use (Primarily Residential, Some Other)","107","Residential, Multiple Use",NA,"Westborough",NA,NA,NA,NA
+"010","Mixed Use (Primarily Residential, Some Other)","110","Residential, Multiple Use",NA,"Westborough",NA,NA,NA,NA
+"013","Mixed Use (Primarily Residential, Some Commercial)","137","Mixed Use (Primarily Vacant Residential, some Agriculture)",NA,"West Newbury",NA,NA,NA,NA
+"017","Mixed Use (Primarily Residential, Some Agriculture)","178","Mixed Use (Primarily Residential, some Agriculture, some Forest)",NA,"West Newbury",NA,NA,NA,NA
+"010","Mixed Use (Primarily Residential, Some Other)","107","Bed and breakfast (3 rooms or less)",NA,"Lynn",NA,NA,NA,NA
+"013","Mixed Use (Primarily Residential, Some Commercial)","137","Mixed Use (Primarily Residential, some Commercial)",NA,"Montague",NA,NA,NA,NA
+"017","Mixed Use (Primarily Residential, Some Agriculture)","173","Mixed Use (Primarily Residential, some Commercial)",NA,"Montague",NA,NA,NA,NA
+"018","Mixed Use (Primarily Residential, Some Recreation)","187","Mixed Use (Primarily Residential, some Recreational)",NA,"Montague",NA,NA,NA,NA
+"013","Mixed Use (Primarily Residential, Some Commercial)","134","PR RES COM",NA,"Blackstone",NA,NA,NA,NA
+"012","Mixed Use (Primarily Residential, Some Open Space)","120","PR RES OPN",NA,"North Attleborough",NA,NA,NA,NA
+"013","Mixed Use (Primarily Residential, Some Commercial)","134","PRI RS C/I",NA,"North Attleborough",NA,NA,NA,NA
+"016","Mixed Use (Primarily Residential, Some Forest)","160","RES AND CHAP 61",NA,"Westport",NA,NA,NA,NA
+"017","Mixed Use (Primarily Residential, Some Agriculture)","170","RES AND CHAP 61A",NA,"Westport",NA,NA,NA,NA
+"018","Mixed Use (Primarily Residential, Some Recreation)","180","RES AND CHAP 61B",NA,"Westport",NA,NA,NA,NA
+"010","Mixed Use (Primarily Residential, Some Other)","1080","Accessory Land with Improvement",NA,"Amesbury",NA,NA,NA,NA
+"013","Mixed Use (Primarily Residential, Some Commercial)","134","Mixed Use Res R",NA,"Sutton",NA,NA,NA,NA
+"013","Mixed Use (Primarily Residential, Some Commercial)","135","Mixed Use Res C",NA,"Sutton",NA,NA,NA,NA
+"010","Mixed Use (Primarily Residential, Some Other)","107","Single Family with Accessory Apartment",NA,"Hopkinton",NA,NA,NA,NA
+"017","Mixed Use (Primarily Residential, Some Agriculture)","176","Mixed Use (Primarily Residential, some Forest and some Agriculture)",NA,"Pepperell",NA,NA,NA,NA
+"018","Mixed Use (Primarily Residential, Some Recreation)","187","Mixed Use (Primarily Residential, some Chapter 61B and 61A)",NA,"Pepperell",NA,NA,NA,NA
+"013","Mixed Use (Primarily Residential, Some Commercial)","137","Mixed Use (Primarily Residential, some Commercial and Chapter 61A)",NA,"Pepperell",NA,NA,NA,NA
+"016","Mixed Use (Primarily Residential, Some Forest)","167","Mixed use residential; chapter 61 and chapter 61A",NA,"Dunstable",NA,NA,NA,NA
+"017","Mixed Use (Primarily Residential, Some Agriculture)","176","Mixed use residential; chapter 61A and chapter 61",NA,"Dunstable",NA,NA,NA,NA
+"013","Mixed Use (Primarily Residential, Some Commercial)","134","RESIDENTIAL USE",NA,"Newton",NA,NA,NA,NA
+"010","Mixed Use (Primarily Residential, Some Other)","113C","Apartments with More than 100 Units",NA,"Newton",NA,NA,NA,NA
+"010","Mixed Use (Primarily Residential, Some Other)","113","Apartments with More than 99 units",NA,"Newton",NA,NA,NA,NA
+"010","Mixed Use (Primarily Residential, Some Other)","1130","Apartments with More than 99 units",NA,"Newton",NA,NA,NA,NA
+"010","Mixed Use (Primarily Residential, Some Other)","113","APARTMENTS (9 or more units) with affordable units, and less than 50% are affordable",NA,"Franklin",NA,NA,NA,NA
+"013","Mixed Use (Primarily Residential, Some Commercial)","134","Predom Res R",NA,"Westminster",NA,NA,NA,NA
+"013","Mixed Use (Primarily Residential, Some Commercial)","135","Predom Res C",NA,"Westminster",NA,NA,NA,NA
+"017","Mixed Use (Primarily Residential, Some Agriculture)","170","Residential with agricultural and/or horticultural use",NA,"Randolph",NA,NA,NA,NA
+"017","Mixed Use (Primarily Residential, Some Agriculture)","170","Mixed use, Residential and Chapter 61A",NA,"Stow",NA,NA,NA,NA
+"016","Mixed Use (Primarily Residential, Some Forest)","160","Mixed-use Residential/Forestry",NA,"Stow",NA,NA,NA,NA
+"013","Mixed Use (Primarily Residential, Some Commercial)","134","Primary residence w/Commercial or Industrial (Mixed use)",NA,"Barnstable",NA,NA,NA,NA
+"013","Mixed Use (Primarily Residential, Some Commercial)","135","MU DOCKYARD RS",NA,"Barnstable",NA,NA,NA,NA
+"013","Mixed Use (Primarily Residential, Some Commercial)","136","MU MARINA RES",NA,"Barnstable",NA,NA,NA,NA
+"017","Mixed Use (Primarily Residential, Some Agriculture)","170","61B-Recreation category and a 803-Natre Study use; Class Code 8030",NA,"Eastham",NA,NA,NA,NA
+"018","Mixed Use (Primarily Residential, Some Recreation)","180","61A- Nursery category with a 719A: Agric/Horticultural use; Class Code 7190",NA,"Eastham",NA,NA,NA,NA
+"010","Mixed Use (Primarily Residential, Some Other)","1132","MULTI USE COMMERCIAL",NA,"Dennis",NA,NA,NA,NA
+"013","Mixed Use (Primarily Residential, Some Commercial)","137","Mixed use, Residential/Commercial/Chapter 61A",NA,"Boxborough",NA,NA,NA,NA
+"013","Mixed Use (Primarily Residential, Some Commercial)","136","Predom Res C",NA,"Grafton",NA,NA,NA,NA
+"016","Mixed Use (Primarily Residential, Some Forest)","161","Predom Res/600 R",NA,"Grafton",NA,NA,NA,NA
+"017","Mixed Use (Primarily Residential, Some Agriculture)","170","Predom Res/700 V",NA,"Grafton",NA,NA,NA,NA
+"017","Mixed Use (Primarily Residential, Some Agriculture)","171","Predom Res/700 R",NA,"Grafton",NA,NA,NA,NA
+"018","Mixed Use (Primarily Residential, Some Recreation)","180","Predom Res/800 V",NA,"Grafton",NA,NA,NA,NA
+"018","Mixed Use (Primarily Residential, Some Recreation)","181","Predom Res/800 R",NA,"Grafton",NA,NA,NA,NA
+"010","Mixed Use (Primarily Residential, Some Other)","113","Mixed Use Comm",NA,"Medford",NA,NA,NA,NA
+"016","Mixed Use (Primarily Residential, Some Forest)","160","Single Fam/Antique with Forestry Chapter Land",NA,"Kingston",NA,NA,NA,NA
+"010","Mixed Use (Primarily Residential, Some Other)","1070","Single Family Residential with In-Law Apartment",NA,"Plainville",NA,NA,NA,NA
+"013","Mixed Use (Primarily Residential, Some Commercial)","138","MIXED USE & CH. 61B",NA,"Ipswich",NA,NA,NA,NA
+"010","Mixed Use (Primarily Residential, Some Other)","113","Apartment with over 100 units",NA,"Framingham",NA,NA,NA,NA
+"030","Mixed Use (Primarily Commercial, Some Other)","3030","Intentionally left blank by DOR- and we don't use this code.",NA,"Abington",NA,NA,NA,NA
+"030","Mixed Use (Primarily Commercial, Some Other)","3094","APR WET",NA,"Middleborough",NA,NA,NA,NA
+"030","Mixed Use (Primarily Commercial, Some Other)","303","Mixed use commercial use, maybe commercial & residential but predominately commercial",NA,"Northbridge",NA,NA,NA,NA
+"032","Mixed Use (Primarily Commercial, Some Open Space)","3270","Gas station with a food market",NA,"North Attleborough",NA,NA,NA,NA
+"039","Mixed Use (Primarily Commercial, Some Exempt)","3940","APR land",NA,"Southampton",NA,NA,NA,NA
+"034","UNDEFINED","347","Mixed Use - Agricultural/Horticultural, Nurseries, Wet land, scrub land, rock land (Ch. 61A, not classified as Open Space)",NA,"Hopkinton",NA,NA,NA,NA
+"031","UNDEFINED","3190","Mixed Use",NA,"Ludlow",NA,NA,NA,NA
+"034","UNDEFINED","343","Commercial Building with Condo Units (Medical)",NA,"Hopedale",NA,NA,NA,NA
+"030","Mixed Use (Primarily Commercial, Some Other)","3390","gas with market",NA,"Randolph",NA,NA,NA,NA
+"030","Mixed Use (Primarily Commercial, Some Other)","3094","APR WET",NA,"Chelmsford",NA,NA,NA,NA
+"030","Mixed Use (Primarily Commercial, Some Other)","339O","Agricultural restricted property with orchards.",NA,"Stow",NA,NA,NA,NA
+"032","Mixed Use (Primarily Commercial, Some Open Space)","328","Multiple use - condo and restraunt",NA,"Rockport",NA,NA,NA,NA
+"040","Mixed Use (Primarily Industrial, Some Other)","445","Buildings with Industrial Condo Units (Various)",NA,"Hopedale",NA,NA,NA,NA
+"040","Mixed Use (Primarily Industrial, Some Other)","4460","Associated Industrial land (vacant or with site improvements)",NA,"Barnstable",NA,NA,NA,NA
+"047","UNDEFINED","470","Mixed Predom I S",NA,"Dudley",NA,NA,NA,NA
+"041","UNDEFINED","415","Predom Ind R",NA,"Grafton",NA,NA,NA,NA
+"047","UNDEFINED","470","Predom Ind/700",NA,"Grafton",NA,NA,NA,NA
+"061","UNDEFINED","6100","Chapter land - special use - forestry land",NA,"Northbridge",NA,NA,NA,NA
+"072","Mixed Use (Primarily Agriculture, Some Open Space)","722P","NPR WOOD-P",NA,"Easthampton",NA,NA,NA,NA
+"072","Mixed Use (Primarily Agriculture, Some Open Space)","722","Mixed use Chapter 61A Agricultural/Horticultural",NA,"Sherborn",NA,NA,NA,NA
+"072","Mixed Use (Primarily Agriculture, Some Open Space)","7220","NON PR Wetland",NA,"Mansfield",NA,NA,NA,NA
+"072","Mixed Use (Primarily Agriculture, Some Open Space)","722","IMPUTED - Nonpr Wetlands",NA,"West Brookfield",NA,NA,NA,NA
+"080","Mixed Use (Primarily Recreation, Some Other)","8000","Chapter land - special use - recreational",NA,"Northbridge",NA,NA,NA,NA
+"090","Mixed Use (Primarily Exempt, Some Other)","999","Northborough assessor will be adding these records to their database and assigning proper use codes",NA,"Northborough",NA,NA,NA,NA
+"097","Mixed Use (Primarily Exempt, Some Agriculture)","9771","Local Use Code Variation for tracking and administrative purposes, Same as ""9770"".",NA,"Chicopee",NA,NA,NA,NA
+"090","Mixed Use (Primarily Exempt, Some Other)","9090","Church owned vacant land and out buildings",NA,"South Hadley",NA,NA,NA,NA
+"090","Mixed Use (Primarily Exempt, Some Other)","909V","Church owned vacant land and out buildings",NA,"South Hadley",NA,NA,NA,NA
+"090","Mixed Use (Primarily Exempt, Some Other)","998","City Park and Recreation",NA,"Fall River",NA,NA,NA,NA
+"096","Mixed Use (Primarily Exempt, Some Forest)","967","LOFT BLDG/COMMERCIAL USE",NA,"Boston",NA,NA,NA,NA
+"090","Mixed Use (Primarily Exempt, Some Other)","999","PARTIAL EXEMPT USE",NA,"Boston",NA,NA,NA,NA
+"090","Mixed Use (Primarily Exempt, Some Other)","909","IMPUTED - Primarily Exempt (Town of Bourne)",NA,"Bourne",NA,NA,NA,NA
+"090","Mixed Use (Primarily Exempt, Some Other)","9090","IMPUTED - Primarily Exempt (Town of Bourne)",NA,"Bourne",NA,NA,NA,NA
+"090","Mixed Use (Primarily Exempt, Some Other)","909","Exempt, Multiple Use",NA,"Stoughton",NA,NA,NA,NA

@@ -2933,11 +2933,11 @@ gc()
 # 5.0 Create Harmonized Use Code Crosswalk
 # 5.1 Load Mixed and Single Use Crosswalks Created in Section 4.1 and 4.2
 ```{r}
-# Load Single Use Amended Land Use Codes
-su.matched.luc_xwalk <- readRDS(here(paste0("04_Output/Internal/Matched_tbl_SU_.",q,"_",yr,".rds")))
+# Load Single Use Initially Matched Amended Land Use Codes
+su.matched.luc_xwalk <- readRDS(here(paste0("04_Output/Internal/matched_su.amended_xwalk_.",q,"_",yr,".rds")))
 
-# Load Single Use amended Land Use Codes
-su.amend.luc_xwalk <- readRDS(here(paste0("04_Output/Internal/su.amended_xwalk_.",q,"_",yr,".rds")))
+# Load Single Use Initially Unmatched Amended Land Use Codes
+su.unmatched.luc_xwalk <- readRDS(here(paste0("04_Output/Internal/unmatched_su.amended_xwalk_.",q,"_",yr,".rds")))
 
 # Load Mixed Use Amended and Matched Land use Codes
 mxu.luc_xwalk <- readRDS(here(paste0("04_Output/Internal/muni_mixed.use_xwalk.",q,"_",yr,".rds")))
@@ -2947,7 +2947,7 @@ mxu.luc_xwalk <- readRDS(here(paste0("04_Output/Internal/muni_mixed.use_xwalk.",
 # 5.2 Combine Land Use Code Crosswalks
 ```{r}
 # Combine single and mixed use crosswalks
-luc_xwalk <- bind_rows(su.matched.luc_xwalk, su.amend.luc_xwalk, mxu.luc_xwalk)
+luc_xwalk <- bind_rows(su.matched.luc_xwalk, su.unmatched.luc_xwalk, mxu.luc_xwalk)
 ```
 
 # 5.3 Save Single, Amended Land Use Code Crosswalk
