@@ -1174,7 +1174,9 @@ unmatched.amend_tbl <- NULL
 # Create a table of "known" unknown land use codes for hardcoding/human review.
 unmatched.uk_tbl <- NULL
 # Create a table of "known" unknown land use codes for hardcoding/human review.
-matched.uk_tbl <- NULL
+matched.kuk_tbl <- NULL
+# Create a table of "known" unknown land use codes for hardcoding/human review.
+matched.ukuk_tbl <- NULL
 # Create a table of codes flagged for duplicative, non-specific DLS land use descriptions.
 dls.dupes_tbl <- NULL
 # Create full flagging QA table dataframe.
@@ -1262,8 +1264,11 @@ for (i in od_uc.list) {
   dls.dupes_tmp <- comp.amend |> filter(dls.dupes == TRUE)
   # 4. Matched use codes.
   matched.amend_tmp <- comp.amend |> filter(matched == 1) |> filter(numTRUE > 0 & dls.dupes == FALSE | (numTRUE == 0 & mxu.amend.flag == TRUE))
-  # 5. Matched codes with an unknown standard use code allocation.
-  matched_uk_tmp <- comp.amend |> filter(matched == 1) |> filter(numTRUE == 0 & mxu.amend.flag == FALSE & dls.dupes == FALSE)
+  # 5. Matched codes with a unknown standard use code allocation that we have some information about what it may be.
+  matched_kuk_tmp <- comp.amend |> filter(matched == 1) |> filter(numTRUE == 0 & mxu.amend.flag == FALSE & dls.dupes == FALSE) |> filter((char_count != 5 | char_count != 7))
+  
+  # 6. Matched codes with a REAL unknown standard use code allocation.
+  matched_ukuk_tmp <- comp.amend |> filter(matched == 1) |> filter(numTRUE == 0 & mxu.amend.flag == FALSE & dls.dupes == FALSE)|> filter(uk.flag == TRUE & (char_count == 5 | char_count == 7))
 
   
   # Appending each set of unmatched code data to categorized table
@@ -1276,7 +1281,9 @@ for (i in od_uc.list) {
   # Add to full table to matched municipal specific codes
   matched_tbl <- bind_rows(matched_tbl, matched.amend_tmp)
   # Add to full table of unknown municipal specific use codes.
-  matched.uk_tbl <- bind_rows(matched.uk_tbl, matched_uk_tmp)
+  matched.kuk_tbl <- bind_rows(matched.kuk_tbl, matched_kuk_tmp)
+  # Add to full table of unknown municipal specific use codes.
+  matched.ukuk_tbl <- bind_rows(matched.ukuk_tbl, matched_ukuk_tmp)
   
   # QA Analysis of unmatched land use codes
   # Create null QA table
@@ -1334,7 +1341,7 @@ for (i in od_uc.list) {
   flag.QA_um_tbl <- bind_rows(flag.QA_um_tbl, flag.QA_um)
   
   # Remove various dataframes and lists used in each loop iteration.
-  rm(x,y,comp,matched,unmatched,flag.df, comp.amend,unmatched.amend_tmp,unmatched_uk_tmp,dls.dupes_tmp, matched_uk_tmp, matched.amend_tmp,flag.QA_um,a_um,b_um,c_um,d_um,e_um)
+  rm(x,y,comp,matched,unmatched,flag.df, comp.amend,unmatched.amend_tmp,unmatched_uk_tmp,dls.dupes_tmp, matched_kuk_tmp,matched_ukuk_tmp, matched.amend_tmp,flag.QA_um,a_um,b_um,c_um,d_um,e_um)
   
 }
 #==========================================================================================================
@@ -1344,8 +1351,12 @@ matched_tbl <- depr_assign(matched_tbl)
 matched_tbl <- inlaw_assign(matched_tbl)
 
 # Matched Unknown Table
-matched.uk_tbl <- depr_assign(matched.uk_tbl)
-matched.uk_tbl <- inlaw_assign(matched.uk_tbl)
+matched.kuk_tbl <- depr_assign(matched.kuk_tbl)
+matched.kuk_tbl <- inlaw_assign(matched.kuk_tbl)
+
+# Matched Unknown Table
+matched.ukuk_tbl <- depr_assign(matched.ukuk_tbl)
+matched.ukuk_tbl <- inlaw_assign(matched.ukuk_tbl)
 
 #===================
 # Write fill flagging diagnostic table to 
@@ -1355,7 +1366,10 @@ write.csv(flag.QA_um_tbl, here(paste0("02_Data/Logs/Unmatched.Diagnostics_SU_.",
 write.csv(matched_tbl, here(paste0("02_Data/Processed/Matched_tbl_SU_.",q,"_",yr,".csv")), row.names = FALSE)
 
 # Write the full unknown table.
-write.csv(matched.uk_tbl, here(paste0("02_Data/Processed/Matched.Unknown_tbl_SU_.",q,"_",yr,".csv")), row.names = FALSE)
+write.csv(matched.kuk_tbl, here(paste0("02_Data/Processed/Matched.Known.Unknown_tbl_SU_.",q,"_",yr,".csv")), row.names = FALSE)
+
+# Write the full unknown table.
+write.csv(matched.ukuk_tbl, here(paste0("02_Data/Processed/Matched.Unknown.Unknown_tbl_SU_.",q,"_",yr,".csv")), row.names = FALSE)
 
 # Write the full flagged unmatched table.
 write.csv(unmatched.amend_tbl, here(paste0("02_Data/Processed/Unmatched_tbl_SU_.",q,"_",yr,".csv")), row.names = FALSE)
@@ -1373,9 +1387,14 @@ write.csv(matched_tbl, here(paste0("04_Output/Internal/Matched_tbl_SU_.",q,"_",y
 write_rds(matched_tbl, here(paste0("04_Output/Internal/Matched_tbl_SU_.",q,"_",yr,".rds")))
 
 # Write the matched unknown table
-write.csv(matched.uk_tbl, here(paste0("04_Output/Internal/Matched.Unknown_tbl_SU_.",q,"_",yr,".csv")), row.names = FALSE)
+write.csv(matched.kuk_tbl, here(paste0("04_Output/Internal/Matched.Known.Unknown_tbl_SU_.",q,"_",yr,".csv")), row.names = FALSE)
 
-write_rds(matched.uk_tbl, here(paste0("04_Output/Internal/Matched.Unknown_tbl_SU_.",q,"_",yr,".csv")))
+write_rds(matched.kuk_tbl, here(paste0("04_Output/Internal/Matched.Known.Unknown_tbl_SU_.",q,"_",yr,".csv")))
+
+# Write the matched unknown table
+write.csv(matched.ukuk_tbl, here(paste0("04_Output/Internal/Matched.Unknown.Unknown_tbl_SU_.",q,"_",yr,".csv")), row.names = FALSE)
+
+write_rds(matched.ukuk_tbl, here(paste0("04_Output/Internal/Matched.Unknown.Unknown_tbl_SU_.",q,"_",yr,".csv")))
 
 # Write the unknown table
 write.csv(unmatched.uk_tbl, here(paste0("04_Output/Internal/Unmatched.Unknown_tbl_SU_.",q,"_",yr,".csv")), row.names = FALSE)
