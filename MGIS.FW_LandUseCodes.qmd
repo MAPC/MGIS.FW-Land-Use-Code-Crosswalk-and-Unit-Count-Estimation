@@ -486,7 +486,7 @@ td.std.desc_lexicon_unique$`103` <- c(td.std.desc_lexicon_unique$`103`, "mbl", "
 td.std.desc_lexicon_unique$`104` <- c(td.std.desc_lexicon_unique$`104`)
 td.std.desc_lexicon_unique$`105` <- c(td.std.desc_lexicon_unique$`105`)
 td.std.desc_lexicon_unique$`106` <- c(td.std.desc_lexicon_unique$`106`, "acc", "ac", "outbuilding")
-td.std.desc_lexicon_unique$`109` <- c(td.std.desc_lexicon_unique$`109`, "law", "colony")
+td.std.desc_lexicon_unique$`109` <- c(td.std.desc_lexicon_unique$`109`, "law", "colony", "accessory", "auxiliary")
 td.std.desc_lexicon_unique$`111` <- c(td.std.desc_lexicon_unique$`111`)
 td.std.desc_lexicon_unique$`112` <- c(td.std.desc_lexicon_unique$`112`, "over")
 td.std.desc_lexicon_unique$`114` <- c(td.std.desc_lexicon_unique$`114`, "subsd")
@@ -1265,7 +1265,7 @@ for (i in od_uc.list) {
   # 4. Matched use codes.
   matched.amend_tmp <- comp.amend |> filter(matched == 1) |> filter(numTRUE > 0 & dls.dupes == FALSE | (numTRUE == 0 & mxu.amend.flag == TRUE))
   # 5. Matched codes with a unknown standard use code allocation that we have some information about what it may be.
-  matched_kuk_tmp <- comp.amend |> filter(matched == 1) |> filter(numTRUE == 0 & mxu.amend.flag == FALSE & dls.dupes == FALSE) |> filter(uk == FALSE | !(uk == FALSE & char_count == 5) & !(uk == FALSE & char_count == 7))
+  matched_kuk_tmp <- comp.amend |> filter(matched == 1) |> filter(numTRUE == 0 & mxu.amend.flag == FALSE & dls.dupes == FALSE) |> filter(uk == FALSE)
   
   # 6. Matched codes with a REAL unknown standard use code allocation.
   matched_ukuk_tmp <- comp.amend |> filter(matched == 1) |> filter(numTRUE == 0 & mxu.amend.flag == FALSE & dls.dupes == FALSE)|> filter(uk == TRUE & (char_count == 5 | char_count == 7))
@@ -1404,12 +1404,12 @@ write_rds(unmatched.uk_tbl, here(paste0("04_Output/Internal/Unmatched.Unknown_tb
 #~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Standard Use Code Assignment Process
 # Add back in the Known/Unknown Use Codes to the matched table
-matched_tbl <- bind_rows(matched_tbl, matched.kuk_tbl)
+matched_tbl_test <- bind_rows(matched_tbl, matched.kuk_tbl)
 # Split the to-be-amended matched use code dataframe into two segments: 1) single use 2) mixed use.
 # Single Use
-matched.amend_su <- matched_tbl |> filter(mxu.amend.flag == FALSE) |> mutate(STD.USE_CODE_comp = NA)
+matched.amend_su <- matched_tbl_test |> filter(mxu.amend.flag == FALSE) |> mutate(STD.USE_CODE_comp = NA)
 # Mixed-Use
-matched.amend_mxu <- matched_tbl |> filter(mxu.amend.flag == TRUE)
+matched.amend_mxu <- matched_tbl_test |> filter(mxu.amend.flag == TRUE)
 
 # SINGLE USE CODE ASSIGNMENT
 # Create a unique ID value for each 
@@ -2152,7 +2152,7 @@ mxu.matched_amend_tbl <- matched.amend_mxu |> ungroup() |>
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Create a single dataframe for the single use amended land use code crosswalk
-matched_su.luc_xwalk <- bind_rows(matched_amend_tbl_clean, mxu.matched_amend_tbl, matched.kuk_tbl) |> 
+matched_su.luc_xwalk <- bind_rows(matched_amend_tbl_clean, mxu.matched_amend_tbl) |> 
   mutate(
     STD.USE_CODE = if_else(MUNI.USE_DESC %in% in.need.of.use_code, "001", STD.USE_CODE),
     STD.USE_DESC = if_else(MUNI.USE_DESC %in% in.need.of.use_code, "Flag for DLS/BLA Code Update.", STD.USE_DESC)

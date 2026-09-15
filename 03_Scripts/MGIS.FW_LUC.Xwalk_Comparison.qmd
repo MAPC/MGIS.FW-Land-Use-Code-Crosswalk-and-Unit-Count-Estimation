@@ -71,6 +71,7 @@ tbl.2.umdi <- umdi.luc.xwalk |>
   ungroup()
 # 7 broad use categories definiting the standard land use codes contained in the crosswalk.
 
+########
 # UMDI Comparison Analysis
 umdi.comp <-
   left_join(
@@ -79,19 +80,89 @@ umdi.comp <-
     by = c("MUNI.USE_CODE" = "USE_CODE", "MUNI.USE_DESC" = "USE_DESC")
   ) |> 
   mutate(
-     std.luc_compare = if_else(STD.USE_CODE == STD_LUC, TRUE, FALSE)
+     std.luc_compare = if_else(STD.USE_CODE == STD_LUC, TRUE, FALSE),
+     std.luc_comp_compare = if_else(STD.USE_CODE == STD_LUC, TRUE, FALSE),
   )
 
-# Compare the number of crosswalked three digit land use codes which match each other and those that do not.
-umdi_std.comp_tbl <- umdi.comp |>
-  group_by(std.luc_compare) |> 
+###
+# Tables looking at the distribution of land use codes by 
+# - Whether the initial matched land use code/text analyzed assigned code/mixed use assigned code matches to the UMDI code or the text analysis/mixed use assigned code matches to the UMDI code
+# Comparison of initial matched land use code/text analyzed assigned code/mixed use assigned code matches to the UMDI code
+umdi_std.1stcomp_tbl <- umdi.comp |>
+  group_by(std.luc_compare, ) |> 
+  summarise(
+    n = n()
+  ) |> 
+  ungroup()
+# Comparison of text analysis/mixed use assigned code matches to the UMDI code
+umdi_std.2ndcomp_tbl <- umdi.comp |>
+  group_by(std.luc_comp_compare) |> 
   summarise(
     n = n()
   ) |> 
   ungroup()
 
-umdi.f_std.luc_compare <- umdi.comp |> filter(std.luc_compare == FALSE)
-umdi.t_std.luc_compare <- umdi.comp |> filter(std.luc_compare == TRUE)
+# Comparison of both
+umdi_std.2ndcomp_tbl <- umdi.comp |>
+  group_by(std.luc_compare, std.luc_comp_compare) |> 
+  summarise(
+    n = n()
+  ) |> 
+  ungroup()
+###
+
+####
+# Tables looking at the distribution of land use codes based on:
+# - Whether they matched to a standard use code initially
+# - Whether the initial matched land use code/text analyzed assigned code/mixed use assigned code matches to the UMDI code or the text analysis/mixed use assigned code matches to the UMDI code
+
+# Comparison of initial matched land use code/text analyzed assigned code/mixed use assigned code matches to the UMDI code
+initial.match_1stcomp_tbl <- umdi.comp |>
+  group_by(matched, std.luc_compare) |> 
+  summarise(
+    n = n()
+  ) |> 
+  ungroup()
+# Comparison of text analysis/mixed use assigned code matches to the UMDI code
+initial.match_2ndcomp_tbl <- umdi.comp |>
+  group_by(matched, std.luc_comp_compare) |> 
+  summarise(
+    n = n()
+  ) |> 
+  ungroup()
+####
+
+####
+# Tables looking at the distribution of land use codes based on:
+# - One Digit Use Code category
+# - Whether the initial matched land use code/text analyzed assigned code/mixed use assigned code matches to the UMDI code or the text analysis/mixed use assigned code matches to the UMDI code
+
+# Comparison of initial matched land use code/text analyzed assigned code/mixed use assigned code matches to the UMDI code
+od.uc_1stcomp_tbl <- umdi.comp |>
+  group_by(od_uc, std.luc_compare) |> 
+  summarise(
+    n = n()
+  ) |> 
+  ungroup()
+# Comparison of text analysis/mixed use assigned code matches to the UMDI code
+od.uc_2ndcomp_tbl <- umdi.comp |>
+  group_by(od_uc, std.luc_comp_compare) |> 
+  summarise(
+    n = n()
+  ) |> 
+  ungroup()
+####
+
+# Full set of land use codes 
+umdi.f_matched_std.luc_compare <- umdi.comp |> filter(matched == 1 & std.luc_compare == FALSE) |> 
+  select(MUNI.USE_CODE, MUNI.USE_DESC, STD.USE_CODE, STD.USE_DESC, STD.USE_CODE_comp, STD_LUC, CATEGORY, od_uc)
+umdi.f_unmatched_std.luc_compare <- umdi.comp |> filter(matched == 0 & std.luc_compare == FALSE)|> 
+  select(MUNI.USE_CODE, MUNI.USE_DESC, STD.USE_CODE, STD.USE_DESC, STD.USE_CODE_comp, STD_LUC, CATEGORY, od_uc)
+
+umdi.t_matched_std.luc_compare <- umdi.comp |> filter(matched == 1 & std.luc_compare == TRUE)|> 
+  select(MUNI.USE_CODE, MUNI.USE_DESC, STD.USE_CODE, STD.USE_DESC, STD.USE_CODE_comp, STD_LUC, CATEGORY, od_uc)
+umdi.t_unmatched_std.luc_compare <- umdi.comp |> filter(matched == 0 & std.luc_compare == TRUE)|> 
+  select(MUNI.USE_CODE, MUNI.USE_DESC, STD.USE_CODE, STD.USE_DESC, STD.USE_CODE_comp, STD_LUC, CATEGORY, od_uc)
 
 # Observations
 # UMDI does not include a TOWN_ID or municipal name variable making it difficult to crosswalk MAPC's Land Use Code Crosswalk specifically to each Use Code.
