@@ -89,7 +89,7 @@ umdi.comp <-
 # - Whether the initial matched land use code/text analyzed assigned code/mixed use assigned code matches to the UMDI code or the text analysis/mixed use assigned code matches to the UMDI code
 # Comparison of initial matched land use code/text analyzed assigned code/mixed use assigned code matches to the UMDI code
 umdi_std.1stcomp_tbl <- umdi.comp |>
-  group_by(std.luc_compare, ) |> 
+  group_by(std.luc_compare) |> 
   summarise(
     n = n()
   ) |> 
@@ -103,7 +103,7 @@ umdi_std.2ndcomp_tbl <- umdi.comp |>
   ungroup()
 
 # Comparison of both
-umdi_std.2ndcomp_tbl <- umdi.comp |>
+umdi_std.1st2ndcomp_tbl <- umdi.comp |>
   group_by(std.luc_compare, std.luc_comp_compare) |> 
   summarise(
     n = n()
@@ -152,6 +152,12 @@ od.uc_2ndcomp_tbl <- umdi.comp |>
   ) |> 
   ungroup()
 ####
+
+# Write data tables
+write.csv(umdi.comp, here(paste0("02_Data/Logs/Use Code Comparison Table Diagnostics/UMDI/UMDI.comp.csv")), row.names = FALSE)
+write.csv(umdi_std.1stcomp_tbl, here(paste0("02_Data/Logs/Use Code Comparison Table Diagnostics/UMDI/UMDI.code.comp_tbl.csv")), row.names = FALSE)
+write.csv(initial.match_1stcomp_tbl, here(paste0("02_Data/Logs/Use Code Comparison Table Diagnostics/UMDI/UMDI.initialmatch.comp_tbl.csv")), row.names = FALSE)
+write.csv(od.uc_1stcomp_tbl, here(paste0("02_Data/Logs/Use Code Comparison Table Diagnostics/UMDI/UMDI.oduc.comp_tbl.csv")), row.names = FALSE)
 
 # Full set of land use codes 
 umdi.f_matched_std.luc_compare <- umdi.comp |> filter(matched == 1 & std.luc_compare == FALSE) |> 
