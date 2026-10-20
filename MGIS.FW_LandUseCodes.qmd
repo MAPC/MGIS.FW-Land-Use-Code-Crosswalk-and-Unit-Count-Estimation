@@ -90,9 +90,12 @@ std_uc <- use_codes |>
 
 # QC Checks for standard use code 
 # Check the number of unique 1-, 2-, and 3-digit land-use codes
-print(length(unique(std_uc$od_uc))) # Should be equal to 10 (0-9)
-print(length(unique(std_uc$td_uc))) # Should be equal to 54
-print(length(unique(std_uc$xwalk_uc))) # Should be equal to 304 (296 + deprecated 901-908 codes)
+print( "1 Digit Land Use Codes  = 10")
+print(length(unique(std_uc$od_uc))==10) # Should be equal to 10 (0-9)
+print( "2 Digit Land Use Codes  = 54")
+print(length(unique(std_uc$td_uc))== 54) # Should be equal to 54
+print( "3 Digit Land Use Codes  = 304")
+print(length(unique(std_uc$xwalk_uc))==304) # Should be equal to 304 (296 + deprecated 901-908 codes)
 
 # Two-digit Use Codes not in the codebook
 # 00 - Unknown use
@@ -160,7 +163,7 @@ muni_uc <- use_codes |>
   )
 
 # QC Checks for municipal use code 
-print(length(unique(muni_uc$TOWN_ID))) # Only 328 municipalities are listed in the specific LUT
+print(length(unique(muni_uc$TOWN_ID))) # Only 329 municipalities are listed in the specific LUT
 
 # Create dataframe of all muni IDs and names in the LUT use code codebook
 muni.df.LUT <- muni_uc |> select(TOWN_ID, muni_name) |> dplyr::rename(muni_name_LUT = muni_name) |> distinct(TOWN_ID, .keep_all = TRUE)
