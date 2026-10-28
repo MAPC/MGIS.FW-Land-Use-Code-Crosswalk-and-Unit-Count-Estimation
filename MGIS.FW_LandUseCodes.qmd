@@ -192,6 +192,9 @@ missing.muni.LUC <- assessors |> filter(CITY %in% muni.diff.list) |> group_by(US
   ) |> 
   ungroup()
 
+# Municipalities that only use the DLS/BLA standard land use code have a majority of parcels with USE_CODE:
+# "101 - Single Family Residences" - 546, "130 - Developable Land" - 209, "901 - Intentionally Left Blank" - 127, "132 - Undevelopable Land" - 115, "803 - Nature Study - areas specifically for nature study or observation " - 40
+
 # Join missing muni parcels summed to land use code to the full set of standard use codes.
 # full_join() will reveal mismatches with standard use codes.
 std_uc.check <- full_join(std_uc, missing.muni.LUC, by = c("STD.USE_CODE" = "USE_CODE")) |> drop_na()
@@ -235,7 +238,7 @@ std.desc_lexicon <- NULL
 # Filters the Municipal and Standard use codes by one-digit use code and creates a dataframe which is a list of codes which can be accessed by the one digit use code for that set of codes.
 
 # Creates a dataframe which is a list of terms used in use code descriptions for each group of one-digit land use codes. Can be accessed by the one digit use code for that respective group of codes.
-for (i in od_uc.list) {
+for (i in as.character(0:9)) {
   # Muni Use Code List
   print("Compile list of Municipal Use Codes by One Digit Use Code.")
   od_muni.uc[[i]] <- muni_uc |> filter(str_starts(MUNI.USE_CODE, i))
@@ -256,23 +259,15 @@ for (i in od_uc.list) {
 
 # Compare each one digit land use code's list of use code description terms to terms included in every other one digit land use code's list to determine which terms are unique to a specific land use.
 
-#Remove Mixed Use from the list since there will be term overlap that we would like to ignore and this framework will not be used for the mixed use bloc of codes.
-od_uc.list <- tibble(value = od_uc.list)
-  # Remove one of the one-digit codes.
-od_uc.list <-  od_uc.list |>  filter(!value %in% "0")
-  # Extract the updated vector of one digit codes.
-od_uc.list <- pull(od_uc.list, value)
-print(od_uc.list)
-
 # Create a null list where unique use description terms are saved.
 std.desc_lexicon_unique <- NULL
 
-for (i in od_uc.list){
+for (i in as.character(1:9)){
   
   print(paste0("One Digit Use Code ", i, "."))
   # Create a temporary list of one digit land use codes. 
   # Convert to tibble.
-  tmp <- tibble(value = od_uc.list)
+  tmp <- tibble(value = as.character(1:9))
   # Remove one of the one-digit codes.
   tmp <-  tmp |>  filter(!value %in% c(i))
   # Extract the updated vector of one digit codes.
@@ -328,18 +323,10 @@ for (i in td_uc.list){
 
 # Compare each one digit land use code's list of use code description terms to terms included in every other one digit land use code's list to determine which terms are unique to a specific land use.
 
-#Remove Mixed Use from the list since there will be term overlap that we would like to ignore and this framework will not be used for the mixed use bloc of codes.
-od_uc.list <- tibble(value = od_uc.list)
-# Remove one of the one-digit codes.
-od_uc.list <-  od_uc.list |>  filter(!value %in% "0")
-  # Extract the updated vector of one digit codes.
-od_uc.list <- pull(od_uc.list, value)
-print(od_uc.list)
-
 # Create a null list where unique use description terms are saved.
 td.std.desc_lexicon_unique <- NULL
 
-for (i in od_uc.list) {
+for (i in as.character(1:9)) {
   tmp_list <- td_std.uc[[i]]
   
   for (j in tmp_list) {
@@ -405,7 +392,7 @@ comp <- full_join(std_uc, muni_uc, by = c("xwalk_uc")) |>
 # Create a list of terms for each three digit standard code
 od.muni.desc_lexicon <- NULL
 
-for (i in od_uc.list){
+for (i in as.character(0:9)){
   
   # Creates a list of individual terms found in each unique standard three digit land use code.
   od.muni.desc_lexicon[[i]] <- comp |>
@@ -423,23 +410,15 @@ for (i in od_uc.list){
 
 # Compare each one digit land use code's list of use code description terms to terms included in every other one digit land use code's list to determine which terms are unique to a specific land use.
 
-#Remove Mixed Use from the list since there will be term overlap that we would like to ignore and this framework will not be used for the mixed use bloc of codes.
-od_uc.list <- tibble(value = od_uc.list)
-# Remove one of the one-digit codes.
-od_uc.list <-  od_uc.list |>  filter(!value %in% "0")
-  # Extract the updated vector of one digit codes.
-od_uc.list <- pull(od_uc.list, value)
-print(od_uc.list)
-
 # Create a null list where unique use description terms are saved.
 od.muni.desc_lexicon_unique <- NULL
 
-for (i in od_uc.list){
+for (i in as.character(1:9)){
   
   print(paste0("One Digit Use Code ", i, "."))
   # Create a temporary list of one digit land use codes. 
   # Convert to tibble.
-  tmp <- tibble(value = od_uc.list)
+  tmp <- tibble(value = as.character(1:9))
   # Remove one of the one-digit codes.
   tmp <-  tmp |>  filter(!value %in% c(i))
   # Extract the updated vector of one digit codes.
@@ -1188,7 +1167,7 @@ flag.QA_um_tbl <- NULL
 flag.QA.cols_um <- c("Unmatched.Codes","Unmatched.Codes_pct","Unmatched.Codes.Flagged","Unmatched.Codes.Flagged_pct","Remaining.Unmatched_pct")
 
 # 
-for (i in od_uc.list) {
+for (i in as.character(1:9)) {
   print(paste("Beginning Flagging Process for One Digit Use Code Category: ",i,"."))
   #      
   x <- od_muni.uc[[i]] |> select(xwalk_uc, MUNI.USE_CODE, MUNI.USE_DESC, muni_name)
