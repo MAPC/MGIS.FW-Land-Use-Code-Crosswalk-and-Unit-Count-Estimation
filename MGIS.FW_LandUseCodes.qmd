@@ -851,9 +851,9 @@ gen_muc <-function(prim, sec){
 
 gen_std_uc <- function(prim, sec){
   if(sec %in% c(as.character(prim), "0", NA)){
-     return(paste0("Multiple Use (Primarily ", od_categories[1 == prim,][2], " Some Other)"))
+     return(paste0("Multiple Use (Primarily ", od_categories[prim,][2], " Some Other)"))
   } else{
-     return(paste0("Multiple Use (Primarily ", od_categories[1 == prim,][2], " Some ", std_uc[1 == sec,][2], ")"))
+     return(paste0("Multiple Use (Primarily ", od_categories[prim,][2], " Some ", std_uc[sec,][2], ")"))
   }
 }
 
