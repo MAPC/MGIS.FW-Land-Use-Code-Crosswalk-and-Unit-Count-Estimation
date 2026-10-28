@@ -18,20 +18,6 @@ keys <- mapcdatakeys::all_muni_data_keys |>
   select(c(muni_name,muni_id)) |> 
   mutate(muni_name = stringr::str_to_title(muni_name))
 
-# Set list of stopwords
-# Create different case variations of stop words
-sw.upper <- str_to_upper(stopwords(source = "snowball"))
-sw.title <- str_to_title(stopwords(source = "snowball"))
-sw.lower <- str_to_lower(stopwords(source = "snowball"))
-
-# Create single list of case variant stop words
-sw <- c(sw.upper, sw.title, sw.lower)
-# Remove intermediate stop word lists
-rm(sw.upper, sw.title, sw.lower)
-
-# Common terms list
-cmn_terms <- c("buildings", "building", "land", "primarily", "chapter", "ch", "61a", "part", "code")
-
 #Global options to remove scientific notation and set random seed
 options(scipen = 999)
 set.seed(351)
@@ -62,6 +48,44 @@ print(str(assessors))
 
 # Writes a log of the Land Use Code file within the MassGIS Property Tax Parcel geodatabase.
 writexl::write_xlsx(use_codes, here(paste0("02_Data/Logs/L3_UC_LUT.",q,"_",yr,".xlsx")))
+```
+
+# 1.2 Create Helper Terms Lists
+```{r}
+# Create list of terms to help make determinations about how to allocate municipal land use codes to DLS/BLA standard land use codes
+
+# 1. - "DLS Duplicate" terms
+dls.duplicative.terms <- c("woodland", "cranberry", "garage", "day care")
+
+# 2. - Frequent Terms without a DLS/BLA Standard Land Use Code
+in.need.of.use_code <- c("airport")
+
+# 3. - Multiple Use Terms
+# List of strings common to undefined Mixed Use use codes which indicate whether or not they are ACTUALLY Mixed Use, as opposed to misclassified single use.
+mu.strings <- c("Mixed", "mixed", "MIXED", "mixedj", "mix", "Mix", "MIX", "MXD", "mxd", "MU ", "Mu ", "mu ", "primary", "Primary", "primarily", "Primarily","PR ", "Pr ", "pr ",  "PRI ", "pri ", "Pri ", "PRI- ", "pri- ", "Pri- ", "-use", "-Use", "-USE", " use", " USE", " Use", "predom", "Predom", "PREDOM")
+
+# Create a secondary list of terms and symbols to indicate whether municipal specific land use codes could be mixed-use.
+td.mu.strings <- c("//,", "///", " and", " AND", " And", " with", " With", " WITH", " on", " On", " ON")
+
+# 4. - Create a list of terms to flag municipal specific land use codes with an unknown or unspecific use description.
+# Full list of "Other" and "Unknown" terms
+td.mu.other.strings <- c("other", "Other", "OTHER", "unknown", "Unknown", "UNKNOWN", "known", "blank", "intentionally", "left", "not known")
+# Create a list of terms to indicate the presence of an unspecific use description. To be used later with "char_count" variable to determine "known unknowns" and "unknown unknowns".
+other.string <- c("other", "Other", "OTHER")
+
+# 5. - Set list of stopwords
+# Create different case variations of stop words
+sw.upper <- str_to_upper(stopwords(source = "snowball"))
+sw.title <- str_to_title(stopwords(source = "snowball"))
+sw.lower <- str_to_lower(stopwords(source = "snowball"))
+
+# Create single list of case variant stop words
+sw <- c(sw.upper, sw.title, sw.lower)
+# Remove intermediate stop word lists
+rm(sw.upper, sw.title, sw.lower)
+
+# 6. - Common terms list
+cmn_terms <- c("buildings", "building", "land", "primarily", "chapter", "ch", "61a", "part", "code")
 ```
 
 # 2.0 Creating Land Use Code Data Frames
@@ -445,21 +469,7 @@ for (i in as.character(1:9)){
   
 }
 
-# Add strings to unique standard terms list
-#
-dls.duplicative.terms <- c("woodland", "cranberry", "garage", "day care")
-#
-in.need.of.use_code <- c("airport")
-# Mixed Use
-# List of strings common to undefined Mixed Use use codes which indicate whether or not they are ACTUALLY Mixed Use, as opposed to misclassified single use.
-mu.strings <- c("Mixed", "mixed", "MIXED", "mixedj", "mix", "Mix", "MIX", "MXD", "mxd", "MU ", "Mu ", "mu ", "primary", "Primary", "primarily", "Primarily","PR ", "Pr ", "pr ",  "PRI ", "pri ", "Pri ", "PRI- ", "pri- ", "Pri- ", "-use", "-Use", "-USE", " use", " USE", " Use", "predom", "Predom", "PREDOM")
 
-# Create a secondary list of terms and symbols to indicate whether municipal specific land use codes could be mixed-use.
-td.mu.strings <- c("//,", "///", " and", " AND", " And", " with", " With", " WITH", " on", " On", " ON")
-# Create a list of terms to flag municipal specific land use codes with an unknown or unspecific use description.
-td.mu.other.strings <- c("other", "Other", "OTHER", "unknown", "Unknown", "UNKNOWN", "known", "blank", "intentionally", "left", "not known")
-# Create a list of terms to indicate the presence of an unspecific use description. To be used later with "char_count" variable to determine "known unknowns" and "unknown unknowns".
-other.string <- c("other", "Other", "OTHER")
 
 # Residential (19)
 td.std.desc_lexicon_unique$`101` <- c(td.std.desc_lexicon_unique$`101`, "sing")
