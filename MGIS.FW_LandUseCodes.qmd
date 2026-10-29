@@ -840,8 +840,7 @@ print(nrow(unmatched[unmatched$mu.flag == TRUE,])/nrow(unmatched))
 print(1-nrow(unmatched[unmatched$mu.flag == TRUE,])/nrow(unmatched))
 # 64% of unmatched mixed use codes are single use use codes that have been mischaracterized.
 
-
-# 
+# Generate a new land use code and land use code description.
 amended.comp <- unmatched |> 
   rowwise() |> 
   mutate(
@@ -873,20 +872,20 @@ amended.comp <- unmatched |>
     STD.USE_DESC = gen_std_uc(prim = undef.primary, sec = undef.secondary)
   ) |> 
   distinct(MUNI.USE_CODE, muni_name, .keep_all = TRUE) |> 
-   select(c(xwalk_uc, MUNI.USE_CODE, MUNI.USE_CODE_fix, MUNI.USE_CODE_underlying, MUNI.USE_DESC, mu.flag, td.mu.flag, muni_name, uk.flag, other, char_count, dls.dupes, matched, initial.use_type))
+   select(c(xwalk_uc, MUNI.USE_CODE, MUNI.USE_CODE_fix, MUNI.USE_CODE_underlying, MUNI.USE_DESC, STD.USE_DESC, mu.flag, td.mu.flag, muni_name, uk.flag, other, char_count, dls.dupes, matched, initial.use_type))
 #
 
 # Subset 1: Unmatched that ARE Mixed Use
 subset.unmatched.1 <- amended.comp |> 
-  filter(is.na(STD.USE_DESC) == FALSE & (mu.flag == TRUE & (td.mu.flag == TRUE | td.mu.flag == FALSE) | (mu.flag == FALSE & td.mu.flag == TRUE)))
+  filter((mu.flag == TRUE & (td.mu.flag == TRUE | td.mu.flag == FALSE) | (mu.flag == FALSE & td.mu.flag == TRUE)) & uk.flag == FALSE)
 
 # Subset 2: Unmatched that ARE NOT Mixed Use
 subset.unmatched.2 <- amended.comp |> 
-  filter(is.na(STD.USE_DESC) == FALSE & mu.flag == FALSE & td.mu.flag == FALSE)
+  filter(mu.flag == FALSE & td.mu.flag == FALSE & uk.flag == FALSE)
 
 # Subset Hand Edit: Unmatched that need additional work.
 hand.edit.unmatched <- amended.comp |> 
-  filter(is.na(STD.USE_DESC) == TRUE)
+  filter(uk.flag == TRUE)
 
 # Check: Do we have the correct number of codes at the end of this processing?
 # Threshold for acceptance: Number of codes matches exactly to original, unedited  number of codes.
@@ -901,9 +900,10 @@ amended.comp <- amended.comp |> drop_na(STD.USE_DESC) |> distinct(MUNI.USE_CODE,
 
 # Check: What percentage of unmatched mixed use codes can be amended or confirmed programmatically using these methods?
 # Threshold for acceptance: 75% 
-if (nrow(amended.comp)/nrow(amended.uc) > 0.75){
-  print(paste0("Satisfies acceptance threshold with ", round((nrow(amended.comp)/nrow(amended.uc)*100),1), " percent of mixed use codes amended programmatically."))
-  rm(amended.uc, amended.comp)
+if (sum(nrow(subset.unmatched.1), nrow(subset.unmatched.2))/nrow(amended.comp) > 0.75){
+  
+  print(paste0("Satisfies acceptance threshold with ", round(sum(nrow(subset.unmatched.1), nrow(subset.unmatched.2))/nrow(amended.comp)*100,1), " percent of mixed use codes amended programmatically."))
+  rm(amended.comp)
 } else{
   print("Does not meet 75% threshold for method acceptance. Can you refine the code and text analysis methods further?")
 }
@@ -972,20 +972,20 @@ amended.uc <- matched |>
     #
     STD.USE_DESC = gen_std_uc(prim = undef.primary, sec = undef.secondary)
   )|> distinct(MUNI.USE_CODE, muni_name, .keep_all = TRUE) |> 
-   select(c(xwalk_uc, MUNI.USE_CODE, MUNI.USE_CODE_fix, MUNI.USE_CODE_underlying, MUNI.USE_DESC, mu.flag, td.mu.flag, muni_name, uk.flag, other, char_count, dls.dupes, matched, initial.use_type))
+   select(c(xwalk_uc, MUNI.USE_CODE, MUNI.USE_CODE_fix, MUNI.USE_CODE_underlying, MUNI.USE_DESC, STD.USE_DESC, mu.flag, td.mu.flag, muni_name, uk.flag, other, char_count, dls.dupes, matched, initial.use_type))
 
 # Subsets
 # Subset 1: Matched that ARE Mixed Use
 subset.matched.1 <- amended.comp |> 
-  filter(is.na(STD.USE_DESC) == FALSE & (mu.flag == TRUE & (td.mu.flag == TRUE | td.mu.flag == FALSE) | (mu.flag == FALSE & td.mu.flag == TRUE)))
+  filter((mu.flag == TRUE & (td.mu.flag == TRUE | td.mu.flag == FALSE) | (mu.flag == FALSE & td.mu.flag == TRUE)) & uk.flag == FALSE)
 
 #Subset 2: Matched that ARE NOT Mixed Use
 subset.matched.2 <- amended.comp |> 
-  filter(is.na(STD.USE_DESC) == FALSE & mu.flag == FALSE & td.mu.flag == FALSE)
+  filter(mu.flag == FALSE & td.mu.flag == FALSE & uk.flag == FALSE)
 
 # Subset Hand Edit: Matched that are not 
 hand.edit.matched <- amended.comp |> 
-  filter(is.na(STD.USE_DESC) == TRUE)
+  filter(uk.flag == TRUE)
 
 # Check: Do we have the correct number of codes at the end of this processing?
 # Threshold for acceptance: Number of codes matches exactly to original, unedited  number of codes.
@@ -1000,8 +1000,8 @@ amended.comp <- amended.comp |> drop_na(STD.USE_DESC) |> distinct(MUNI.USE_CODE,
 
 # What percentage of unmatched mixed use codes can be amended or confirmed programmatically using these methods?
 # 75% threshold for acceptance.
-if (nrow(amended.comp)/nrow(amended.uc) > 0.75){
-  print(paste0("Satisfies acceptance threshold with ", round((nrow(amended.comp)/nrow(amended.uc)*100),1), " percent of mixed use codes amended programmatically."))
+if (sum(nrow(subset.unmatched.1), nrow(subset.unmatched.2))/nrow(amended.comp) > 0.75){
+  print(paste0("Satisfies acceptance threshold with ", round(sum(nrow(subset.unmatched.1), nrow(subset.unmatched.2))/nrow(amended.comp)*100,1), " percent of mixed use codes amended programmatically."))
 } else{
   print(paste0("Does not meet 75% threshold for method acceptance (Only amends ",round((nrow(amended.comp)/nrow(amended.uc)*100),1)," percent). Can you refine the code and text analysis methods further?"))
 }
