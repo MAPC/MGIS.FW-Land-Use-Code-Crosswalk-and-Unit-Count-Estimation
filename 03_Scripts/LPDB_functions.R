@@ -96,7 +96,7 @@ inlaw_assign <- function(df){
 
 # 4. Multiple Use Code Assignment
 gen_muc <-function(prim, sec){
-  if(sec %in% c(as.character(prim), "0", NA)){
+  if(any(sec %in% c(as.character(sec), "0", NA))){
     return(paste0("0", prim, "0"))
   } else{
     return(paste0("0", prim, sec))
@@ -105,7 +105,7 @@ gen_muc <-function(prim, sec){
 
 # 5. Multiple Use Description Construction
 gen_std_uc <- function(prim, sec){
-  if(sec %in% c(as.character(prim), "0", NA)){
+  if(any(sec %in% c(as.character(sec), "0", NA))){
     return(paste0("Multiple Use (Primarily ", od_categories[as.numeric(prim)+1,][2], " Some Other)"))
   } else{
     return(paste0("Multiple Use (Primarily ", od_categories[as.numeric(prim)+1,][2], " Some ", od_categories[as.numeric(sec)+1,][2], ")"))
