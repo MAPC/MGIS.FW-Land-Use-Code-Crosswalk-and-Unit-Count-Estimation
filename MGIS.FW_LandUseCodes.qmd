@@ -840,26 +840,9 @@ print(nrow(unmatched[unmatched$mu.flag == TRUE,])/nrow(unmatched))
 print(1-nrow(unmatched[unmatched$mu.flag == TRUE,])/nrow(unmatched))
 # 64% of unmatched mixed use codes are single use use codes that have been mischaracterized.
 
-#
-gen_muc <-function(prim, sec){
-    if(sec %in% c(as.character(prim), "0", NA)){
-        return(paste0("0", prim, "0"))
-    } else{
-        return(paste0("0", prim, sec))
-    }
-}
 
-gen_std_uc <- function(prim, sec){
-  if(sec %in% c(as.character(prim), "0", NA)){
-     return(paste0("Multiple Use (Primarily ", od_categories[prim,][2], " Some Other)"))
-  } else{
-     return(paste0("Multiple Use (Primarily ", od_categories[prim,][2], " Some ", std_uc[sec,][2], ")"))
-  }
-}
-
-# Use std_uc
-
-amended.uc <- unmatched |> 
+# 
+amended.comp <- unmatched |> 
   rowwise() |> 
   mutate(
     MUNI.USE_CODE_fix = case_when(
@@ -868,46 +851,6 @@ amended.uc <- unmatched |>
       mu.flag == TRUE ~ gen_muc(prim = undef.primary, sec = undef.secondary),
       .default = "hopefully this doesn't happen"
     ),
-    STD.USE_DESC = gen_std_uc(prim = undef.primary, sec = undef.secondary)
-  )
-#
-
-# Logic for amending Mixed Use Land Use Code Descriptions to match Standard Land Use Codes.
-amended.uc <- unmatched |> 
-  mutate(
-    MUNI.USE_CODE_fix = case_when(
-      mu.flag == FALSE  ~ str_sub(MUNI.USE_CODE, start = 2, end = 4),
-      # Residential Mixed Use
-      mu.flag == TRUE & undef.primary == 1 & undef.secondary %in% c(2,3,4,5,7,8,9) ~ paste0("0",undef.primary,undef.secondary),
-      mu.flag == TRUE & undef.primary == 1 & undef.secondary %in% c(1,0,NA) ~ "010",
-      # Open Space Mixed Use
-      mu.flag == TRUE & undef.primary == 2 & undef.secondary %in% c(1,3,4,5,6,7,8,9) ~ paste0("0",undef.primary,undef.secondary),
-      mu.flag == TRUE & undef.primary == 2 & undef.secondary %in% c(2,0,NA) ~ "020",
-      # Commercial Mixed Use
-      mu.flag == TRUE & undef.primary == 3 & undef.secondary %in% c(1,2,4,5,6,7,8,9) ~ paste0("0",undef.primary,undef.secondary),
-      mu.flag == TRUE & undef.primary == 3 & undef.secondary %in% c(3,0,NA) ~ "030",
-      # Industrial Mixed Use
-      mu.flag == TRUE & undef.primary == 4 & undef.secondary %in% c(1,2,3,5,6,7,8,9) ~ paste0("0",undef.primary,undef.secondary),
-      mu.flag == TRUE & undef.primary == 4 & undef.secondary %in% c(4,0,NA) ~ "040",
-      # Private Property Mixed Use
-      mu.flag == TRUE & undef.primary == 5 & undef.secondary %in% c(1,2,3,4,6,7,8,9) ~ paste0("0",undef.primary,undef.secondary),
-      mu.flag == TRUE & undef.primary == 5 & undef.secondary %in% c(5,0,NA) ~ "050",
-      # Forest Mixed Use
-      mu.flag == TRUE & undef.primary == 6 & undef.secondary %in% c(1,2,3,4,5,7,8,9) ~ paste0("0",undef.primary,undef.secondary),
-      mu.flag == TRUE & undef.primary == 6 & undef.secondary %in% c(6,0,NA) ~ "060",
-      # Agriculture Mixed Use
-      mu.flag == TRUE & undef.primary == 7 & undef.secondary %in% c(1,2,3,4,5,6,8,9) ~ paste0("0",undef.primary,undef.secondary),
-      mu.flag == TRUE & undef.primary == 7 & undef.secondary %in% c(7,0,NA) ~ "070",
-      # Recreation Mixed Use
-      mu.flag == TRUE & undef.primary == 8 & undef.secondary %in% c(1,2,3,4,5,6,7,9) ~ paste0("0",undef.primary,undef.secondary),
-      mu.flag == TRUE & undef.primary == 8 & undef.secondary %in% c(8,0,NA) ~ "080",
-      # Exempt Mixed Use
-      mu.flag == TRUE & undef.primary == 9 & undef.secondary %in% c(1,2,3,4,5,6,7,8) ~ paste0("0",undef.primary,undef.secondary),
-      mu.flag == TRUE & undef.primary == 9 & undef.secondary %in% c(9,0,NA) ~ "090",
-      # uh....
-      .default = "what the hell is going on here?"
-    ),
-    #
     MUNI.USE_CODE_fix = case_when(
       mu.flag == FALSE & td.mu.flag == TRUE & nchar(MUNI.USE_CODE_fix) == 2 ~ str_pad(MUNI.USE_CODE_fix, width = 3, side = "left", pad = 0),
       mu.flag == FALSE & td.mu.flag == TRUE & nchar(MUNI.USE_CODE_fix) == 3 ~ str_pad(MUNI.USE_CODE_fix, width = 4, side = "left", pad = 0),
@@ -925,59 +868,13 @@ amended.uc <- unmatched |>
       mu.flag == TRUE & (td.mu.flag == TRUE | td.mu.flag == FALSE) ~ str_sub(MUNI.USE_CODE, start = 2, end = 4),
       .default = "BLANK"
     ),
+    xwalk_uc = str_sub(MUNI.USE_CODE_fix, start = 1, end = 3),
     #
-    xwalk_uc = str_sub(MUNI.USE_CODE_fix, start = 1, end = 3)
+    STD.USE_DESC = gen_std_uc(prim = undef.primary, sec = undef.secondary)
   ) |> 
+  distinct(MUNI.USE_CODE, muni_name, .keep_all = TRUE) |> 
    select(c(xwalk_uc, MUNI.USE_CODE, MUNI.USE_CODE_fix, MUNI.USE_CODE_underlying, MUNI.USE_DESC, mu.flag, td.mu.flag, muni_name, uk.flag, other, char_count, dls.dupes, matched, initial.use_type))
-
-# Amend the original crosswalk with fixes made to by the use code category
-# First pass - join the amended data which should now match Standard Use Code typologies
-amended.comp <- left_join(amended.uc, std_uc, by = c("xwalk_uc")) |> 
-  # Removes unmatched Standard Use Codes
-  drop_na(MUNI.USE_CODE) |> 
-  mutate(
-    STD.USE_CODE = coalesce(xwalk_uc, STD.USE_CODE),
-    od_uc = str_sub(STD.USE_CODE, start = 1, end = 1),
-    td_uc = str_sub(STD.USE_CODE, start = 2, end = 2),
-    STD.USE_DESC = case_when(
-      STD.USE_CODE == "000" ~ "Use code not known or nor provided.",
-      STD.USE_CODE == "010" ~ "Mixed Use (Primarily Residential, Some Other)",
-      STD.USE_CODE == "012" ~ "Mixed Use (Primarily Residential, Some Open Space)",
-      STD.USE_CODE == "013" ~ "Mixed Use (Primarily Residential, Some Commercial)",
-      STD.USE_CODE == "014" ~ "Mixed Use (Primarily Residential, Some Industrial)",
-      STD.USE_CODE == "015" ~ "Mixed Use (Primarily Residential, Some Private Property)",
-      STD.USE_CODE == "016" ~ "Mixed Use (Primarily Residential, Some Forest)",
-      STD.USE_CODE == "017" ~ "Mixed Use (Primarily Residential, Some Agriculture)",
-      STD.USE_CODE == "018" ~ "Mixed Use (Primarily Residential, Some Recreation)",
-      STD.USE_CODE == "019" ~ "Mixed Use (Primarily Residential, Some Exempt)",
-      STD.USE_CODE == "020" ~ "Mixed Use (Primarily Open Space, Some Other)",
-      STD.USE_CODE == "023" ~ "Mixed Use (Primarily Open Space, Commercial)",
-      STD.USE_CODE == "030" ~ "Mixed Use (Primarily Commercial, Some Other)",
-      STD.USE_CODE == "032" ~ "Mixed Use (Primarily Commercial, Some Open Space)",
-      STD.USE_CODE == "035" ~ "Mixed Use (Primarily Commercial, Some Private Property)",
-      STD.USE_CODE == "039" ~ "Mixed Use (Primarily Commercial, Some Exempt)",
-      STD.USE_CODE == "040" ~ "Mixed Use (Primarily Industrial, Some Other)",
-      STD.USE_CODE == "042" ~ "Mixed Use (Primarily Industrial, Some Open Space)",
-      STD.USE_CODE == "045" ~ "Mixed Use (Primarily Industrial, Some Private Property)",
-      STD.USE_CODE == "049" ~ "Mixed Use (Primarily Industrial, Some Exempt)",
-      STD.USE_CODE == "050" ~ "Mixed Use (Primarily Private Property, Some Other)",
-      STD.USE_CODE == "060" ~ "Mixed Use (Primarily Forest, Some Other)",
-      STD.USE_CODE == "070" ~ "Mixed Use (Primarily Agriculture, Some Other)",
-      STD.USE_CODE == "072" ~ "Mixed Use (Primarily Agriculture, Some Open Space)",
-      STD.USE_CODE == "080" ~ "Mixed Use (Primarily Recreation, Some Other)",
-      STD.USE_CODE == "089" ~ "Mixed Use (Primarily Recreation, Some Exempt)",
-      STD.USE_CODE == "090" ~ "Mixed Use (Primarily Exempt, Some Other)",
-      STD.USE_CODE == "091" ~ "Mixed Use (Primarily Exempt, Some Residential)",
-      STD.USE_CODE == "092" ~ "Mixed Use (Primarily Exempt, Some Open Space)",
-      STD.USE_CODE == "093" ~ "Mixed Use (Primarily Exempt, Some Commercial)",
-      STD.USE_CODE == "094" ~ "Mixed Use (Primarily Exempt, Some Industrial)",
-      STD.USE_CODE == "095" ~ "Mixed Use (Primarily Exempt, Some Private Property)",
-      STD.USE_CODE == "096" ~ "Mixed Use (Primarily Exempt, Some Forest)",
-      STD.USE_CODE == "097" ~ "Mixed Use (Primarily Exempt, Some Agriculture)",
-      STD.USE_CODE == "098" ~ "Mixed Use (Primarily Exempt, Some Recreation)",
-      .default = STD.USE_DESC
-     )
-  ) |> distinct(MUNI.USE_CODE, muni_name, .keep_all = TRUE)
+#
 
 # Subset 1: Unmatched that ARE Mixed Use
 subset.unmatched.1 <- amended.comp |> 
@@ -1058,7 +955,7 @@ amended.uc <- matched |>
       # Residential Mixed Use
       mu.flag == FALSE ~ MUNI.USE_CODE_underlying,
       # uh....
-      .default = "what the hell is going on here?"
+      .default = "hopefully this doesn't happen"
     ),
     # 
     MUNI.USE_CODE_fix = case_when(
@@ -1071,57 +968,11 @@ amended.uc <- matched |>
       .default = MUNI.USE_CODE_fix
     ),
     #
-    xwalk_uc = str_sub(MUNI.USE_CODE_fix, start = 1, end = 3)
-  )|> 
+    xwalk_uc = str_sub(MUNI.USE_CODE_fix, start = 1, end = 3),
+    #
+    STD.USE_DESC = gen_std_uc(prim = undef.primary, sec = undef.secondary)
+  )|> distinct(MUNI.USE_CODE, muni_name, .keep_all = TRUE) |> 
    select(c(xwalk_uc, MUNI.USE_CODE, MUNI.USE_CODE_fix, MUNI.USE_CODE_underlying, MUNI.USE_DESC, mu.flag, td.mu.flag, muni_name, uk.flag, other, char_count, dls.dupes, matched, initial.use_type))
-
-# Amend the original crosswalk with fixes made to by the use code category
-# First pass - join the amended data which should now match Standard Use Code typologies
-amended.comp <- left_join(amended.uc, std_uc, by = c("xwalk_uc")) |> 
-  # Removes unmatched Standard Use Codes
-  drop_na(MUNI.USE_CODE) |> 
-  mutate(
-    STD.USE_CODE = coalesce(xwalk_uc, STD.USE_CODE),
-    od_uc = str_sub(STD.USE_CODE, start = 1, end = 1),
-    td_uc = str_sub(STD.USE_CODE, start = 2, end = 2),
-    STD.USE_DESC = case_when(
-      STD.USE_CODE == "000" ~ "Use code not known or nor provided.",
-      STD.USE_CODE == "010" ~ "Mixed Use (Primarily Residential, Some Other)",
-      STD.USE_CODE == "012" ~ "Mixed Use (Primarily Residential, Some Open Space)",
-      STD.USE_CODE == "013" ~ "Mixed Use (Primarily Residential, Some Commercial)",
-      STD.USE_CODE == "014" ~ "Mixed Use (Primarily Residential, Some Industrial)",
-      STD.USE_CODE == "015" ~ "Mixed Use (Primarily Residential, Some Private Property)",
-      STD.USE_CODE == "016" ~ "Mixed Use (Primarily Residential, Some Forest)",
-      STD.USE_CODE == "017" ~ "Mixed Use (Primarily Residential, Some Agriculture)",
-      STD.USE_CODE == "018" ~ "Mixed Use (Primarily Residential, Some Recreation)",
-      STD.USE_CODE == "019" ~ "Mixed Use (Primarily Residential, Some Exempt)",
-      STD.USE_CODE == "020" ~ "Mixed Use (Primarily Open Space, Some Other)",
-      STD.USE_CODE == "023" ~ "Mixed Use (Primarily Open Space, Commercial)",
-      STD.USE_CODE == "030" ~ "Mixed Use (Primarily Commercial, Some Other)",
-      STD.USE_CODE == "032" ~ "Mixed Use (Primarily Commercial, Some Open Space)",
-      STD.USE_CODE == "035" ~ "Mixed Use (Primarily Commercial, Some Private Property)",
-      STD.USE_CODE == "039" ~ "Mixed Use (Primarily Commercial, Some Exempt)",
-      STD.USE_CODE == "040" ~ "Mixed Use (Primarily Industrial, Some Other)",
-      STD.USE_CODE == "042" ~ "Mixed Use (Primarily Industrial, Some Open Space)",
-      STD.USE_CODE == "045" ~ "Mixed Use (Primarily Industrial, Some Private Property)",
-      STD.USE_CODE == "049" ~ "Mixed Use (Primarily Industrial, Some Exempt)",
-      STD.USE_CODE == "050" ~ "Mixed Use (Primarily Private Property, Some Other)",
-      STD.USE_CODE == "060" ~ "Mixed Use (Primarily Forest, Some Other)",
-      STD.USE_CODE == "070" ~ "Mixed Use (Primarily Agriculture, Some Other)",
-      STD.USE_CODE == "072" ~ "Mixed Use (Primarily Agriculture, Some Open Space)",
-      STD.USE_CODE == "080" ~ "Mixed Use (Primarily Recreation, Some Other)",
-      STD.USE_CODE == "089" ~ "Mixed Use (Primarily Recreation, Some Exempt)",
-      STD.USE_CODE == "090" ~ "Mixed Use (Primarily Exempt, Some Other)",
-      STD.USE_CODE == "091" ~ "Mixed Use (Primarily Exempt, Some Residential)",
-      STD.USE_CODE == "092" ~ "Mixed Use (Primarily Exempt, Some Open Space)",
-      STD.USE_CODE == "093" ~ "Mixed Use (Primarily Exempt, Some Commercial)",
-      STD.USE_CODE == "094" ~ "Mixed Use (Primarily Exempt, Some Industrial)",
-      STD.USE_CODE == "096" ~ "Mixed Use (Primarily Exempt, Some Forest)",
-      STD.USE_CODE == "097" ~ "Mixed Use (Primarily Exempt, Some Agriculture)",
-      STD.USE_CODE == "098" ~ "Mixed Use (Primarily Exempt, Some Recreation)",
-      .default = STD.USE_DESC
-     )
-  ) |> distinct(MUNI.USE_CODE, muni_name, .keep_all = TRUE)
 
 # Subsets
 # Subset 1: Matched that ARE Mixed Use
