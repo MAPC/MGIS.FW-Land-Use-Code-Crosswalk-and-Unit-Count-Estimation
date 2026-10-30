@@ -1065,10 +1065,13 @@ matched.kuk_tbl <- NULL
 matched.ukuk_tbl <- NULL
 # Create a table of codes flagged for duplicative, non-specific DLS land use descriptions.
 dls.dupes_tbl <- NULL
+# Load Initial Multiple Use Codes that were discovered to be Single Use Codes
+mu_to.su <- readRDS(here(paste0("04_Output/Internal/muni_mu_to.su.",q,"_",yr,".rds")))
 # Create full flagging QA table dataframe.
 flag.QA_um_tbl <- NULL
 # Create QA Table column names
 flag.QA.cols_um <- c("Unmatched.Codes","Unmatched.Codes_pct","Unmatched.Codes.Flagged","Unmatched.Codes.Flagged_pct","Remaining.Unmatched_pct")
+
 
 # 
 for (i in as.character(1:9)) {
