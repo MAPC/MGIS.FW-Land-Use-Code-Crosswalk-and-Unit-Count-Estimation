@@ -794,24 +794,8 @@ comp <- full_join(x, y, by = c("xwalk_uc")) |>
     matched = if_else(STD.USE_CODE != "UNDEFINED", 1, 0),
     initial.use_type = "mixed",
     char_count = nchar(MUNI.USE_DESC),
-    od_uc = "0"
-  ) |> distinct(MUNI.USE_CODE, muni_name, .keep_all = TRUE) 
-
-# Unmatched
-# Count common terms used in unmatched use code descriptions
-unmatched_text <- comp |>  
-  filter(matched == 0) |> 
-  unnest_tokens(word, MUNI.USE_DESC) |> 
-  count(word, sort = TRUE)
-
-# Some of these are just single uses mischaracterized as mixed use with a leading zero in the code
-
-
-# Filter for unmatched use codes and create diagnostic variables.
-unmatched <- comp |> 
-  filter(matched == 0) |> 
-  mutate(
-      # Creates a variable that represents what the municipality believes to be the primary use based on the 1-9 one-digit use code categories present in the L3 Stanardized Use Code codebook.
+    od_uc = "0",
+    # Creates a variable that represents what the municipality believes to be the primary use based on the 1-9 one-digit use code categories present in the L3 Stanardized Use Code codebook.
     undef.primary = str_sub(MUNI.USE_CODE, start = 2, end = 2),
       # Creates a variable that represents what the municipality believes to be the secondary use based on the 1-9 one-digit use code categories present in the L3 Stanardized Use Code codebook.
     undef.secondary = str_sub(MUNI.USE_CODE, start = 3, end = 3),
@@ -825,7 +809,21 @@ unmatched <- comp |>
     other = str_detect(MUNI.USE_DESC, regex(paste(other.string, collapse = "|"), ignore_case = T)),
     #
     dls.dupes = str_detect(MUNI.USE_DESC, regex(paste(dls.duplicative.terms, collapse = "|"), ignore_case = T)),
-  )
+  ) |> 
+  distinct(MUNI.USE_CODE, muni_name, .keep_all = TRUE) 
+
+# Unmatched
+# Count common terms used in unmatched use code descriptions
+unmatched_text <- comp |>  
+  filter(matched == 0) |> 
+  unnest_tokens(word, MUNI.USE_DESC) |> 
+  count(word, sort = TRUE)
+
+# Some of these are just single uses mischaracterized as mixed use with a leading zero in the code
+
+
+# Filter for unmatched use codes and create diagnostic variables.
+unmatched <- comp |> filter(matched == 0)
 
 # Print the percentage of unmatched mixed use codes.
 print(nrow(unmatched))
@@ -844,36 +842,46 @@ print(1-nrow(unmatched[unmatched$mu.flag == TRUE,])/nrow(unmatched))
 amended.comp <- unmatched |> 
   rowwise() |> 
   mutate(
+    # Generate the Standard Use Description from the 
     STD.USE_CODE = case_when(
-      mu.flag == FALSE  ~ str_sub(MUNI.USE_CODE, start = 2, end = 4),
-      # Residential Mixed Use
-      mu.flag == TRUE ~ gen_muc(prim = undef.primary, sec = undef.secondary),
+      # Single Use, Not Unknown
+      mu.flag == FALSE & td.mu.flag == FALSE & uk.flag == FALSE ~ str_sub(MUNI.USE_CODE, start = 2, end = 4),
+      # Multiple Use by Conjunction, Not Unknown
+      mu.flag == FALSE & td.mu.flag == TRUE & uk.flag == FALSE ~ gen_muc(prim = undef.primary, sec = undef.secondary),
+      # Multiple Use by Term or Conjunction, Not Unknown
+      mu.flag == TRUE & (td.mu.flag == TRUE | td.mu.flag == FALSE) & uk.flag == FALSE ~ gen_muc(prim = undef.primary, sec = undef.secondary),
+      # Unknown
+      mu.flag == FALSE & td.mu.flag == FALSE & uk.flag == TRUE ~ "000",
+      # Default Value
       .default = "hopefully this doesn't happen"
     ),
-    STD.USE_CODE = case_when(
-      mu.flag == FALSE & td.mu.flag == TRUE & nchar(STD.USE_CODE) == 2 ~ str_pad(STD.USE_CODE, width = 3, side = "left", pad = 0),
-      mu.flag == FALSE & td.mu.flag == TRUE & nchar(STD.USE_CODE) == 3 ~ str_pad(STD.USE_CODE, width = 4, side = "left", pad = 0),
-      .default = STD.USE_CODE
+    # Generate the Standard Use Description from the 
+    STD.USE_DESC = case_when(
+       mu.flag == FALSE & td.mu.flag == FALSE & uk.flag == FALSE ~ MUNI.USE_DESC,
+      # Multiple Use by Conjunction, Not Unknown
+      mu.flag == FALSE & td.mu.flag == TRUE & uk.flag == FALSE ~ gen_std_uc(prim = undef.primary, sec = undef.secondary),
+      # Multiple Use by Term or Conjunction, Not Unknown
+      mu.flag == TRUE & (td.mu.flag == TRUE | td.mu.flag == FALSE) & uk.flag == FALSE ~ gen_std_uc(prim = undef.primary, sec = undef.secondary),
+      # Unknown
+      mu.flag == FALSE & td.mu.flag == FALSE & uk.flag == TRUE ~ "Other/Unknown",
+      # Default Value
+      .default = "hopefully this doesn't happen."
     ),
-    #
-    STD.USE_CODE = case_when(
-      mu.flag == FALSE & td.mu.flag == FALSE & uk.flag == TRUE ~ "000",
-      .default = STD.USE_CODE
-    ),
-    #
+    # Municipal Multiple Use Codes may contain information about individual uses on a parcel. Capture that in a variable.
     MUNI.USE_CODE_underlying = case_when(
+      # Single or Unknown Use - No Value
       mu.flag == FALSE & td.mu.flag == FALSE ~ "BLANK",
+      # Multiple Use by Conjunction or Multiple Use by Term and Conjunction - Value
       mu.flag == FALSE & td.mu.flag == TRUE ~ str_sub(MUNI.USE_CODE, start = 2, end = 4),
       mu.flag == TRUE & (td.mu.flag == TRUE | td.mu.flag == FALSE) ~ str_sub(MUNI.USE_CODE, start = 2, end = 4),
       .default = "BLANK"
     ),
+    # Create the crosswalk standard use code from the reassigned Standard Use Code.
     xwalk_uc = str_sub(STD.USE_CODE, start = 1, end = 3),
-    #
-    STD.USE_DESC = gen_std_uc(prim = undef.primary, sec = undef.secondary)
   ) |> 
   distinct(MUNI.USE_CODE, muni_name, .keep_all = TRUE) |> 
-   select(c(xwalk_uc, MUNI.USE_CODE, MUNI.USE_CODE_underlying, MUNI.USE_DESC, STD.USE_CODE, STD.USE_DESC, mu.flag, td.mu.flag, muni_name, uk.flag, other, char_count, dls.dupes, matched, initial.use_type))
-#
+   select(c(xwalk_uc, MUNI.USE_CODE, MUNI.USE_CODE_underlying, MUNI.USE_DESC, STD.USE_CODE, STD.USE_DESC, mu.flag, td.mu.flag, muni_name, uk.flag, other, dls.dupes, matched, initial.use_type))
+
 
 # Subset 1: Unmatched that ARE Mixed Use
 subset.unmatched.1 <- amended.comp |> 
@@ -895,21 +903,17 @@ if (sum(nrow(subset.unmatched.1), nrow(subset.unmatched.2), nrow(hand.edit.unmat
   print("Please go back and check the subsetting logic.")
 }
 
-# Programmatically amended subset
-amended.comp <- amended.comp |> drop_na(STD.USE_DESC) |> distinct(MUNI.USE_CODE, muni_name, .keep_all = TRUE)
-
 # Check: What percentage of unmatched mixed use codes can be amended or confirmed programmatically using these methods?
 # Threshold for acceptance: 75% 
 if (sum(nrow(subset.unmatched.1), nrow(subset.unmatched.2))/nrow(amended.comp) > 0.75){
-  
   print(paste0("Satisfies acceptance threshold with ", round(sum(nrow(subset.unmatched.1), nrow(subset.unmatched.2))/nrow(amended.comp)*100,1), " percent of mixed use codes amended programmatically."))
   rm(amended.comp)
 } else{
   print("Does not meet 75% threshold for method acceptance. Can you refine the code and text analysis methods further?")
 }
 
-# Programmatically edited or confirmed 90% of unmatched mixed use codes.
-# Must hand edit 10% of unmatched mixed use codes
+# Programmatically edited or confirmed 95.7% of unmatched mixed use codes.
+# Must hand edit 4.3% of unmatched mixed use codes
 
 # Matched
 # Count common terms used in unmatched use code descriptions
@@ -918,24 +922,7 @@ matched_text <- comp |>
   unnest_tokens(word, MUNI.USE_DESC) |> 
   count(word, sort = TRUE)
 
-matched <- comp |> 
-  filter(matched == 1) |>
-  mutate(
-          # Creates a variable that represents what the municipality believes to be the primary use based on the 1-9 one-digit use code categories present in the L3 Stanardized Use Code codebook.
-    undef.primary = str_sub(MUNI.USE_CODE, start = 2, end = 2),
-      # Creates a variable that represents what the municipality believes to be the secondary use based on the 1-9 one-digit use code categories present in the L3 Stanardized Use Code codebook.
-    undef.secondary = str_sub(MUNI.USE_CODE, start = 3, end = 3),
-    # Flag for text in the municipal use description column.
-    mu.flag = str_detect(MUNI.USE_DESC, paste(mu.strings, collapse = "|")),   
-    # Flags for some additional special characters or terms that appear in mixed use codes that do not use distinct words that indicate mixed use.
-    td.mu.flag = str_detect(MUNI.USE_DESC, paste(td.mu.strings, collapse = "|")),
-    # Flag for unknown use.
-    uk.flag = str_detect(MUNI.USE_DESC, paste(td.mu.other.strings, collapse = "|")),
-    #
-    other = str_detect(MUNI.USE_DESC, regex(paste(other.string, collapse = "|"), ignore_case = T)),
-    #
-    dls.dupes = str_detect(MUNI.USE_DESC, regex(paste(dls.duplicative.terms, collapse = "|"), ignore_case = T))
-  )
+matched <- comp |> filter(matched == 1)
 
 # Print the percentage of matched mixed use codes.
 print(nrow(matched))
