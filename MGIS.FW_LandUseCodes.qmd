@@ -943,7 +943,9 @@ amended.comp <- matched |>
     MUNI.USE_CODE_underlying = str_sub(MUNI.USE_CODE, start = 2, end = 4),,
     STD.USE_CODE = case_when(
       # Assign the three-digit multiple use code to the standard code.
-      mu.flag == TRUE | td.mu.flag == TRUE ~ STD.USE_CODE,
+      mu.flag == FALSE & td.mu.flag == TRUE & uk.flag == FALSE ~ STD.USE_CODE,
+      # Assign the three-digit multiple use code to the standard code.
+      mu.flag == TRUE & (td.mu.flag == TRUE | td.mu.flag == FALSE) & uk.flag == FALSE ~ STD.USE_CODE,
       # Assign the three-digit single use code to multiple use codes that are actually single use codes.
       mu.flag == FALSE & td.mu.flag == FALSE & uk.flag == FALSE ~ MUNI.USE_CODE_underlying,
       # Assign an "Unknown Code" to codes where we do not know the code based on the municipal use code.
@@ -952,7 +954,7 @@ amended.comp <- matched |>
       .default = "hopefully this doesn't happen"
     ),
     xwalk_uc = str_sub(STD.USE_CODE, start = 1, end = 3)
-  )|> distinct(MUNI.USE_CODE, muni_name, .keep_all = TRUE) |> 
+  ) |> 
    select(c(xwalk_uc, MUNI.USE_CODE, MUNI.USE_CODE_underlying, MUNI.USE_DESC, STD.USE_CODE, STD.USE_DESC, mu.flag, td.mu.flag, muni_name, uk.flag, other, char_count, dls.dupes, matched, initial.use_type))
 
 # Subsets
@@ -976,31 +978,30 @@ if (sum(nrow(subset.matched.1), nrow(subset.matched.2), nrow(hand.edit.matched))
   print("Please go back and check the subsetting logic.")
 }
 
-# Programmatically amended subset
-amended.comp <- amended.comp |> drop_na(STD.USE_DESC) |> distinct(MUNI.USE_CODE, muni_name, .keep_all = TRUE)
-
 # What percentage of unmatched mixed use codes can be amended or confirmed programmatically using these methods?
 # 75% threshold for acceptance.
 if (sum(nrow(subset.unmatched.1), nrow(subset.unmatched.2))/nrow(amended.comp) > 0.75){
   print(paste0("Satisfies acceptance threshold with ", round(sum(nrow(subset.unmatched.1), nrow(subset.unmatched.2))/nrow(amended.comp)*100,1), " percent of mixed use codes amended programmatically."))
+  rm(amended.comp)
 } else{
   print(paste0("Does not meet 75% threshold for method acceptance (Only amends ",round((nrow(amended.comp)/nrow(amended.uc)*100),1)," percent). Can you refine the code and text analysis methods further?"))
 }
 
-# CONFIRMED Multiple Use Code Crosswalk
-mu_xwalk <- bind_rows(subset.matched.1, subset.unmatched.1) |> 
-  select(c(STD.USE_CODE, STD.USE_DESC, MUNI.USE_CODE, MUNI.USE_DESC, MUNI.USE_CODE_underlying, muni_name, matched, other, char_count, initial.use_type))
+# Create full dataframes from unmatched and matched code subsets.
+# Municipal Multiple Use Code -> CONFIRMED Multiple Use Codes
+mu_xwalk <- bind_rows(subset.matched.1, subset.unmatched.1)
 
-#
+# Municipal Multiple Use Codes -> ACTUAL Single Use Codes
 mu_to.su <- bind_rows(subset.matched.2, subset.unmatched.2)
 
-# Land Use Codes to pursue manual editing for.
+# Land Use Codes which need additional review.
 mu_hand.edit <- bind_rows(hand.edit.matched, hand.edit.unmatched)
 
 # 90% of municipal Mixed Use Codes are edited/confirmed and crosswalked to a standard mixed use code.
 print(nrow(mu_xwalk)/nrow(x))
 
-# Mixed Use Crosswalk
+# Write out 
+# Municipal Multiple Use Code -> CONFIRMED Multiple Use Codes
 # Write csv
 write.csv(
   mu_xwalk,
@@ -1012,6 +1013,20 @@ write.csv(
 write_rds(
   mu_xwalk,
   paste0(here(paste0("04_Output/Internal/muni_mixed.use_xwalk.",q,"_",yr,".rds")))
+)
+
+# Municipal Multiple Use Codes -> ACTUAL Single Use Codes
+# Write csv
+write.csv(
+  mu_to.su,
+  paste0(here(paste0("04_Output/Internal/muni_mu_to.su.",q,"_",yr,".csv"))),
+  row.names = FALSE
+)
+
+# Write RDS
+write_rds(
+  mu_to.su,
+  paste0(here(paste0("04_Output/Internal/muni_mu_to.su.",q,"_",yr,".rds")))
 )
 
 # Mixed Use Unknowns
@@ -1028,16 +1043,12 @@ write_rds(
   paste0(here(paste0("04_Output/Internal/muni_mixed.use_manual.review.",q,"_",yr,".rds")))
 )
 
-# Removed Mixed-Use dataframes
-rm(amended.comp, amended.uc, hand.edit.matched, hand.edit.unmatched, matched, matched_text, mu_hand.edit, mu_xwalk, subset.matched.1, subset.matched.2, subset.unmatched.1, subset.unmatched.2,
+# Removed Multiple Use dataframes
+rm(hand.edit.matched, hand.edit.unmatched, matched, matched_text, mu_hand.edit, mu_xwalk, subset.matched.1, subset.matched.2, subset.unmatched.1, subset.unmatched.2,
    unmatched, unmatched_text, x, y)
 
 # Clean up the environment
 gc()
-
-#TODO:
-# 1. Determine how to identify incorrectly edited observations.
-
 ```
 
 # 4.2 Single Use
