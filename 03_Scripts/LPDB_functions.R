@@ -94,7 +94,33 @@ inlaw_assign <- function(df){
   return(df)
 }
 
-# 4. Multiple Use Code Assignment
+# 4. Commercial Condo Use Code Assignment
+
+non.res.condo_assign <- function(df){
+  df <- df |> 
+    mutate(
+      # Fix for in-law flag.
+      STD.USE_DESC = case_when(
+        od_uc == "3" & str_detect(MUNI.USE_DESC, regex(paste(condo_terms, collapse = "|"), ignore_case = T)) == TRUE ~ "General Office Buildings",
+        od_uc == "4" & str_detect(MUNI.USE_DESC, regex(paste(condo_terms, collapse = "|"), ignore_case = T)) == TRUE ~ "Buildings for manufacturing operations",
+        .default = STD.USE_DESC
+      ),
+      STD.USE_CODE = case_when(
+        od_uc == "3" & str_detect(MUNI.USE_DESC, regex(paste(condo_terms, collapse = "|"), ignore_case = T)) == TRUE ~ "340",
+        od_uc == "4" & str_detect(MUNI.USE_DESC, regex(paste(condo_terms, collapse = "|"), ignore_case = T)) == TRUE ~ "400",
+        .default = STD.USE_CODE
+      ),
+      condo.fix_flag = case_when(
+        od_uc == "3" & str_detect(MUNI.USE_DESC, regex(paste(condo_terms, collapse = "|"), ignore_case = T)) == TRUE ~ "1",
+        od_uc == "4" & str_detect(MUNI.USE_DESC, regex(paste(condo_terms, collapse = "|"), ignore_case = T)) == TRUE ~ "1",
+        .default = "0"
+      ),
+    )
+  
+  return(df)
+}
+
+# 5. Multiple Use Code Assignment
 gen_muc <-function(prim, sec){
   if(any(sec %in% c(as.character(sec), "0", NA))){
     return(paste0("0", prim, "0"))
@@ -103,7 +129,7 @@ gen_muc <-function(prim, sec){
   }
 }
 
-# 5. Multiple Use Description Construction
+# 6. Multiple Use Description Construction
 gen_std_uc <- function(prim, sec){
   if(any(sec %in% c(as.character(sec), "0", NA))){
     return(paste0("Multiple Use (Primarily ", od_categories[as.numeric(prim)+1,][2], " Some Other)"))
