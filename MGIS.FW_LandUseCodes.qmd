@@ -942,6 +942,7 @@ print(1-nrow(matched[matched$mu.flag == TRUE,])/nrow(matched))
 
 # Logic for amending Mixed Use Land Use Code Descriptions to match Standard Land Use Codes.
 amended.comp <- matched |> 
+  rowwise() |> 
   mutate(
     MUNI.USE_CODE_underlying = str_sub(MUNI.USE_CODE, start = 2, end = 4),,
     STD.USE_CODE = case_when(
@@ -1975,6 +1976,7 @@ gc()
 
 # MIXED USE CODE ASSIGNMENT
 mxu.matched_amend_tbl <- matched.amend_mxu |> ungroup() |>
+  rowwise() |> 
   mutate(
       # Creates a variable that represents what the municipality believes to be the primary use based on the 1-9 one-digit use code categories present in the L3 Stanardized Use Code codebook.
     undef.primary = str_sub(MUNI.USE_CODE, start = 1, end = 1),
@@ -1983,25 +1985,25 @@ mxu.matched_amend_tbl <- matched.amend_mxu |> ungroup() |>
     # Generate the Standard Use Description from the 
     STD.USE_CODE_comp = case_when(
       # Single Use, Not Unknown
-      mu.flag == FALSE & td.mu.flag == FALSE & uk.flag == FALSE ~ str_sub(MUNI.USE_CODE, start = 1, end = 3),
+      mxu.flag == FALSE & mxu.td.flag == FALSE & uk == FALSE ~ str_sub(MUNI.USE_CODE, start = 1, end = 3),
       # Multiple Use by Conjunction, Not Unknown
-      mu.flag == FALSE & td.mu.flag == TRUE & uk.flag == FALSE ~ gen_muc(prim = undef.primary, sec = undef.secondary),
+      mxu.flag == FALSE & mxu.td.flag == TRUE & uk == FALSE ~ gen_muc(prim = undef.primary, sec = undef.secondary),
       # Multiple Use by Term or Conjunction, Not Unknown
-      mu.flag == TRUE & (td.mu.flag == TRUE | td.mu.flag == FALSE) & uk.flag == FALSE ~ gen_muc(prim = undef.primary, sec = undef.secondary),
+     mxu.flag == TRUE & (mxu.td.flag == TRUE | mxu.td.flag == FALSE) & uk == FALSE ~ gen_muc(prim = undef.primary, sec = undef.secondary),
       # Unknown
-      mu.flag == FALSE & td.mu.flag == FALSE & uk.flag == TRUE ~ "000",
+      mxu.flag == FALSE & mxu.td.flag == FALSE & uk == TRUE ~ "000",
       # Default Value
       .default = "hopefully this doesn't happen"
     ),
     # Generate the Standard Use Description from the 
     STD.USE_DESC_comp = case_when(
-       mu.flag == FALSE & td.mu.flag == FALSE & uk.flag == FALSE ~ MUNI.USE_DESC,
+       mxu.flag == FALSE & mxu.td.flag == FALSE & uk == FALSE ~ MUNI.USE_DESC,
       # Multiple Use by Conjunction, Not Unknown
-      mu.flag == FALSE & td.mu.flag == TRUE & uk.flag == FALSE ~ gen_std_uc(prim = undef.primary, sec = undef.secondary),
+      mxu.flag == FALSE & mxu.td.flag == TRUE & uk == FALSE ~ gen_std_uc(prim = undef.primary, sec = undef.secondary),
       # Multiple Use by Term or Conjunction, Not Unknown
-      mu.flag == TRUE & (td.mu.flag == TRUE | td.mu.flag == FALSE) & uk.flag == FALSE ~ gen_std_uc(prim = undef.primary, sec = undef.secondary),
+      mxu.flag == TRUE & (mxu.td.flag == TRUE | mxu.td.flag == FALSE) & uk == FALSE ~ gen_std_uc(prim = undef.primary, sec = undef.secondary),
       # Unknown
-      mu.flag == FALSE & td.mu.flag == FALSE & uk.flag == TRUE ~ "Other/Unknown",
+      mxu.flag == FALSE & mxu.td.flag == FALSE & uk == TRUE ~ "Other/Unknown",
       # Default Value
       .default = "hopefully this doesn't happen."
     ),
@@ -2009,7 +2011,7 @@ mxu.matched_amend_tbl <- matched.amend_mxu |> ungroup() |>
     MUNI.USE_CODE_underlying = "single use",
     comparison = if_else(STD.USE_CODE == STD.USE_CODE_comp, 1, 0)
   ) |> 
-  select(c(STD.USE_CODE, STD.USE_DESC, STD.USE_CODE_comp, MUNI.USE_CODE, MUNI.USE_DESC, muni_name, mxu.amend.flag, comparison))
+  select(c(STD.USE_CODE, STD.USE_DESC, STD.USE_CODE_comp, STD.USE_DESC_comp, MUNI.USE_CODE, MUNI.USE_DESC, muni_name, mxu.amend.flag, comparison))
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -2708,40 +2710,42 @@ gc()
 # ~~~~~~~~~~~~~~~~~~~~~
 # MIXED USE CODE ASSIGNMENT
 mxu.unmatched_amend_tbl <- unmatched.amend_mxu |> ungroup() |>
+  rowwise() |> 
   mutate(
        # Creates a variable that represents what the municipality believes to be the primary use based on the 1-9 one-digit use code categories present in the L3 Stanardized Use Code codebook.
     undef.primary = str_sub(MUNI.USE_CODE, start = 1, end = 1),
       # Creates a variable that represents what the municipality believes to be the secondary use based on the 1-9 one-digit use code categories present in the L3 Stanardized Use Code codebook.
     undef.secondary = str_sub(MUNI.USE_CODE, start = 2, end = 2),
     # Generate the Standard Use Description from the 
+     # Generate the Standard Use Description from the 
     STD.USE_CODE_comp = case_when(
       # Single Use, Not Unknown
-      mu.flag == FALSE & td.mu.flag == FALSE & uk.flag == FALSE ~ str_sub(MUNI.USE_CODE, start = 1, end = 3),
+      mxu.flag == FALSE & mxu.td.flag == FALSE & uk == FALSE ~ str_sub(MUNI.USE_CODE, start = 1, end = 3),
       # Multiple Use by Conjunction, Not Unknown
-      mu.flag == FALSE & td.mu.flag == TRUE & uk.flag == FALSE ~ gen_muc(prim = undef.primary, sec = undef.secondary),
+      mxu.flag == FALSE & mxu.td.flag == TRUE & uk == FALSE ~ gen_muc(prim = undef.primary, sec = undef.secondary),
       # Multiple Use by Term or Conjunction, Not Unknown
-      mu.flag == TRUE & (td.mu.flag == TRUE | td.mu.flag == FALSE) & uk.flag == FALSE ~ gen_muc(prim = undef.primary, sec = undef.secondary),
+     mxu.flag == TRUE & (mxu.td.flag == TRUE | mxu.td.flag == FALSE) & uk == FALSE ~ gen_muc(prim = undef.primary, sec = undef.secondary),
       # Unknown
-      mu.flag == FALSE & td.mu.flag == FALSE & uk.flag == TRUE ~ "000",
+      mxu.flag == FALSE & mxu.td.flag == FALSE & uk == TRUE ~ "000",
       # Default Value
       .default = "hopefully this doesn't happen"
     ),
     # Generate the Standard Use Description from the 
     STD.USE_DESC_comp = case_when(
-       mu.flag == FALSE & td.mu.flag == FALSE & uk.flag == FALSE ~ MUNI.USE_DESC,
+       mxu.flag == FALSE & mxu.td.flag == FALSE & uk == FALSE ~ MUNI.USE_DESC,
       # Multiple Use by Conjunction, Not Unknown
-      mu.flag == FALSE & td.mu.flag == TRUE & uk.flag == FALSE ~ gen_std_uc(prim = undef.primary, sec = undef.secondary),
+      mxu.flag == FALSE & mxu.td.flag == TRUE & uk == FALSE ~ gen_std_uc(prim = undef.primary, sec = undef.secondary),
       # Multiple Use by Term or Conjunction, Not Unknown
-      mu.flag == TRUE & (td.mu.flag == TRUE | td.mu.flag == FALSE) & uk.flag == FALSE ~ gen_std_uc(prim = undef.primary, sec = undef.secondary),
+      mxu.flag == TRUE & (mxu.td.flag == TRUE | mxu.td.flag == FALSE) & uk == FALSE ~ gen_std_uc(prim = undef.primary, sec = undef.secondary),
       # Unknown
-      mu.flag == FALSE & td.mu.flag == FALSE & uk.flag == TRUE ~ "Other/Unknown",
+      mxu.flag == FALSE & mxu.td.flag == FALSE & uk == TRUE ~ "Other/Unknown",
       # Default Value
       .default = "hopefully this doesn't happen."
     ),
     # Create a stand in for the MUNI.USE_CODE_underlying variable. No useful information is stored in the three digit code municipalities assigned to these mixed use codes.
     MUNI.USE_CODE_underlying = "single use"
   ) |> 
-  select(c(STD.USE_CODE, STD.USE_DESC, MUNI.USE_CODE, MUNI.USE_DESC, muni_name))
+ select(c(STD.USE_CODE, STD.USE_DESC, STD.USE_CODE_comp, STD.USE_DESC_comp, MUNI.USE_CODE, MUNI.USE_DESC, muni_name))
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
