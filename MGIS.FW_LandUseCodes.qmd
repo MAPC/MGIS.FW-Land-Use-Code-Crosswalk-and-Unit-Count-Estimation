@@ -782,7 +782,7 @@ gc()
 ```
 
 # 4.0 Municipal-specific to Standard Land Use Code Crosswalking
-# 4.1 Mixed-Use
+# 4.1 Multiple Use
 ```{r}
 # Pull out the Mixed Use use codes from the Muni and Standard Use Code lists
 x <- od_muni.uc$`0` |> select(xwalk_uc, MUNI.USE_CODE, MUNI.USE_DESC, muni_name)
@@ -1271,19 +1271,19 @@ write.csv(flag.QA_um_tbl, here(paste0("02_Data/Logs/Unmatched.Diagnostics_SU_.",
 # Write the full matched table.
 write.csv(matched_tbl, here(paste0("02_Data/Processed/Matched_tbl_SU_.",q,"_",yr,".csv")), row.names = FALSE)
 
-# Write the full unknown table.
+# Write the matched known unknown table.
 write.csv(matched.kuk_tbl, here(paste0("02_Data/Processed/Matched.Known.Unknown_tbl_SU_.",q,"_",yr,".csv")), row.names = FALSE)
 
-# Write the full unknown table.
+# Write the matched unknown unknown table.
 write.csv(matched.ukuk_tbl, here(paste0("02_Data/Processed/Matched.Unknown.Unknown_tbl_SU_.",q,"_",yr,".csv")), row.names = FALSE)
 
-# Write the full flagged unmatched table.
+# Write the flagged unmatched table.
 write.csv(unmatched.amend_tbl, here(paste0("02_Data/Processed/Unmatched_tbl_SU_.",q,"_",yr,".csv")), row.names = FALSE)
 
-# Write the full unknown table.
+# Write the unmatched unknown table.
 write.csv(unmatched.uk_tbl, here(paste0("02_Data/Processed/Unmatched.Unknown_tbl_SU_.",q,"_",yr,".csv")), row.names = FALSE)
 
-# Write the full DLS Duplicates table.
+# Write the DLS Duplicates table.
 write.csv(dls.dupes_tbl, here(paste0("02_Data/Processed/DLS.Duplicates_tbl_SU_.",q,"_",yr,".csv")), row.names = FALSE)
 
 # Write the Matched Table to Internal Outputs as well since we'll want to bring that back for the full crosswalk
@@ -1292,20 +1292,20 @@ write.csv(matched_tbl, here(paste0("04_Output/Internal/Matched_tbl_SU_.",q,"_",y
 
 write_rds(matched_tbl, here(paste0("04_Output/Internal/Matched_tbl_SU_.",q,"_",yr,".rds")))
 
-# Write the matched unknown table
+# Write the matched known unknown table
 write.csv(matched.kuk_tbl, here(paste0("04_Output/Internal/Matched.Known.Unknown_tbl_SU_.",q,"_",yr,".csv")), row.names = FALSE)
 
-write_rds(matched.kuk_tbl, here(paste0("04_Output/Internal/Matched.Known.Unknown_tbl_SU_.",q,"_",yr,".csv")))
+write_rds(matched.kuk_tbl, here(paste0("04_Output/Internal/Matched.Known.Unknown_tbl_SU_.",q,"_",yr,".rds")))
 
-# Write the matched unknown table
+# Write the matched unknown unknown table
 write.csv(matched.ukuk_tbl, here(paste0("04_Output/Internal/Matched.Unknown.Unknown_tbl_SU_.",q,"_",yr,".csv")), row.names = FALSE)
 
-write_rds(matched.ukuk_tbl, here(paste0("04_Output/Internal/Matched.Unknown.Unknown_tbl_SU_.",q,"_",yr,".csv")))
+write_rds(matched.ukuk_tbl, here(paste0("04_Output/Internal/Matched.Unknown.Unknown_tbl_SU_.",q,"_",yr,".rds")))
 
-# Write the unknown table
+# Write the unmatched unknown table
 write.csv(unmatched.uk_tbl, here(paste0("04_Output/Internal/Unmatched.Unknown_tbl_SU_.",q,"_",yr,".csv")), row.names = FALSE)
 
-write_rds(unmatched.uk_tbl, here(paste0("04_Output/Internal/Unmatched.Unknown_tbl_SU_.",q,"_",yr,".csv")))
+write_rds(unmatched.uk_tbl, here(paste0("04_Output/Internal/Unmatched.Unknown_tbl_SU_.",q,"_",yr,".rds")))
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Standard Use Code Assignment Process
@@ -2776,6 +2776,7 @@ gc()
 # 5.0 Create Harmonized Use Code Crosswalk
 # 5.1 Load Mixed and Single Use Crosswalks Created in Section 4.1 and 4.2
 ```{r}
+#
 # Load Single Use Initially Matched Amended Land Use Codes
 su.matched.luc_xwalk <- readRDS(here(paste0("04_Output/Internal/matched_su.amended_xwalk_.",q,"_",yr,".rds")))
 
@@ -2785,12 +2786,28 @@ su.unmatched.luc_xwalk <- readRDS(here(paste0("04_Output/Internal/unmatched_su.a
 # Load Mixed Use Amended and Matched Land use Codes
 mxu.luc_xwalk <- readRDS(here(paste0("04_Output/Internal/muni_mixed.use_xwalk.",q,"_",yr,".rds")))
 
+#----
+# Load Outstanding Codes needed for review
+# Load the matched unknown unknown table.
+matched_ukuk_tbl <- readRDS(paste0(here(paste0("04_Output/Internal/Matched.Unknown.Unknown_tbl_SU_.",q,"_",yr,".rds")))) |> select(MUNI.USE_CODE, MUNI.USE_DESC, muni_name, STD.USE_CODE, STD.USE_DESC, matched, initial.use_type, numTRUE)
+
+# Load the unmatched unknown table
+unmatched_uk_tbl <- readRDS(here(paste0("04_Output/Internal/Unmatched.Unknown_tbl_SU_.",q,"_",yr,".rds")))|> select(MUNI.USE_CODE, MUNI.USE_DESC, muni_name, STD.USE_CODE, STD.USE_DESC, matched, initial.use_type, numTRUE)
+
+# Load multiple use to review table.
+mu_uk_tbl <- readRDS(here(paste0("04_Output/Internal/muni_mixed.use_manual.review.",q,"_",yr,".rds")))|> select(MUNI.USE_CODE, MUNI.USE_DESC, muni_name, STD.USE_CODE, STD.USE_DESC, matched, initial.use_type)
+
+# Load the DLS Duplicates table.
+dls.dupes_tbl <- read.csv(here(paste0("02_Data/Processed/DLS.Duplicates_tbl_SU_.",q,"_",yr,".csv")))|> select(MUNI.USE_CODE, MUNI.USE_DESC, muni_name, STD.USE_CODE, STD.USE_DESC, matched, initial.use_type, numTRUE)
+
 ```
 
 # 5.2 Combine Land Use Code Crosswalks
 ```{r}
 # Combine single and mixed use crosswalks
 luc_xwalk <- bind_rows(su.matched.luc_xwalk, su.unmatched.luc_xwalk, mxu.luc_xwalk)
+# Combine Codes in Need of Review
+review_xwalk <- bind_rows(matched_ukuk_tbl, unmatched_uk_tbl, mu_uk_tbl, dls.dupes_tbl)
 ```
 
 # 5.3 Save Single, Amended Land Use Code Crosswalk
@@ -2813,5 +2830,24 @@ write.csv(
 )
 
 write_rds(luc_xwalk, here(paste0("04_Output/External/MAPC.LUC_xwalk_.",q,"_",yr,".rds")))
+
+# Save finished review codes table
+# Save Copy for Internal Review
+write.csv(
+  review_xwalk,
+  here(paste0("04_Output/Internal/MAPC.LUC_Need.Review_.",q,"_",yr,".csv")),
+  row.names = FALSE
+)
+
+write_rds(review_xwalk, here(paste0("04_Output/Internal/MAPC.LUC_Need.Review_.",q,"_",yr,".rds")))
+
+# Save Copy for External Review
+write.csv(
+  review_xwalk,
+  here(paste0("04_Output/External/Codes for Review/MAPC.LUC_Need.Review_.",q,"_",yr,".csv")),
+  row.names = FALSE
+)
+
+write_rds(review_xwalk, here(paste0("04_Output/External/Codes for Review/MAPC.LUC_Need.Review_.",q,"_",yr,".rds")))
 
 ```

@@ -1,0 +1,763 @@
+"MUNI.USE_CODE","MUNI.USE_DESC","muni_name","STD.USE_CODE","STD.USE_DESC","matched","initial.use_type","numTRUE"
+"1111","Other","Chelsea","111","Apartments with Four to Eight Units",1,"single",0
+"102V","Other","Duxbury","102","Residential Condominium",1,"single",0
+"140C","Other","Duxbury","140","Child Care Facility",1,"single",0
+"1091","Other","Worcester","109","Multiple Houses on one parcel",1,"single",0
+"1092","Other","Worcester","109","Multiple Houses on one parcel",1,"single",0
+"1093","Other","Worcester","109","Multiple Houses on one parcel",1,"single",0
+"1022","Other","Provincetown","102","Residential Condominium",1,"single",0
+"1023","Other","Provincetown","102","Residential Condominium",1,"single",0
+"1012","Unknown","Gosnold","101","Single Family Residential",1,"single",0
+"106V","Unknown","Norwell","106","Accessory Land with Improvement",1,"single",0
+"1015","Unknown","Norwell","101","Single Family Residential",1,"single",0
+"101A","Other","Salisbury","101","Single Family Residential",1,"single",0
+"1013","other","Lakeville","101","Single Family Residential",1,"single",0
+"1041","Unknown","Sterling","104","Two-Family Residential",1,"single",0
+"130I","Unknown","Sterling","130","Developable Residential Land",1,"single",0
+"1013","Unknown","Sterling","101","Single Family Residential",1,"single",0
+"125C","Other","Lawrence","125","Other Congregate Housing (includes non-transient shared living arrangements)",1,"single",0
+"1111","Other","Lawrence","111","Apartments with Four to Eight Units",1,"single",0
+"1124","Other","Rowley","112","Apartments with More than Eight Units",1,"single",0
+"1021","Other","Georgetown","102","Residential Condominium",1,"single",0
+"301R","Unknown","Norwell","301","Motels",1,"single",0
+"322I","Unknown","Norwell","322","Discount Stores, Junior Department Stores, Department Stores",1,"single",0
+"330V","Unknown","Norwell","330","Automotive Vehicles Sales and Service",1,"single",0
+"333V","Unknown","Norwell","333","Fuel Service Areas - providing only fuel products",1,"single",0
+"340R","Unknown","Norwell","340","General Office Buildings",1,"single",0
+"390V","Unknown","Norwell","390","Developable Commercial Land",1,"single",0
+"322I","Unknown","Sterling","322","Discount Stores, Junior Department Stores, Department Stores",1,"single",0
+"392V","Unknown","Sterling","392","Undevelopable Commercial Land",1,"single",0
+"371C","Other","Walpole","371","Ice Skating Rinks/Facilities",1,"single",0
+"384I","Other","Tisbury","384","Marinas - including marine terminals & associated areas primarily for recreational marine craft (not Ch. 61B)",1,"single",0
+"3401","Other","Lawrence","340","General Office Buildings",1,"single",0
+"337V","Other","Lawrence","337","Parking Lots - a commercial open parking lot for motor vehicles",1,"single",0
+"332I","Other","Lawrence","332","Auto Repair Facilities",1,"single",0
+"331I","Other","Lawrence","331","Automotive Supplies Sales and Service",1,"single",0
+"330I","Other","Lawrence","330","Automotive Vehicles Sales and Service",1,"single",0
+"3371","Other","Everett","337","Parking Lots - a commercial open parking lot for motor vehicles",1,"single",0
+"424Y","Unknown","Norwell","424","Electricity Regulating Substations",1,"single",0
+"4022","Unknown","Sterling","402","Office Building - part of manufacturing operation",1,"single",0
+"441V","Unknown","Sterling","4410","Potentially Developable Industrial Land",1,"single",0
+"402C","Other","Lawrence","402","Office Building - part of manufacturing operation",1,"single",0
+"4005","Other","Georgetown","400","Buildings for manufacturing operations",1,"single",0
+"4021","Other","Georgetown","402","Office Building - part of manufacturing operation",1,"single",0
+"601V","Unknown","Sterling","6010","All land designated under Chapter 61 (not classified as Open Space)",1,"single",0
+"713V","Unknown","Sterling","7130","Field Crops - hay, wheat, tillable forage, cropland, etc... (Ch. 61A, not classified as Open Space)",1,"single",0
+"714V","Unknown","Sterling","7140","Orchards - pears, apples, grape vineyards, etc... (Ch. 61A, not classified as Open Space)",1,"single",0
+"716V","Unknown","Sterling","7160","Necessary related land-farm roads, ponds, land under farm buildings (Ch. 61A, not classified as Open Space)",1,"single",0
+"717V","Unknown","Sterling","7170","Productive Woodland (Ch. 61A, not classified as Open Space, with a Forest Management Plan); woodlots ",1,"single",0
+"9971","Unknown","Marlborough","997","Other",1,"single",0
+"905C","Unknown","Hudson","951","Other (Charitable Org.)",1,"single",0
+"930V","Other","Duxbury","930","Vacant, Selectmen or City Council (Municipal)",1,"single",0
+"931V","Other","Duxbury","931","Improved, Selectmen or City Council (Municipal)",1,"single",0
+"951R","Other","Duxbury","951","Other (Charitable Org.)",1,"single",0
+"930R","Other","Duxbury","930","Vacant, Selectmen or City Council (Municipal)",1,"single",0
+"934V","Other","Hingham","934","Improved, Education (Municipal or County)",1,"single",0
+"936V","Other","Hingham","936","Vacant, Tax Title/Treasurer",1,"single",0
+"9622","Other C","Lowell","962","Other (Religious Org.)",1,"single",0
+"904V","Unknown","Wenham","942","College or University (Educational Private)",1,"single",0
+"9031","Unknown","Norwell","931","Improved, Selectmen or City Council (Municipal)",1,"single",0
+"931B","Unknown","Norwell","931","Improved, Selectmen or City Council (Municipal)",1,"single",0
+"950R","Unknown","Norwell","950","Vacant, Conservation Organizations (Charitable Org.)",1,"single",0
+"960C","Unknown","Norwell","960","Church, Mosque, Synagogue, Temple, etc...",1,"single",0
+"960R","Unknown","Norwell","960","Church, Mosque, Synagogue, Temple, etc...",1,"single",0
+"970C","Unknown","Norwell","970","Housing Authority",1,"single",0
+"9971","Unknown","Norwell","997","Other",1,"single",0
+"9622","Other C","Holland","962","Other (Religious Org.)",1,"single",0
+"9612","Unknown","Holland","961","Rectory or Parsonage",1,"single",0
+"9972","Other","Amesbury","997","Other",1,"single",0
+"9621","Other","Cambridge","962","Other (Religious Org.)",1,"single",0
+"9625","Other","Cambridge","962","Other (Religious Org.)",1,"single",0
+"9971","Other","Cambridge","997","Other",1,"single",0
+"9973","Other","Cambridge","997","Other",1,"single",0
+"9975","Other","Cambridge","997","Other",1,"single",0
+"9511","Other","Wilmington","951","Other (Charitable Org.)",1,"single",0
+"9601","Other","Boxford","960","Church, Mosque, Synagogue, Temple, etc...",1,"single",0
+"9602","Other","Boxford","960","Church, Mosque, Synagogue, Temple, etc...",1,"single",0
+"962C","OTHER","Ludlow","962","Other (Religious Org.)",1,"single",0
+"9512","Other C","Otis","951","Other (Charitable Org.)",1,"single",0
+"960V","Unknown","Dartmouth","960","Church, Mosque, Synagogue, Temple, etc...",1,"single",0
+"947V","Other","Newton","947","Other (Educational Private)",1,"single",0
+"947C","Other","Newton","947","Other (Educational Private)",1,"single",0
+"9891","Unknown","Westminster","989","Improved, Other District (County)",1,"single",0
+"947V","Other","Sharon","947","Other (Educational Private)",1,"single",0
+"951A","Other","Sharon","951","Other (Charitable Org.)",1,"single",0
+"951R","Other","Sharon","951","Other (Charitable Org.)",1,"single",0
+"9031","Other","Avon","931","Improved, Selectmen or City Council (Municipal)",1,"single",0
+"9622","Other C","Dudley","962","Other (Religious Org.)",1,"single",0
+"9031","Unknown","Sterling","931","Improved, Selectmen or City Council (Municipal)",1,"single",0
+"9033","Unknown","Sterling","931","Improved, Selectmen or City Council (Municipal)",1,"single",0
+"9035","Unknown","Sterling","931","Improved, Selectmen or City Council (Municipal)",1,"single",0
+"906R","Unknown","Sterling","962","Other (Religious Org.)",1,"single",0
+"910R","Unknown","Sterling","910","Dept. of Conservation and Recreation (DCR), Division of State Parks and Recreation",1,"single",0
+"915R","Unknown","Sterling","915","Dept. of Conservation and Recreation (DCR) - Division of Water Supply Protection",1,"single",0
+"9622","OTHER C","Clinton","962","Other (Religious Org.)",1,"single",0
+"943C","Other","Walpole","943","Other Educational (Educational Private)",1,"single",0
+"951I","Other","Walpole","951","Other (Charitable Org.)",1,"single",0
+"962V","Other","Walpole","962","Other (Religious Org.)",1,"single",0
+"9031","Other","Walpole","931","Improved, Selectmen or City Council (Municipal)",1,"single",0
+"901I","Other","Tisbury","919","Comm. Of Mass. (Other)",1,"single",0
+"902C","Other","Tisbury","994","Improved County or Regional Association Commission",1,"single",0
+"902R","Other","Tisbury","994","Improved County or Regional Association Commission",1,"single",0
+"9031","Other","Tisbury","931","Improved, Selectmen or City Council (Municipal)",1,"single",0
+"9032","Other","Tisbury","931","Improved, Selectmen or City Council (Municipal)",1,"single",0
+"9033","Other","Tisbury","931","Improved, Selectmen or City Council (Municipal)",1,"single",0
+"903C","Other","Tisbury","931","Improved, Selectmen or City Council (Municipal)",1,"single",0
+"903I","Other","Tisbury","931","Improved, Selectmen or City Council (Municipal)",1,"single",0
+"905C","Other","Tisbury","951","Other (Charitable Org.)",1,"single",0
+"905R","Other","Tisbury","951","Other (Charitable Org.)",1,"single",0
+"906C","Other","Tisbury","962","Other (Religious Org.)",1,"single",0
+"906I","Other","Tisbury","962","Other (Religious Org.)",1,"single",0
+"906R","Other","Tisbury","962","Other (Religious Org.)",1,"single",0
+"908C","Other","Tisbury","970","Housing Authority",1,"single",0
+"990V","Other","Lawrence","990","121A Corporations",1,"single",0
+"901V","Other","Lawrence","919","Comm. Of Mass. (Other)",1,"single",0
+"9621","Other R","Spencer","962","Other (Religious Org.)",1,"single",0
+"110","Other","Danvers","UNDEFINED","UNDEFINED",0,"single",0
+"187","Residential Other","West Newbury","UNDEFINED","UNDEFINED",0,"single",0
+"1070","Residential","Wareham","UNDEFINED","UNDEFINED",0,"single",0
+"1340","OFC RES LND","Middleborough","UNDEFINED","UNDEFINED",0,"single",0
+"110","APT 4-8 RES","Middleborough","UNDEFINED","UNDEFINED",0,"single",0
+"113C","MDL-94","Worcester","UNDEFINED","UNDEFINED",0,"single",0
+"107","Residential","North Adams","UNDEFINED","UNDEFINED",0,"single",0
+"110","Residential, Multi","North Adams","UNDEFINED","UNDEFINED",0,"single",0
+"113","Other - Stores/Apt Com","Lowell","UNDEFINED","UNDEFINED",0,"single",0
+"136","Use code not known or nor provided.","Montague","UNDEFINED","UNDEFINED",0,"single",0
+"138","Use code not known or nor provided.","Montague","UNDEFINED","UNDEFINED",0,"single",0
+"167","Use code not known or nor provided.","Montague","UNDEFINED","UNDEFINED",0,"single",0
+"176","Use code not known or nor provided.","Montague","UNDEFINED","UNDEFINED",0,"single",0
+"110","Residential MH","Montague","UNDEFINED","UNDEFINED",0,"single",0
+"163","Use code not known or nor provided.","Montague","UNDEFINED","UNDEFINED",0,"single",0
+"107","Use code not known or nor provided.","Montague","UNDEFINED","UNDEFINED",0,"single",0
+"1070","IMPUTED - Residential Unknown","Wrentham","UNDEFINED","UNDEFINED",0,"single",0
+"107","(Intentionally left blank)","North Attleborough","UNDEFINED","UNDEFINED",0,"single",0
+"108","(Intentionally left blank)","North Attleborough","UNDEFINED","UNDEFINED",0,"single",0
+"1080","(Intentionally left blank)","North Attleborough","UNDEFINED","UNDEFINED",0,"single",0
+"171","Unknown","Hinsdale","UNDEFINED","UNDEFINED",0,"single",0
+"181","Unknown","Hinsdale","UNDEFINED","UNDEFINED",0,"single",0
+"120","Other - R1","Springfield","UNDEFINED","UNDEFINED",0,"single",0
+"134","0134","Westport","UNDEFINED","UNDEFINED",0,"single",0
+"1000","1000","Westport","UNDEFINED","UNDEFINED",0,"single",0
+"1070","1070","Westport","UNDEFINED","UNDEFINED",0,"single",0
+"1080","1080","Westport","UNDEFINED","UNDEFINED",0,"single",0
+"1340","1340","Westport","UNDEFINED","UNDEFINED",0,"single",0
+"137","Other","Salisbury","UNDEFINED","UNDEFINED",0,"single",0
+"173","Other","Salisbury","UNDEFINED","UNDEFINED",0,"single",0
+"137","RES-COV-PKG","Cambridge","UNDEFINED","UNDEFINED",0,"single",0
+"198","CNDO-RES-PKG","Cambridge","UNDEFINED","UNDEFINED",0,"single",0
+"107","(Unknown)","Dunstable","UNDEFINED","UNDEFINED",0,"single",0
+"108","(Unknown)","Dunstable","UNDEFINED","UNDEFINED",0,"single",0
+"137","IMPUTED - Various Chapter Lands","Monterey","UNDEFINED","UNDEFINED",0,"single",0
+"1070","APT GAR","Quincy","UNDEFINED","UNDEFINED",0,"single",0
+"199","Other","Belchertown","UNDEFINED","UNDEFINED",0,"single",0
+"199","Other Residential","Fall River","UNDEFINED","UNDEFINED",0,"single",0
+"135","RRI RES/COM","Grafton","UNDEFINED","UNDEFINED",0,"single",0
+"136","Residience","Cummington","UNDEFINED","UNDEFINED",0,"single",0
+"107","OTHER RESIDENTIAL","Boston","UNDEFINED","UNDEFINED",0,"single",0
+"113","APT 31-99 UNITS","Boston","UNDEFINED","UNDEFINED",0,"single",0
+"1080","Interval M01","Nantucket","UNDEFINED","UNDEFINED",0,"single",0
+"160","Other","Rowley","UNDEFINED","UNDEFINED",0,"single",0
+"170","Other","Rowley","UNDEFINED","UNDEFINED",0,"single",0
+"171","Other","Rowley","UNDEFINED","UNDEFINED",0,"single",0
+"172","Other","Rowley","UNDEFINED","UNDEFINED",0,"single",0
+"137","Other","Newbury","UNDEFINED","UNDEFINED",0,"single",0
+"176","Other","Newbury","UNDEFINED","UNDEFINED",0,"single",0
+"0136","PRED RES","Wrentham","UNDEFINED","UNDEFINED",0,"mixed",0
+"0181","PRED RES 800 V","Wrentham","UNDEFINED","UNDEFINED",0,"mixed",0
+"0182","PRED RES 800 C","Wrentham","UNDEFINED","UNDEFINED",0,"mixed",0
+"0178","Chapter Land","Uxbridge","UNDEFINED","UNDEFINED",0,"mixed",0
+"0133","MULTIUSE-RES-COM","Cambridge","UNDEFINED","UNDEFINED",0,"mixed",0
+"0137","Res/Com/Agr","Agawam","UNDEFINED","UNDEFINED",0,"mixed",0
+"0134","MULTI","Dennis","UNDEFINED","UNDEFINED",0,"mixed",0
+"0135","Conservation Res M01","Nantucket","UNDEFINED","UNDEFINED",0,"mixed",0
+"0136","Conservation Res M00","Nantucket","UNDEFINED","UNDEFINED",0,"mixed",0
+"0167","101 & chapter land code","Ipswich","UNDEFINED","UNDEFINED",0,"mixed",0
+"0176","101 & chapter land code","Ipswich","UNDEFINED","UNDEFINED",0,"mixed",0
+"0183","101 & chapter land code","Ipswich","UNDEFINED","UNDEFINED",0,"mixed",0
+"0187","101 & chapter land code","Ipswich","UNDEFINED","UNDEFINED",0,"mixed",0
+"0176","Residential","Townsend","UNDEFINED","UNDEFINED",0,"mixed",0
+"0137","Store","Newbury","UNDEFINED","UNDEFINED",0,"mixed",0
+"011C","APT 4-UNIT  MDL-94","Concord","UNDEFINED","UNDEFINED",0,"mixed",0
+"011C","APT 4-UNIT  MDL-94","Chelsea","UNDEFINED","UNDEFINED",0,"mixed",0
+"010V","IMPUTED - Residential","Hadley","UNDEFINED","UNDEFINED",0,"mixed",0
+"0110","APT 4-8 RES","Middleborough","UNDEFINED","UNDEFINED",0,"mixed",0
+"011C","APT 4-UNIT  MDL-94","Lowell","UNDEFINED","UNDEFINED",0,"mixed",0
+"011M","APT 4-8 MDL-03","Easton","UNDEFINED","UNDEFINED",0,"mixed",0
+"010Z","STORE/SHOP  MDL-94","West Springfield","UNDEFINED","UNDEFINED",0,"mixed",0
+"011C","Stores/Apt Com","Somerville","UNDEFINED","UNDEFINED",0,"mixed",0
+"011C","APT 4-UNIT  MDL-94","Mansfield","UNDEFINED","UNDEFINED",0,"mixed",0
+"012C","APT OV 8 M94","Mansfield","UNDEFINED","UNDEFINED",0,"mixed",0
+"011C","APT 4 UNIT MDL-94","Clinton","UNDEFINED","UNDEFINED",0,"mixed",0
+"0113","IMPUTED - Residential","Medford","UNDEFINED","UNDEFINED",0,"mixed",0
+"011C","Apts 4-Unit M-9","Walpole","UNDEFINED","UNDEFINED",0,"mixed",0
+"010J","Stores/Apt Com","Westfield","UNDEFINED","UNDEFINED",0,"mixed",0
+"010R","Colonial","Westfield","UNDEFINED","UNDEFINED",0,"mixed",0
+"011I","Store","Westfield","UNDEFINED","UNDEFINED",0,"mixed",0
+"011C","APT 4-8 UNIT M94","Taunton","UNDEFINED","UNDEFINED",0,"mixed",0
+"011C","APT 4-UNIT MDL9","Yarmouth","UNDEFINED","UNDEFINED",0,"mixed",0
+"2000","2000","Westport","UNDEFINED","UNDEFINED",0,"single",0
+"2120","2120","Westport","UNDEFINED","UNDEFINED",0,"single",0
+"303M","COTT COL MDL-03","Chatham","UNDEFINED","UNDEFINED",0,"single",0
+"303R","COTT COL MDL-01","Chatham","UNDEFINED","UNDEFINED",0,"single",0
+"3030","NULL","Chicopee","UNDEFINED","UNDEFINED",0,"single",0
+"3030","LEASED SPA","Pelham","UNDEFINED","UNDEFINED",0,"single",0
+"327","COM RETAIL CNDO","Reading","UNDEFINED","UNDEFINED",0,"single",0
+"3430","Unknown","East Bridgewater","UNDEFINED","UNDEFINED",0,"single",0
+"343","Other","Swampscott","UNDEFINED","UNDEFINED",0,"single",0
+"344","Other","Swampscott","UNDEFINED","UNDEFINED",0,"single",0
+"303","Kennell","Tyngsborough","UNDEFINED","UNDEFINED",0,"single",0
+"3030","(Intentionally Left Blank)","Wareham","UNDEFINED","UNDEFINED",0,"single",0
+"3030","LEASED SPA","Middleborough","UNDEFINED","UNDEFINED",0,"single",0
+"3031","LEASE LAND","Middleborough","UNDEFINED","UNDEFINED",0,"single",0
+"319","COMM WHSE MDL-00","Middleborough","UNDEFINED","UNDEFINED",0,"single",0
+"327","STORE/SHOP MDL-01","Middleborough","UNDEFINED","UNDEFINED",0,"single",0
+"395","M/U DEV LAND MDL-00","Middleborough","UNDEFINED","UNDEFINED",0,"single",0
+"3190","COMM WHSE MDL 00","Middleborough","UNDEFINED","UNDEFINED",0,"single",0
+"3190","Other","Worcester","UNDEFINED","UNDEFINED",0,"single",0
+"319V","MDL-00","Worcester","UNDEFINED","UNDEFINED",0,"single",0
+"3270","Other","Worcester","UNDEFINED","UNDEFINED",0,"single",0
+"327V","MDL-00","Worcester","UNDEFINED","UNDEFINED",0,"single",0
+"3280","RETAIL CON MDL-06","Worcester","UNDEFINED","UNDEFINED",0,"single",0
+"3390","Other","Worcester","UNDEFINED","UNDEFINED",0,"single",0
+"3030","COM LAND","Rehoboth","UNDEFINED","UNDEFINED",0,"single",0
+"395","Salon","Fairhaven","UNDEFINED","UNDEFINED",0,"single",0
+"3284","OFFC/RETL","Northbridge","UNDEFINED","UNDEFINED",0,"single",0
+"3430","Other","Provincetown","UNDEFINED","UNDEFINED",0,"single",0
+"327","Retail Trade","Cohasset","UNDEFINED","UNDEFINED",0,"single",0
+"303","(Intentionally left blank)","North Attleborough","UNDEFINED","UNDEFINED",0,"single",0
+"3030","COMRELLND","North Attleborough","UNDEFINED","UNDEFINED",0,"single",0
+"343","Use code not known or nor provided.","Medfield","UNDEFINED","UNDEFINED",0,"single",0
+"347","Other - B3","Springfield","UNDEFINED","UNDEFINED",0,"single",0
+"348","Other - Medical","Springfield","UNDEFINED","UNDEFINED",0,"single",0
+"3030","Unknown","Norwell","UNDEFINED","UNDEFINED",0,"single",0
+"3200","3200","Westport","UNDEFINED","UNDEFINED",0,"single",0
+"3270","VENUE AGRICULTURE","Westport","UNDEFINED","UNDEFINED",0,"single",0
+"3280","3280","Westport","UNDEFINED","UNDEFINED",0,"single",0
+"3290","3290","Westport","UNDEFINED","UNDEFINED",0,"single",0
+"3570","3570","Westport","UNDEFINED","UNDEFINED",0,"single",0
+"3580","3580","Westport","UNDEFINED","UNDEFINED",0,"single",0
+"3590","3590","Westport","UNDEFINED","UNDEFINED",0,"single",0
+"3780","3780","Westport","UNDEFINED","UNDEFINED",0,"single",0
+"303","Timeshare","Falmouth","UNDEFINED","UNDEFINED",0,"single",0
+"394","Com-YI/OB","New Bedford","UNDEFINED","UNDEFINED",0,"single",0
+"357","Hangar (Airport)","New Bedford","UNDEFINED","UNDEFINED",0,"single",0
+"345","RETAIL-OFFIC","Cambridge","UNDEFINED","UNDEFINED",0,"single",0
+"327","Other","Lynnfield","UNDEFINED","UNDEFINED",0,"single",0
+"343","Other","Lynnfield","UNDEFINED","UNDEFINED",0,"single",0
+"303","(Unknown)","Dunstable","UNDEFINED","UNDEFINED",0,"single",0
+"394","Residential subdivision?","Dunstable","UNDEFINED","UNDEFINED",0,"single",0
+"308","Comm Imp","Plymouth","UNDEFINED","UNDEFINED",0,"single",0
+"319","Comm Whse","Plymouth","UNDEFINED","UNDEFINED",0,"single",0
+"3030","ASSTD LVNG","Acton","UNDEFINED","UNDEFINED",0,"single",0
+"3030","LEASED SPA","Chelmsford","UNDEFINED","UNDEFINED",0,"single",0
+"3031","LEASE LAND","Chelmsford","UNDEFINED","UNDEFINED",0,"single",0
+"343","Misc","Saugus","UNDEFINED","UNDEFINED",0,"single",0
+"3390","Unknown","Sharon","UNDEFINED","UNDEFINED",0,"single",0
+"327O","Unknown - calling Jim Benoit","Barnstable","UNDEFINED","UNDEFINED",0,"single",0
+"3030","TIMESHARE MDL-06","Barnstable","UNDEFINED","UNDEFINED",0,"single",0
+"3070","MOTEL COND MDL-06","Barnstable","UNDEFINED","UNDEFINED",0,"single",0
+"343","OFC CND","Billerica","UNDEFINED","UNDEFINED",0,"single",0
+"327","RTL CND","Billerica","UNDEFINED","UNDEFINED",0,"single",0
+"3430","PROF OFFC","Quincy","UNDEFINED","UNDEFINED",0,"single",0
+"3030","Unknown","Edgartown","UNDEFINED","UNDEFINED",0,"single",0
+"3030","Comrellnd","Lakeville","UNDEFINED","UNDEFINED",0,"single",0
+"394","Hall","Fall River","UNDEFINED","UNDEFINED",0,"single",0
+"399","Oth Comm","Fall River","UNDEFINED","UNDEFINED",0,"single",0
+"395","Salon","Fall River","UNDEFINED","UNDEFINED",0,"single",0
+"3030","Unknown","Dennis","UNDEFINED","UNDEFINED",0,"single",0
+"3270","RETAIL CND MDL-06","Somerville","UNDEFINED","UNDEFINED",0,"single",0
+"399","MULTI VILL","Holden","UNDEFINED","UNDEFINED",0,"single",0
+"3280","RETAIL CON  MDL-06","Lexington","UNDEFINED","UNDEFINED",0,"single",0
+"3030","LEASED SPA","Amherst","UNDEFINED","UNDEFINED",0,"single",0
+"3031","Lease Land","Amherst","UNDEFINED","UNDEFINED",0,"single",0
+"346","LODGE","Milford","UNDEFINED","UNDEFINED",0,"single",0
+"320","Unknown","Malden","UNDEFINED","UNDEFINED",0,"single",0
+"344","Other","Boxborough","UNDEFINED","UNDEFINED",0,"single",0
+"307","VETERINARY HOSPITAL","Boston","UNDEFINED","UNDEFINED",0,"single",0
+"309","MEDICAL CLINIC OUTPATIENT","Boston","UNDEFINED","UNDEFINED",0,"single",0
+"327","RESTAURANT/LOUNGE","Boston","UNDEFINED","UNDEFINED",0,"single",0
+"329","BAR/TAVERN/PUB","Boston","UNDEFINED","UNDEFINED",0,"single",0
+"378","SCHOOL","Boston","UNDEFINED","UNDEFINED",0,"single",0
+"398","AIRPORT  TERMINAL","Boston","UNDEFINED","UNDEFINED",0,"single",0
+"399","COM GREENHOUSE","Boston","UNDEFINED","UNDEFINED",0,"single",0
+"303","PRIV CITY CLUB","Boston","UNDEFINED","UNDEFINED",0,"single",0
+"327V","Junkyard M00","Nantucket","UNDEFINED","UNDEFINED",0,"single",0
+"3031","Imputed - Motel","Tisbury","UNDEFINED","UNDEFINED",0,"single",0
+"3030","(Intentionally left blank)","Templeton","UNDEFINED","UNDEFINED",0,"single",0
+"343","Unknown","Hull","UNDEFINED","UNDEFINED",0,"single",0
+"327","Restaurant","Holbrook","UNDEFINED","UNDEFINED",0,"single",0
+"3430","Other - Unknown","Scituate","UNDEFINED","UNDEFINED",0,"single",0
+"327","RTL CND","Ipswich","UNDEFINED","UNDEFINED",0,"single",0
+"343","OFC CND","Ipswich","UNDEFINED","UNDEFINED",0,"single",0
+"3030","Other","Georgetown","UNDEFINED","UNDEFINED",0,"single",0
+"3430","OFFC CNDO M06","Taunton","UNDEFINED","UNDEFINED",0,"single",0
+"394","Other","New Ashford","UNDEFINED","UNDEFINED",0,"single",0
+"031I","LUMBER YRD MDL C","Middleborough","UNDEFINED","UNDEFINED",0,"mixed",0
+"0319","COMM WHSE MDL-00","Middleborough","UNDEFINED","UNDEFINED",0,"mixed",0
+"038V","OTHR OUTDR M-00","Rehoboth","UNDEFINED","UNDEFINED",0,"mixed",0
+"0319","PRED COMM R","Wrentham","UNDEFINED","UNDEFINED",0,"mixed",0
+"031V","WHS MDL00","North Attleborough","UNDEFINED","UNDEFINED",0,"mixed",0
+"0303","STUDIO","Newburyport","UNDEFINED","UNDEFINED",0,"mixed",0
+"034B","PROF BLDG MDL-01","Easton","UNDEFINED","UNDEFINED",0,"mixed",0
+"031V","COM/RES","Ludlow","UNDEFINED","UNDEFINED",0,"mixed",0
+"034V","COM/IND","Ludlow","UNDEFINED","UNDEFINED",0,"mixed",0
+"0319","Prim Comm R","Otis","UNDEFINED","UNDEFINED",0,"mixed",0
+"031I","LUMBER YRD MDL C","Chelmsford","UNDEFINED","UNDEFINED",0,"mixed",0
+"031I","COM GRN HS  MDL-96","Sharon","UNDEFINED","UNDEFINED",0,"mixed",0
+"031L","COMM WHSE M96","Barnstable","UNDEFINED","UNDEFINED",0,"mixed",0
+"034R","Mansard-Apts","Somerville","UNDEFINED","UNDEFINED",0,"mixed",0
+"0343","Laundromat","Nantucket","UNDEFINED","UNDEFINED",0,"mixed",0
+"037I","Tennis Club M96","Nantucket","UNDEFINED","UNDEFINED",0,"mixed",0
+"031B","Family Conver.","Westfield","UNDEFINED","UNDEFINED",0,"mixed",0
+"031M","Conventional","Westfield","UNDEFINED","UNDEFINED",0,"mixed",0
+"031R","Conventional","Westfield","UNDEFINED","UNDEFINED",0,"mixed",0
+"034R","Cape Cod","Westfield","UNDEFINED","UNDEFINED",0,"mixed",0
+"034R","Res Complex","Georgetown","UNDEFINED","UNDEFINED",0,"mixed",0
+"031I","COMM WHSE M96","Taunton","UNDEFINED","UNDEFINED",0,"mixed",0
+"034R","PROF BLDG M01","Taunton","UNDEFINED","UNDEFINED",0,"mixed",0
+"032I","RETAIL <10K M96","Marion","UNDEFINED","UNDEFINED",0,"mixed",0
+"032R","RETAIL <10K M01","Marion","UNDEFINED","UNDEFINED",0,"mixed",0
+"032V","RETAIL <10K M00","Marion","UNDEFINED","UNDEFINED",0,"mixed",0
+"032I","STORE/SHOP  MDL-96","Chelsea","UNDEFINED","UNDEFINED",0,"mixed",0
+"032L","REST/CLUBS  MDL-96","Chelsea","UNDEFINED","UNDEFINED",0,"mixed",0
+"032R","STORE/SHOP  MDL-01","Chelsea","UNDEFINED","UNDEFINED",0,"mixed",0
+"039","Junkyard","Northborough","UNDEFINED","UNDEFINED",0,"mixed",0
+"032I","STORE/SHOP MDL - 96","Palmer","UNDEFINED","UNDEFINED",0,"mixed",0
+"032A","RESTAURANT MDL C","Middleborough","UNDEFINED","UNDEFINED",0,"mixed",0
+"032V","STORE/SHOP MDL C","Middleborough","UNDEFINED","UNDEFINED",0,"mixed",0
+"0327","STORE/SHOP MDL-01","Middleborough","UNDEFINED","UNDEFINED",0,"mixed",0
+"0329","STORE/SHOP MDL-96","Middleborough","UNDEFINED","UNDEFINED",0,"mixed",0
+"0395","M/U DEV LAND MDL-00","Middleborough","UNDEFINED","UNDEFINED",0,"mixed",0
+"032R","STORE/SHP M-01","Northbridge","UNDEFINED","UNDEFINED",0,"mixed",0
+"032I","MURETMDL96","North Attleborough","UNDEFINED","UNDEFINED",0,"mixed",0
+"032L","STORE/SHOP  MDL-96","North Attleborough","UNDEFINED","UNDEFINED",0,"mixed",0
+"032R","MURETMDL01","North Attleborough","UNDEFINED","UNDEFINED",0,"mixed",0
+"032R","STORE/SHOP M01","Millbury","UNDEFINED","UNDEFINED",0,"mixed",0
+"032R","STORE/SHOP MDL-01","Easton","UNDEFINED","UNDEFINED",0,"mixed",0
+"032I","STORE/SHOP MDL-96","Easton","UNDEFINED","UNDEFINED",0,"mixed",0
+"032I","STORE/SHOP  MDL-96","West Springfield","UNDEFINED","UNDEFINED",0,"mixed",0
+"032A","RESTAURANT MDL C","Chelmsford","UNDEFINED","UNDEFINED",0,"mixed",0
+"032V","STORE/SHOP MDL C","Chelmsford","UNDEFINED","UNDEFINED",0,"mixed",0
+"032I","Store/Shop MDL - 96","Attleboro","UNDEFINED","UNDEFINED",0,"mixed",0
+"032R","STORE/SHOP  MDL-01","Sharon","UNDEFINED","UNDEFINED",0,"mixed",0
+"032I","STORE/SHOP MDL96","Avon","UNDEFINED","UNDEFINED",0,"mixed",0
+"032C","STORE/SHOP  MDL-94","Holden","UNDEFINED","UNDEFINED",0,"mixed",0
+"032I","STORE/SHOP  M-96","Mansfield","UNDEFINED","UNDEFINED",0,"mixed",0
+"032V","STORE/SHOP  M-00","Mansfield","UNDEFINED","UNDEFINED",0,"mixed",0
+"032R","Store/Shop","Mansfield","UNDEFINED","UNDEFINED",0,"mixed",0
+"032I","STORE/SHOP M-96","Walpole","UNDEFINED","UNDEFINED",0,"mixed",0
+"032R","STORE/SHOP M-01","Walpole","UNDEFINED","UNDEFINED",0,"mixed",0
+"032C","Restaurant/Club M94","Nantucket","UNDEFINED","UNDEFINED",0,"mixed",0
+"032I","Store/Shop M96","Nantucket","UNDEFINED","UNDEFINED",0,"mixed",0
+"032R","Store/Shop M01","Nantucket","UNDEFINED","UNDEFINED",0,"mixed",0
+"032I","Store","Westfield","UNDEFINED","UNDEFINED",0,"mixed",0
+"032R","Cape Cod","Westfield","UNDEFINED","UNDEFINED",0,"mixed",0
+"033R","Cape Cod","Westfield","UNDEFINED","UNDEFINED",0,"mixed",0
+"039","Hospital","Everett","UNDEFINED","UNDEFINED",0,"mixed",0
+"032I","STORES/SHOP M96","Taunton","UNDEFINED","UNDEFINED",0,"mixed",0
+"032I","STORE/SHOP M96","Yarmouth","UNDEFINED","UNDEFINED",0,"mixed",0
+"039","Exempt","Buckland","UNDEFINED","UNDEFINED",0,"mixed",0
+"4990","Airport","Carver","UNDEFINED","UNDEFINED",0,"single",0
+"490","EXMPT/TAXLAND","Worcester","UNDEFINED","UNDEFINED",0,"single",0
+"4095","IND GAR","Blackstone","UNDEFINED","UNDEFINED",0,"single",0
+"406","HIGH-TECH","Cambridge","UNDEFINED","UNDEFINED",0,"single",0
+"407","CLEAN-MANUF","Cambridge","UNDEFINED","UNDEFINED",0,"single",0
+"405","Mnf Wrhse","Plymouth","UNDEFINED","UNDEFINED",0,"single",0
+"499","Hanger","Plymouth","UNDEFINED","UNDEFINED",0,"single",0
+"408","Airport Hangar","Plymouth","UNDEFINED","UNDEFINED",0,"single",0
+"445","Other Industrial","Whitman","UNDEFINED","UNDEFINED",0,"single",0
+"444","Industrial","Westford","UNDEFINED","UNDEFINED",0,"single",0
+"445","Industrial","Westford","UNDEFINED","UNDEFINED",0,"single",0
+"405","Industrial, Other","North Andover","UNDEFINED","UNDEFINED",0,"single",0
+"445","Other Industrial","Medford","UNDEFINED","UNDEFINED",0,"single",0
+"437","Industrial","Cummington","UNDEFINED","UNDEFINED",0,"single",0
+"405","INDUSTRIAL LOFT","Boston","UNDEFINED","UNDEFINED",0,"single",0
+"436","STUDIO/REMOTE CONTR","Boston","UNDEFINED","UNDEFINED",0,"single",0
+"445","RAILROAD PROP","Boston","UNDEFINED","UNDEFINED",0,"single",0
+"4449","Other - Realty","Everett","UNDEFINED","UNDEFINED",0,"single",0
+"444","Industrial","Stoughton","UNDEFINED","UNDEFINED",0,"single",0
+"405","IND CND","Ipswich","UNDEFINED","UNDEFINED",0,"single",0
+"0471","Industrial","Westborough","UNDEFINED","UNDEFINED",0,"mixed",0
+"049","Industrial, Exempt","North Adams","UNDEFINED","UNDEFINED",0,"mixed",0
+"0490","Industrial Exemption","Holyoke","UNDEFINED","UNDEFINED",0,"mixed",0
+"5555","TEST CODE","Dennis","UNDEFINED","UNDEFINED",0,"single",0
+"6000","6000","Westport","UNDEFINED","UNDEFINED",0,"single",0
+"6100","unknown","Russell","UNDEFINED","UNDEFINED",0,"single",0
+"6100","Unknown","Sterling","UNDEFINED","UNDEFINED",0,"single",0
+"0613","Chapter Land","Uxbridge","UNDEFINED","UNDEFINED",0,"mixed",0
+"7220","Chapter Land","Concord","UNDEFINED","UNDEFINED",0,"single",0
+"7290","FRMFTFTG","Middleborough","UNDEFINED","UNDEFINED",0,"single",0
+"7000","7000","Westport","UNDEFINED","UNDEFINED",0,"single",0
+"722","Unknown","Sheffield","UNDEFINED","UNDEFINED",0,"single",0
+"722","(Unknown)","Dunstable","UNDEFINED","UNDEFINED",0,"single",0
+"7290","FRMFTFTG","Chelmsford","UNDEFINED","UNDEFINED",0,"single",0
+"7220","Unknown","Sterling","UNDEFINED","UNDEFINED",0,"single",0
+"7220","Other","Tisbury","UNDEFINED","UNDEFINED",0,"single",0
+"722","Other","Newbury","UNDEFINED","UNDEFINED",0,"single",0
+"722","Other","New Ashford","UNDEFINED","UNDEFINED",0,"single",0
+"071R","TR CRP VEG MDL-01","Easton","UNDEFINED","UNDEFINED",0,"mixed",0
+"071C","FRM/RES","Agawam","UNDEFINED","UNDEFINED",0,"mixed",0
+"071R","FRM/RES","Agawam","UNDEFINED","UNDEFINED",0,"mixed",0
+"8000","RECREATION","Marion","UNDEFINED","UNDEFINED",0,"single",0
+"800","IMPUTED - Recreation","Groton","UNDEFINED","UNDEFINED",0,"single",0
+"8000","IMPUTED - Recreation","Groton","UNDEFINED","UNDEFINED",0,"single",0
+"8000","RECREATION MDL-00","Palmer","UNDEFINED","UNDEFINED",0,"single",0
+"800R","RECREATION MDL-01","Palmer","UNDEFINED","UNDEFINED",0,"single",0
+"800","CHAPTERLAND","Palmer","UNDEFINED","UNDEFINED",0,"single",0
+"8000","RECREATION","Pelham","UNDEFINED","UNDEFINED",0,"single",0
+"8000","Recreation","Marlborough","UNDEFINED","UNDEFINED",0,"single",0
+"8000","IMPUTED - Recreation","Westhampton","UNDEFINED","UNDEFINED",0,"single",0
+"8000","Recreation","Hubbardston","UNDEFINED","UNDEFINED",0,"single",0
+"800V","Recreation","Hubbardston","UNDEFINED","UNDEFINED",0,"single",0
+"800","Recreation","Tyngsborough","UNDEFINED","UNDEFINED",0,"single",0
+"8000","RECREATION","Middleborough","UNDEFINED","UNDEFINED",0,"single",0
+"8000","RECREATION","Newburyport","UNDEFINED","UNDEFINED",0,"single",0
+"8000","RECREATION","Rehoboth","UNDEFINED","UNDEFINED",0,"single",0
+"8000","RECREATION","Easthampton","UNDEFINED","UNDEFINED",0,"single",0
+"8000","Recreation","Petersham","UNDEFINED","UNDEFINED",0,"single",0
+"800","RECREATION","North Attleborough","UNDEFINED","UNDEFINED",0,"single",0
+"8000","RECREATION","North Attleborough","UNDEFINED","UNDEFINED",0,"single",0
+"8000","RECRTION","Norwell","UNDEFINED","UNDEFINED",0,"single",0
+"8000","RECREATION","Sutton","UNDEFINED","UNDEFINED",0,"single",0
+"8000","Recreation","Otis","UNDEFINED","UNDEFINED",0,"single",0
+"8000","Recreation","Dartmouth","UNDEFINED","UNDEFINED",0,"single",0
+"8000","recereation","Leominster","UNDEFINED","UNDEFINED",0,"single",0
+"8000","RECREATION MDL-00","Westminster","UNDEFINED","UNDEFINED",0,"single",0
+"8000","RECREATION","Chelmsford","UNDEFINED","UNDEFINED",0,"single",0
+"800C","Recreation Model 94","Woburn","UNDEFINED","UNDEFINED",0,"single",0
+"8000","Recreation","Topsfield","UNDEFINED","UNDEFINED",0,"single",0
+"800","Unknown","Topsfield","UNDEFINED","UNDEFINED",0,"single",0
+"8000","Recreation","Lakeville","UNDEFINED","UNDEFINED",0,"single",0
+"800","RECREATION","Dudley","UNDEFINED","UNDEFINED",0,"single",0
+"800","Other","Belchertown","UNDEFINED","UNDEFINED",0,"single",0
+"8000","Misc recreation","Holden","UNDEFINED","UNDEFINED",0,"single",0
+"8000","Recreation","Amherst","UNDEFINED","UNDEFINED",0,"single",0
+"800","Recreation","Princeton","UNDEFINED","UNDEFINED",0,"single",0
+"8000","Recreation","Princeton","UNDEFINED","UNDEFINED",0,"single",0
+"8000","RECREATION","Grafton","UNDEFINED","UNDEFINED",0,"single",0
+"8000","RECREATION","Walpole","UNDEFINED","UNDEFINED",0,"single",0
+"8000","RECREATION","Auburn","UNDEFINED","UNDEFINED",0,"single",0
+"8000","Imputed - Recreation","Tisbury","UNDEFINED","UNDEFINED",0,"single",0
+"8000","RECREATION","Plainville","UNDEFINED","UNDEFINED",0,"single",0
+"8000","Recreation","Hampden","UNDEFINED","UNDEFINED",0,"single",0
+"8000","Other","Lawrence","UNDEFINED","UNDEFINED",0,"single",0
+"8000","RECREATION","Spencer","UNDEFINED","UNDEFINED",0,"single",0
+"8000","Recreation","Phillipston","UNDEFINED","UNDEFINED",0,"single",0
+"800","Other","Newbury","UNDEFINED","UNDEFINED",0,"single",0
+"0873","Misc","Saugus","UNDEFINED","UNDEFINED",0,"mixed",0
+"081R","REC/RES","Agawam","UNDEFINED","UNDEFINED",0,"mixed",0
+"0800","RECREATION","Marion","UNDEFINED","UNDEFINED",0,"mixed",0
+"0800","IMPUTED - Recreation","Groton","UNDEFINED","UNDEFINED",0,"mixed",0
+"0800","RECREATION","Newburyport","UNDEFINED","UNDEFINED",0,"mixed",0
+"0800","RECREATION","Leominster","UNDEFINED","UNDEFINED",0,"mixed",0
+"0800","RECREATION","Princeton","UNDEFINED","UNDEFINED",0,"mixed",0
+"9980","OWNER UNKN","Chelsea","UNDEFINED","UNDEFINED",0,"single",0
+"998","Railroad","Northborough","UNDEFINED","UNDEFINED",0,"single",0
+"909","Exempt","Westborough","UNDEFINED","UNDEFINED",0,"single",0
+"9090","Charitable","Hingham","UNDEFINED","UNDEFINED",0,"single",0
+"9980","Unknown","Carver","UNDEFINED","UNDEFINED",0,"single",0
+"909","Unknown","Winchendon","UNDEFINED","UNDEFINED",0,"single",0
+"909V","MDL-00","Worcester","UNDEFINED","UNDEFINED",0,"single",0
+"9090","Unknown","Brewster","UNDEFINED","UNDEFINED",0,"single",0
+"9999","Unknown","Brewster","UNDEFINED","UNDEFINED",0,"single",0
+"9090","Exempt","Wrentham","UNDEFINED","UNDEFINED",0,"single",0
+"909","OWNER UNKNOWN","Brimfield","UNDEFINED","UNDEFINED",0,"single",0
+"9090","EXEMPT/OTHER","Mashpee","UNDEFINED","UNDEFINED",0,"single",0
+"999","IMPUTED - Tax Exempt","Wenham","UNDEFINED","UNDEFINED",0,"single",0
+"909","Veterans Organizations","Waltham","UNDEFINED","UNDEFINED",0,"single",0
+"9090","Charitable","Norwood","UNDEFINED","UNDEFINED",0,"single",0
+"909","Other - B3","Springfield","UNDEFINED","UNDEFINED",0,"single",0
+"909","Other","Uxbridge","UNDEFINED","UNDEFINED",0,"single",0
+"9090","9090","Westport","UNDEFINED","UNDEFINED",0,"single",0
+"9999","Other","Salisbury","UNDEFINED","UNDEFINED",0,"single",0
+"909","Other","Methuen","UNDEFINED","UNDEFINED",0,"single",0
+"909","Pennsylvania Central Trans Co Railroad
+","Hopedale","UNDEFINED","UNDEFINED",0,"single",0
+"909","Exempt","Dunstable","UNDEFINED","UNDEFINED",0,"single",0
+"909","IMPUTED - Exempt","Carlisle","UNDEFINED","UNDEFINED",0,"single",0
+"909","Railroad ROW - Titled Ownership","Franklin","UNDEFINED","UNDEFINED",0,"single",0
+"909","Misc","Saugus","UNDEFINED","UNDEFINED",0,"single",0
+"9490","Other","Sandwich","UNDEFINED","UNDEFINED",0,"single",0
+"9690","Other","Sandwich","UNDEFINED","UNDEFINED",0,"single",0
+"999U","Unknown - calling Jim Benoit","Barnstable","UNDEFINED","UNDEFINED",0,"single",0
+"9990","BETTERMENT","Barnstable","UNDEFINED","UNDEFINED",0,"single",0
+"9090","IMPUTED - Exempt","Edgartown","UNDEFINED","UNDEFINED",0,"single",0
+"977","DPW","Fall River","UNDEFINED","UNDEFINED",0,"single",0
+"999","City Cem","Fall River","UNDEFINED","UNDEFINED",0,"single",0
+"9090","unknown","Russell","UNDEFINED","UNDEFINED",0,"single",0
+"909","Exempt","Westford","UNDEFINED","UNDEFINED",0,"single",0
+"909","IMPUTED - Tax Exempt","Huntington","UNDEFINED","UNDEFINED",0,"single",0
+"9090","Unknown","Sterling","UNDEFINED","UNDEFINED",0,"single",0
+"909","Unknown","Malden","UNDEFINED","UNDEFINED",0,"single",0
+"999","Unknown","Malden","UNDEFINED","UNDEFINED",0,"single",0
+"909","Owner Unknown","Deerfield","UNDEFINED","UNDEFINED",0,"single",0
+"948","Owner Unknown","Essex","UNDEFINED","UNDEFINED",0,"single",0
+"964","EXEMPT","Boston","UNDEFINED","UNDEFINED",0,"single",0
+"966","INDUSTRIAL/MFG BLDG","Boston","UNDEFINED","UNDEFINED",0,"single",0
+"979","HOSPITAL (EXEMPT)","Boston","UNDEFINED","UNDEFINED",0,"single",0
+"909","Exempt Hospital","Salem","UNDEFINED","UNDEFINED",0,"single",0
+"9090","Other","Lawrence","UNDEFINED","UNDEFINED",0,"single",0
+"9980","Economic Dev. Program","Holyoke","UNDEFINED","UNDEFINED",0,"single",0
+"909","Railroad","Holyoke","UNDEFINED","UNDEFINED",0,"single",0
+"998","Other","Holyoke","UNDEFINED","UNDEFINED",0,"single",0
+"909","EXEMPT","Ipswich","UNDEFINED","UNDEFINED",0,"single",0
+"909","Unknown Owner","Townsend","UNDEFINED","UNDEFINED",0,"single",0
+"093","Hospital","Danvers","UNDEFINED","UNDEFINED",0,"mixed",0
+"091","IMPUTED - Excempt, Residential","West Stockbridge","UNDEFINED","UNDEFINED",0,"mixed",0
+"091","Exepmpt, Residential","North Adams","UNDEFINED","UNDEFINED",0,"mixed",0
+"093","EXM-COMM - HOSPITAL","Waltham","UNDEFINED","UNDEFINED",0,"mixed",0
+"091","Residential/Exempt","Andover","UNDEFINED","UNDEFINED",0,"mixed",0
+"091","COMM BLOCK","Stoneham","UNDEFINED","UNDEFINED",0,"mixed",0
+"093","STORE","Stoneham","UNDEFINED","UNDEFINED",0,"mixed",0
+"094","EX/COMM/IND","Wakefield","UNDEFINED","UNDEFINED",0,"mixed",0
+"097","Chapter Exempt Land","Topsfield","UNDEFINED","UNDEFINED",0,"mixed",0
+"093","Exempt/Comm","Burlington","UNDEFINED","UNDEFINED",0,"mixed",0
+"091","EXEMPT/RES","Randolph","UNDEFINED","UNDEFINED",0,"mixed",0
+"091","IMPUTED - Charitable","Wendell","UNDEFINED","UNDEFINED",0,"mixed",0
+"093","EXEMPT/COMM","Billerica","UNDEFINED","UNDEFINED",0,"mixed",0
+"091","Exempt/Residential","Sudbury","UNDEFINED","UNDEFINED",0,"mixed",0
+"093","Municipal","Winchester","UNDEFINED","UNDEFINED",0,"mixed",0
+"0369","OTHER CULT","Marion","000","Mixed Use (Primarily Commercial, some Forest)",1,"mixed",NA
+"0316","IMPUTED - Other Storage, Warehouse, and Distribution facilities (see also usecode 401)","Groton","hopefully this doesn't happen","Mixed Use (Primarily Commercial, some Residential)",1,"mixed",NA
+"0316","Other Storage, Warehouse, and Distribution facilities (see also usecode 401)","Hubbardston","hopefully this doesn't happen","Mixed Use (Primarily Commercial, some Residential)",1,"mixed",NA
+"013C","Other","Duxbury","000","Mixed Use (Primarily Residential, some Commercial)",1,"mixed",NA
+"0302","Other","Duxbury","000","Mixed Use (Primarily Commercial, some Other)",1,"mixed",NA
+"031R","Other","Duxbury","000","Mixed Use (Primarily Commercial, some Residential)",1,"mixed",NA
+"0343","Other","Duxbury","000","Mixed Use (Primarily Commercial, some Industrial)",1,"mixed",NA
+"0712","Other","Duxbury","000","Mixed Use (Primarily Agriculture, some Residential)",1,"mixed",NA
+"0716","Other","Duxbury","000","Mixed Use (Primarily Agriculture, some Residential)",1,"mixed",NA
+"0717","Other","Duxbury","000","Mixed Use (Primarily Agriculture, some Residential)",1,"mixed",NA
+"0718","Other","Duxbury","000","Mixed Use (Primarily Agriculture, some Residential)",1,"mixed",NA
+"0132","Other","Duxbury","000","Mixed Use (Primarily Residential, some Commercial)",1,"mixed",NA
+"0316","Mixed Use - Other Storage, Warehouse, and Distribution facilities (see also usecode 401)","Barre","hopefully this doesn't happen","Mixed Use (Primarily Commercial, some Residential)",1,"mixed",NA
+"0369","Mixed Use - Other Cultural and Entertainment Properties","Barre","hopefully this doesn't happen","Mixed Use (Primarily Commercial, some Forest)",1,"mixed",NA
+"0388","Mixed Use - Other Outdoor facilities - e.g. driving ranges, miniature golf, baseball batting ranges, etc... (not Ch. 61B)","Barre","hopefully this doesn't happen","Mixed Use (Primarily Commercial, some Recreation)",1,"mixed",NA
+"0316","Other Storage, Warehouse and Distribution facilities","Wareham","hopefully this doesn't happen","Mixed Use (Primarily Commercial, some Residential)",1,"mixed",NA
+"0137","Other","Sunderland","000","Mixed Use (Primarily Residential, some Commercial)",1,"mixed",NA
+"0173","Other","Sunderland","000","Mixed Use (Primarily Residential, some Agriculture)",1,"mixed",NA
+"0314","Other","Sunderland","000","Mixed Use (Primarily Commercial, some Residential)",1,"mixed",NA
+"0317","Other","Sunderland","000","Mixed Use (Primarily Commercial, some Residential)",1,"mixed",NA
+"0716","MIXED USE (PRIMARILY AGRICULTURE-OTHER LAND)","Hadley","hopefully this doesn't happen","Mixed Use (Primarily Agriculture, some Residential)",1,"mixed",NA
+"0168","Unknown","Goshen","000","Mixed Use (Primarily Residential, some Forest)",1,"mixed",NA
+"0418","Unknown","Goshen","000","Mixed Use (Primarily Industrial, some Residential)",1,"mixed",NA
+"0369","OTHER CULT","Newburyport","000","Mixed Use (Primarily Commercial, some Forest)",1,"mixed",NA
+"013C","Other","Worcester","000","Mixed Use (Primarily Residential, some Commercial)",1,"mixed",NA
+"013M","Other","Worcester","000","Mixed Use (Primarily Residential, some Commercial)",1,"mixed",NA
+"031C","Other","Worcester","000","Mixed Use (Primarily Commercial, some Residential)",1,"mixed",NA
+"0186","Unknown","Winchendon","000","Mixed Use (Primarily Residential, some Recreation)",1,"mixed",NA
+"0137","Unknown","Leicester","000","Mixed Use (Primarily Residential, some Commercial)",1,"mixed",NA
+"0186","Unknown","Leicester","000","Mixed Use (Primarily Residential, some Recreation)",1,"mixed",NA
+"0318","Unknown","Leicester","000","Mixed Use (Primarily Commercial, some Residential)",1,"mixed",NA
+"0173","Mixed use Residential, Farming, Other Commercial Land","Leicester","hopefully this doesn't happen","Mixed Use (Primarily Residential, some Agriculture)",1,"mixed",NA
+"013M","OTHER - Mixed Use (Primarily Residential, some Commercial)","North Attleborough","hopefully this doesn't happen","Mixed Use (Primarily Residential, some Commercial)",1,"mixed",NA
+"0316","Other Storage, Warehouse and Distribution facilities (see also Industrial Code 401)","Southwick","hopefully this doesn't happen","Mixed Use (Primarily Commercial, some Residential)",1,"mixed",NA
+"0388","Other Outdoor facilities- e.g., driving ranges, miniature golf, baseball batting ranges, etc..","Southwick","000","Mixed Use (Primarily Commercial, some Recreation)",1,"mixed",NA
+"0741","Other","Greenfield","000","Mixed Use (Primarily Agriculture, some Industrial)",1,"mixed",NA
+"0834","Other","Greenfield","000","Mixed Use (Primarily Recreation, some Commercial)",1,"mixed",NA
+"0163","Other","Greenfield","000","Mixed Use (Primarily Residential, some Forest)",1,"mixed",NA
+"0716","Other","Greenfield","000","Mixed Use (Primarily Agriculture, some Residential)",1,"mixed",NA
+"013C","Unknown","Norwell","000","Mixed Use (Primarily Residential, some Commercial)",1,"mixed",NA
+"034R","Unknown","Norwell","000","Mixed Use (Primarily Commercial, some Industrial)",1,"mixed",NA
+"0342","Unknown","Norwell","000","Mixed Use (Primarily Commercial, some Industrial)",1,"mixed",NA
+"0316","Mixed Use (Primarily Other Storage, Warehouse, and Distribution facilities)","South Hadley","hopefully this doesn't happen","Mixed Use (Primarily Commercial, some Residential)",1,"mixed",NA
+"0712","Other","South Hadley","000","Mixed Use (Primarily Agriculture, some Residential)",1,"mixed",NA
+"0716","Other","South Hadley","000","Mixed Use (Primarily Agriculture, some Residential)",1,"mixed",NA
+"0718","Other","South Hadley","000","Mixed Use (Primarily Agriculture, some Residential)",1,"mixed",NA
+"0385","Unknown","Holland","000","Mixed Use (Primarily Commercial, some Recreation)",1,"mixed",NA
+"0137","Other","Methuen","000","Mixed Use (Primarily Residential, some Commercial)",1,"mixed",NA
+"0413","Other Mining/Quarry","Pepperell","000","Mixed Use (Primarily Industrial, some Residential)",1,"mixed",NA
+"0316","Other Storage, Warehouse, and Distribution facilities (see also usecode 401)","Acton","hopefully this doesn't happen","Mixed Use (Primarily Commercial, some Residential)",1,"mixed",NA
+"0317","Other","Sudbury","000","Mixed Use (Primarily Commercial, some Residential)",1,"mixed",NA
+"0136","Other","Belchertown","000","Mixed Use (Primarily Residential, some Commercial)",1,"mixed",NA
+"0137","Other","Belchertown","000","Mixed Use (Primarily Residential, some Commercial)",1,"mixed",NA
+"0139","Other","Belchertown","000","Mixed Use (Primarily Residential, some Commercial)",1,"mixed",NA
+"0164","Other","Belchertown","000","Mixed Use (Primarily Residential, some Forest)",1,"mixed",NA
+"0167","Other","Belchertown","000","Mixed Use (Primarily Residential, some Forest)",1,"mixed",NA
+"0173","Other","Belchertown","000","Mixed Use (Primarily Residential, some Agriculture)",1,"mixed",NA
+"0178","Other","Belchertown","000","Mixed Use (Primarily Residential, some Agriculture)",1,"mixed",NA
+"0183","Other","Belchertown","000","Mixed Use (Primarily Residential, some Recreation)",1,"mixed",NA
+"0186","Other","Belchertown","000","Mixed Use (Primarily Residential, some Recreation)",1,"mixed",NA
+"0318","Other","Belchertown","000","Mixed Use (Primarily Commercial, some Residential)",1,"mixed",NA
+"0673","Other","Belchertown","000","Mixed Use (Primarily Forest, some Agriculture)",1,"mixed",NA
+"0713","Other","Belchertown","000","Mixed Use (Primarily Agriculture, some Residential)",1,"mixed",NA
+"0731","Other","Belchertown","000","Mixed Use (Primarily Agriculture, some Commercial)",1,"mixed",NA
+"0763","Other","Belchertown","000","Mixed Use (Primarily Agriculture, some Forest)",1,"mixed",NA
+"0863","Other","Belchertown","000","Mixed Use (Primarily Recreation, some Forest)",1,"mixed",NA
+"0418","Other","Belchertown","000","Mixed Use (Primarily Industrial, some Residential)",1,"mixed",NA
+"0186","Other","Boxborough","000","Mixed Use (Primarily Residential, some Recreation)",1,"mixed",NA
+"0471","Unknown","Deerfield","000","Mixed Use (Primarily Industrial, some Agriculture)",1,"mixed",NA
+"0316","IMPUTED - Other Storage, Warehouse, and Distribution facilities (see also usecode 401)","Medford","hopefully this doesn't happen","Mixed Use (Primarily Commercial, some Residential)",1,"mixed",NA
+"0316","Other Storage, Warehouse, and Distribution facilities (see also usecode 401)","Kingston","hopefully this doesn't happen","Mixed Use (Primarily Commercial, some Residential)",1,"mixed",NA
+"013C","Other","Tisbury","000","Mixed Use (Primarily Residential, some Commercial)",1,"mixed",NA
+"0302","Other","Tisbury","000","Mixed Use (Primarily Commercial, some Other)",1,"mixed",NA
+"0316","Other","Tisbury","000","Mixed Use (Primarily Commercial, some Residential)",1,"mixed",NA
+"0317","Other","Tisbury","000","Mixed Use (Primarily Commercial, some Residential)",1,"mixed",NA
+"0342","Other","Tisbury","000","Mixed Use (Primarily Commercial, some Industrial)",1,"mixed",NA
+"034R","Other","Tisbury","000","Mixed Use (Primarily Commercial, some Industrial)",1,"mixed",NA
+"0361","Other","Tisbury","000","Mixed Use (Primarily Commercial, some Forest)",1,"mixed",NA
+"0362","Other","Tisbury","000","Mixed Use (Primarily Commercial, some Forest)",1,"mixed",NA
+"0386","Other","Tisbury","000","Mixed Use (Primarily Commercial, some Recreation)",1,"mixed",NA
+"0313","Other","Tisbury","000","Mixed Use (Primarily Commercial, some Residential)",1,"mixed",NA
+"0377","MIXED USE OTHER INDOOR REC","Athol","hopefully this doesn't happen","Mixed Use (Primarily Commercial, some Agriculture)",1,"mixed",NA
+"0316","Other Storage, Warehouse and Distribution facilities","Westfield","hopefully this doesn't happen","Mixed Use (Primarily Commercial, some Residential)",1,"mixed",NA
+"0173","Use code not known or nor provided","West Bridgewater","000","Mixed Use (Primarily Residential, some Agriculture)",1,"mixed",NA
+"0134","Other","Gill","000","Mixed Use (Primarily Residential, some Commercial)",1,"mixed",NA
+"0137","Other","Gill","000","Mixed Use (Primarily Residential, some Commercial)",1,"mixed",NA
+"0167","Other","Gill","000","Mixed Use (Primarily Residential, some Forest)",1,"mixed",NA
+"0147","Other Mixed Use","Ipswich","hopefully this doesn't happen","Mixed Use (Primarily Residential, some Industrial)",1,"mixed",NA
+"0316","Other","Georgetown","000","Mixed Use (Primarily Commercial, some Residential)",1,"mixed",NA
+"0318","Other","Georgetown","000","Mixed Use (Primarily Commercial, some Residential)",1,"mixed",NA
+"0434","Other","Georgetown","000","Mixed Use (Primarily Industrial, some Commercial)",1,"mixed",NA
+"0715","Other","Georgetown","000","Mixed Use (Primarily Agriculture, some Residential)",1,"mixed",NA
+"0176","Other","Newbury","000","Mixed Use (Primarily Residential, some Agriculture)",1,"mixed",NA
+"0187","Other","Newbury","000","Mixed Use (Primarily Residential, some Recreation)",1,"mixed",NA
+"0167","Other","New Ashford","000","Mixed Use (Primarily Residential, some Forest)",1,"mixed",NA
+"0341","Other","New Ashford","000","Mixed Use (Primarily Commercial, some Industrial)",1,"mixed",NA
+"039","Commercial-Other","Danvers","000","Other/Unknown",0,"mixed",NA
+"0334","IMPUTED - Mixed Use (Primarily Gas Service Station, Some Other Commercial)","Hubbardston","hopefully this doesn't happen","hopefully this doesn't happen.",0,"mixed",NA
+"0332","Other","Duxbury","000","Other/Unknown",0,"mixed",NA
+"0601","Other","Duxbury","000","Other/Unknown",0,"mixed",NA
+"0720","Other","Duxbury","000","Other/Unknown",0,"mixed",NA
+"0801","Other","Duxbury","000","Other/Unknown",0,"mixed",NA
+"0803","Other","Duxbury","000","Other/Unknown",0,"mixed",NA
+"0805","Other","Duxbury","000","Other/Unknown",0,"mixed",NA
+"049C","Other","Worcester","000","Other/Unknown",0,"mixed",NA
+"0390","Mixed use (accessory to commercial parcel or not specifically included in another class)","Rehoboth","hopefully this doesn't happen","hopefully this doesn't happen.",0,"mixed",NA
+"010C","Other - Stores/Apt Com","Lowell","000","Other/Unknown",0,"mixed",NA
+"010J","Other - Stores/Apt Com","Lowell","000","Other/Unknown",0,"mixed",NA
+"010Z","Other - Stores/Apt Com","Lowell","000","Other/Unknown",0,"mixed",NA
+"093","Use code not known or nor provided.","Montague","000","Other/Unknown",0,"mixed",NA
+"039","Use code not known or nor provided.","Montague","000","Other/Unknown",0,"mixed",NA
+"0601","IMPUTED - Mixed Use (Primarily Ch 61 Land, Some Unknown)","Wrentham","hopefully this doesn't happen","hopefully this doesn't happen.",0,"mixed",NA
+"0801","IMPUTED - Mixed Use (Primarily Recreational Land, Some Unknown)","Wrentham","hopefully this doesn't happen","hopefully this doesn't happen.",0,"mixed",NA
+"094","Unknown","Leicester","000","Other/Unknown",0,"mixed",NA
+"039","Other","Greenfield","000","Other/Unknown",0,"mixed",NA
+"094","Other","Greenfield","000","Other/Unknown",0,"mixed",NA
+"032R","Unknown","Norwell","000","Other/Unknown",0,"mixed",NA
+"0332","Unknown","Norwell","000","Other/Unknown",0,"mixed",NA
+"0104","Unknown","Norwell","000","Other/Unknown",0,"mixed",NA
+"0601","Other","South Hadley","000","Other/Unknown",0,"mixed",NA
+"0803","Other","South Hadley","000","Other/Unknown",0,"mixed",NA
+"0101","Unknown","Holland","000","Other/Unknown",0,"mixed",NA
+"0326","Unknown","Holland","000","Other/Unknown",0,"mixed",NA
+"0338","IMPUTED - Other Motor Vehicles Sales and Services","Holland","hopefully this doesn't happen","hopefully this doesn't happen.",0,"mixed",NA
+"032I","Unknown","Sutton","000","Other/Unknown",0,"mixed",NA
+"011C","Unknown","Sutton","000","Other/Unknown",0,"mixed",NA
+"098","Vacant, Selectmen or City Council, Other City or Town (Municipal)","Hopkinton","000","Other/Unknown",0,"mixed",NA
+"0338","MXD OTHER-AUTO","Cambridge","hopefully this doesn't happen","hopefully this doesn't happen.",0,"mixed",NA
+"093","Other, Theater","New Bedford","000","Other/Unknown",0,"mixed",NA
+"0338","Other Motor Vehicles Sales and Services","Otis","hopefully this doesn't happen","hopefully this doesn't happen.",0,"mixed",NA
+"0121","Other","Avon","000","Other/Unknown",0,"mixed",NA
+"0326","Other","Avon","000","Other/Unknown",0,"mixed",NA
+"032Y","Unknown - calling Jim Benoit","Barnstable","000","Other/Unknown",0,"mixed",NA
+"039","Other","Belchertown","000","Other/Unknown",0,"mixed",NA
+"093","Other","Belchertown","000","Other/Unknown",0,"mixed",NA
+"091","Other Charitable","Fall River","000","Other/Unknown",0,"mixed",NA
+"093","Other Charitable","Fall River","000","Other/Unknown",0,"mixed",NA
+"0101","Unknown","Sterling","000","Other/Unknown",0,"mixed",NA
+"0103","Unknown","Sterling","000","Other/Unknown",0,"mixed",NA
+"093","Unknown","Malden","000","Other/Unknown",0,"mixed",NA
+"010C","Other","Walpole","000","Other/Unknown",0,"mixed",NA
+"0338","Other Motor Vehicles Sales and Services","Kingston","hopefully this doesn't happen","hopefully this doesn't happen.",0,"mixed",NA
+"0101","Other","Tisbury","000","Other/Unknown",0,"mixed",NA
+"0104","Other","Tisbury","000","Other/Unknown",0,"mixed",NA
+"0109","Other","Tisbury","000","Other/Unknown",0,"mixed",NA
+"010J","Other","Tisbury","000","Other/Unknown",0,"mixed",NA
+"0111","Other","Tisbury","000","Other/Unknown",0,"mixed",NA
+"0322","Other","Tisbury","000","Other/Unknown",0,"mixed",NA
+"0326","Other","Tisbury","000","Other/Unknown",0,"mixed",NA
+"032I","Other","Tisbury","000","Other/Unknown",0,"mixed",NA
+"0350","Other","Tisbury","000","Other/Unknown",0,"mixed",NA
+"0351","Other","Tisbury","000","Other/Unknown",0,"mixed",NA
+"0338","MIXED USE OTHER MVE SERVICE/STATION","Athol","hopefully this doesn't happen","hopefully this doesn't happen.",0,"mixed",NA
+"093","Other","Southborough","000","Other/Unknown",0,"mixed",NA
+"091","Use code not known or nor provided","West Bridgewater","000","Other/Unknown",0,"mixed",NA
+"0101","Other","Georgetown","000","Other/Unknown",0,"mixed",NA
+"0105","Other","Georgetown","000","Other/Unknown",0,"mixed",NA
+"0322","Other","Georgetown","000","Other/Unknown",0,"mixed",NA
+"0325","Other","Georgetown","000","Other/Unknown",0,"mixed",NA
+"0326","Other","Georgetown","000","Other/Unknown",0,"mixed",NA
+"0355","Other","Georgetown","000","Other/Unknown",0,"mixed",NA
+"0601","Other","Georgetown","000","Other/Unknown",0,"mixed",NA
+"097","Other","Newbury","000","Other/Unknown",0,"mixed",NA
+"091","Other","Newbury","000","Other/Unknown",0,"mixed",NA
+"012","Other","New Ashford","000","Other/Unknown",0,"mixed",NA
+"150","Garage","Belmont","UNDEFINED","UNDEFINED",0,"single",0
+"107","Condo Garage","Monterey","UNDEFINED","UNDEFINED",0,"single",1
+"107","Garage","Sherborn","UNDEFINED","UNDEFINED",0,"single",0
+"160","61: Forest category and a 601A-productive woodland use; Class Code of 6010","Eastham","UNDEFINED","UNDEFINED",0,"single",5
+"140C","DAY CARE  MDL-94","Mansfield","140","Child Care Facility",1,"single",3
+"142","Day Care","Brookline","UNDEFINED","UNDEFINED",0,"single",3
+"116","RES PARKING GARAGE","Boston","UNDEFINED","UNDEFINED",0,"single",1
+"117","DAY CARE USE","Boston","UNDEFINED","UNDEFINED",0,"single",3
+"170","Single Fam/Conventional with Cranberry Chapter Land","Kingston","UNDEFINED","UNDEFINED",0,"single",3
+"103I","Garage/Office","Westfield","103","Mobile Home (includes mobile home park land)",1,"single",3
+"140C","DAY CARE M94","Taunton","140","Child Care Facility",1,"single",3
+"137","Garage Spaces","Framingham","UNDEFINED","UNDEFINED",0,"single",2
+"0270","Cranberry Bog","Ludlow","270","Cranberry Bog (classified as Open Space)",1,"mixed",2
+"3327","COM GARAGE","Middleborough","332","Auto Repair Facilities",1,"single",0
+"3322","Garage","North Attleborough","332","Auto Repair Facilities",1,"single",0
+"3390","Garage","Norwood","UNDEFINED","UNDEFINED",0,"single",0
+"332G","Commercial Garage","Hanover","332","Auto Repair Facilities",1,"single",1
+"3521","DAY CARE","Sutton","352","Day Care Centers, Adult (see also Code 140)",1,"single",3
+"3325","Garage","Millbury","332","Auto Repair Facilities",1,"single",0
+"339","Commercial Garage","Wakefield","UNDEFINED","UNDEFINED",0,"single",1
+"3325","GARAGE","Barnstable","332","Auto Repair Facilities",1,"single",0
+"3323","GARAGE","Southbridge","332","Auto Repair Facilities",1,"single",0
+"3361","Parking Garage","Medford","336","Parking Garages",1,"single",1
+"332G","Garage","Millis","332","Auto Repair Facilities",1,"single",0
+"339","PARKING GARAGE H.V.","Boston","UNDEFINED","UNDEFINED",0,"single",1
+"329","Condo Garage","Salem","UNDEFINED","UNDEFINED",0,"single",1
+"332C","Garage Condo M06","Nantucket","332","Auto Repair Facilities",1,"single",1
+"3222","Garage/Office","Westfield","322","Discount Stores, Junior Department Stores, Department Stores",1,"single",3
+"332G","Garage","Taunton","332","Auto Repair Facilities",1,"single",0
+"316C","Garage/Office","Westfield","316","Other Storage, Warehouse, and Distribution facilities (see also usecode 401)",1,"single",3
+"340I","Garage/Office","Westfield","340","General Office Buildings",1,"single",3
+"336I","IMPUTED - Parking Garages","Ipswich","336","Parking Garages",1,"single",2
+"0317","101 Single Family, 718 Pasture, 716 Related, 717 Productive Woodland, 720 Non Productive Land, 317 Farm Buildings & 130 Land","Belchertown","317","Farm Buildings - barns, silo, utility shed, etc",1,"mixed",11
+"0331","GARAGE","Marion","331","Automotive Supplies Sales and Service",1,"mixed",0
+"0352","DAY CARE","Marion","352","Day Care Centers, Adult (see also Code 140)",1,"mixed",3
+"0352","DAY CARE","Newburyport","352","Day Care Centers, Adult (see also Code 140)",1,"mixed",3
+"0352","DAY CARE","Gloucester","352","Day Care Centers, Adult (see also Code 140)",1,"mixed",3
+"0352","DAY CARE","East Brookfield","352","Day Care Centers, Adult (see also Code 140)",1,"mixed",3
+"033G","Commercial Garage","Millis","UNDEFINED","UNDEFINED",0,"mixed",1
+"0336","PARKING GARAGE","Taunton","336","Parking Garages",1,"mixed",1
+"0352","Day Care Centers, Adult (see also Code 140)","Wayland","352","Day Care Centers, Adult (see also Code 140)",1,"mixed",5
+"406","Garage Condominium","Tyngsborough","UNDEFINED","UNDEFINED",0,"single",2
+"4005","IND GARAGE","Wrentham","400","Buildings for manufacturing operations",1,"single",0
+"400G","Industrial Garage","Hanover","400","Buildings for manufacturing operations",1,"single",0
+"436","IND PRK-GARAGE","Cambridge","UNDEFINED","UNDEFINED",0,"single",0
+"4095","IND GARAGE","Southbridge","UNDEFINED","UNDEFINED",0,"single",0
+"4095","Industrial Garage, Job Shop","Millis","UNDEFINED","UNDEFINED",0,"single",1
+"400S","IND JOB SHOP/GARAGE","Taunton","400","Buildings for manufacturing operations",1,"single",1
+"0413","101 Single Family, 431 Cell Tower, 452 Solar, 715 Christmas Trees, 717 Productive Woodland & 317 Farm Building","Belchertown","413","Other Mining/Quarry",1,"mixed",8
+"601V","Productive woodland","Foxborough","6010","All land designated under Chapter 61 (not classified as Open Space)",1,"single",3
+"0601","WOODLAND","Sutton","6010","All land designated under Chapter 61 (not classified as Open Space)",1,"mixed",2
+"7101","Cranberry","Marion","7100","Cranberry Bog (Ch. 61A, not classified as Open Space)",1,"single",2
+"7102","Cranberry","Marion","7100","Cranberry Bog (Ch. 61A, not classified as Open Space)",1,"single",2
+"7172","Forest Management Ch. 61A Woodland","Marion","7170","Productive Woodland (Ch. 61A, not classified as Open Space, with a Forest Management Plan); woodlots ",1,"single",4
+"722","Non-productive Woodland (Chapter Land)","Bellingham","UNDEFINED","UNDEFINED",0,"single",5
+"710C","IMPUTED - Cranberry Bog (Ch. 61A, not classified as Open Space)","Wareham","7100","Cranberry Bog (Ch. 61A, not classified as Open Space)",1,"single",8
+"710I","cranberry mdl 96","Wareham","7100","Cranberry Bog (Ch. 61A, not classified as Open Space)",1,"single",2
+"717V","IMPUTED - Productive Woodland (Ch. 61A, not classified as Open Space, with a Forest Management Plan); woodlots","East Longmeadow","7170","Productive Woodland (Ch. 61A, not classified as Open Space, with a Forest Management Plan); woodlots ",1,"single",10
+"710A","Cranberry AA","Plympton","7100","Cranberry Bog (Ch. 61A, not classified as Open Space)",1,"single",2
+"710C","Cranberry BA","Plympton","7100","Cranberry Bog (Ch. 61A, not classified as Open Space)",1,"single",2
+"7220","Non-productive chapterland contiguous necessary and related to cranberry bogs (Can either be excess land at $6,100/acre OR $500/acre)","Plympton","UNDEFINED","UNDEFINED",0,"single",13
+"717A","Productive Woodland - woodlots (Ch. 61A, not classified as Open Space) - West side of River","Northfield","7170","Productive Woodland (Ch. 61A, not classified as Open Space, with a Forest Management Plan); woodlots ",1,"single",9
+"717B","Productive Woodland - woodlots (Ch. 61A, not classified as Open Space) - East side of River","Northfield","7170","Productive Woodland (Ch. 61A, not classified as Open Space, with a Forest Management Plan); woodlots ",1,"single",9
+"7171","Ch61a productive woodland","Southampton","7170","Productive Woodland (Ch. 61A, not classified as Open Space, with a Forest Management Plan); woodlots ",1,"single",4
+"7172","Ch61a productive woodland","Southampton","7170","Productive Woodland (Ch. 61A, not classified as Open Space, with a Forest Management Plan); woodlots ",1,"single",4
+"7171","PRODUCTIVE WOODLAND","Ludlow","7170","Productive Woodland (Ch. 61A, not classified as Open Space, with a Forest Management Plan); woodlots ",1,"single",3
+"722","Non-Productive Woodland","Monterey","UNDEFINED","UNDEFINED",0,"single",5
+"710A","Cranberry bog A","Rochester","7100","Cranberry Bog (Ch. 61A, not classified as Open Space)",1,"single",2
+"710B","Cranberry bog B","Rochester","7100","Cranberry Bog (Ch. 61A, not classified as Open Space)",1,"single",2
+"710N","Cranberry bog N","Rochester","7100","Cranberry Bog (Ch. 61A, not classified as Open Space)",1,"single",2
+"7101","Cranberry","Kingston","7100","Cranberry Bog (Ch. 61A, not classified as Open Space)",1,"single",2
+"717A","Productive Woodland - woodlots (Ch. 61A, not classified as Open Space)","Hampden","7170","Productive Woodland (Ch. 61A, not classified as Open Space, with a Forest Management Plan); woodlots ",1,"single",9
+"722","Non-productive Woodlands","Townsend","UNDEFINED","UNDEFINED",0,"single",5
+"0717","IMPUTED - Productive Woodland - woodlots (Ch. 61A, not classified as Open Space)","Granby","7170","Productive Woodland (Ch. 61A, not classified as Open Space, with a Forest Management Plan); woodlots ",1,"mixed",9
+"0717","Productive Woodland - woodlots (Ch. 61A, not classified as Open Space)","West Boylston","7170","Productive Woodland (Ch. 61A, not classified as Open Space, with a Forest Management Plan); woodlots ",1,"mixed",9
+"9311","Municipal Garage","Marlborough","931","Improved, Selectmen or City Council (Municipal)",1,"single",0
+"9512","Service Garage","Marlborough","951","Other (Charitable Org.)",1,"single",2
+"9721","CONDO GARAGE","Medford","972","Transportation Authority",1,"single",1
+"963","Religious-Auxilary Use (offices,garage)","Wellesley","UNDEFINED","UNDEFINED",0,"single",4
